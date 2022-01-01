@@ -3,6 +3,9 @@ name = "lipl-gatt-bluer"
 version = "0.1.12"
 edition = "2021"
 
+[profile.release]
+lto = true
+
 [dependencies]
 bluer = { version = "0.13" }
 futures = "0.3"
@@ -12,3 +15,6 @@ tracing = "0.1"
 [dev-dependencies]
 tokio = { version = "1", features = ["rt", "macros"] }
 futures = "0.3"
+
+[features]
+secure = []
