@@ -7,16 +7,9 @@ use bluer::Uuid;
 use crate::message::{Command, Message};
 use crate::constant::{CHARACTERISTIC_COMMAND_UUID, CHARACTERISTIC_STATUS_UUID, CHARACTERISTIC_TEXT_UUID};
 
-#[cfg(feature = "secure")]
-const AUTHORIZE: bool = true;
-
-#[cfg(not(feature = "secure"))]
-const AUTHORIZE: bool = false;
-
 pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u8>>>, sender: mpsc::Sender<crate::message::Message>) -> Characteristic {
     Characteristic {
         uuid,
-        authorize: AUTHORIZE,
         write: Some(CharacteristicWrite {
             write: true,
             write_without_response: true,
