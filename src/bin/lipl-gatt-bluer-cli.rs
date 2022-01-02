@@ -1,14 +1,14 @@
 use futures::StreamExt;
 use lipl_gatt_bluer::message::{Command, Message};
+use lipl_gatt_bluer::{Error, Result};
 
 #[tokio::main(flavor = "current_thread")]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<()> {
     let (tx_values, mut rx_values) = lipl_gatt_bluer::create_channel();
     let (mut tx_cancel, rx_cancel) = lipl_gatt_bluer::create_cancel();
 
     let task1 = async move {
-        lipl_gatt_bluer::listen(rx_cancel, tx_values).await?;
-        Ok::<(), Box<dyn std::error::Error>>(())
+        lipl_gatt_bluer::listen(rx_cancel, tx_values).await
     };
 
     let task2 = async move {
@@ -18,10 +18,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 Message::Status(status) => { println!("Received status: {}", status); },
                 Message::Command(command) => {
                     if command == Command::Poweroff {
-                        match tx_cancel.try_send(()) {
-                            Ok(_) => { println!("Cancel send to listen task"); },
-                            Err(_) => { eprintln!("Failed to send cancel to listen task"); }
-                        };
+                        tx_cancel.try_send(())?;
+                        return Err(Error::Cancelled);
                     }
                     else {
                         println!("Received command: {:?}", command);
@@ -29,9 +27,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 },
             }
         }
-        Ok::<(), Box<dyn std::error::Error>>(())
+        Ok::<(), Error>(())
     };
 
-    tokio::try_join!(task1, task2)?;
+    if let Err(Error::Cancelled) = tokio::try_join!(task1, task2) {
+        login_poweroff_reboot::poweroff().map_err(|_| Error::Poweroff)?;
+    };
     Ok(())
 }

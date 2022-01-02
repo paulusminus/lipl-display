@@ -14,34 +14,30 @@ use tokio::{sync::Mutex, time};
 use bluer::Uuid;
 use tracing::{trace};
 
-pub mod constant;
+mod constant;
 pub mod message;
+mod error;
 mod characteristic;
 
-fn no_adapter_error() -> bluer::Error {
-    bluer::Error {
-        kind: bluer::ErrorKind::NotFound,
-        message: constant::ERROR_NO_ADAPTER.to_owned(),
-    }
-}
+pub use error::{Result, Error};
 
-async fn first_adapter() -> bluer::Result<bluer::Adapter> {
+async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
     let adapter_names = session.adapter_names().await?;
-    let adapter_name = adapter_names.first().ok_or_else(no_adapter_error)?;
+    let adapter_name = adapter_names.first().ok_or_else(|| Error::NoBluetooth)?;
     let adapter: bluer::Adapter = session.adapter(adapter_name)?;
     adapter.set_powered(true).await?;
     Ok(adapter)
 }
 
-async fn advertise(adapter: &bluer::Adapter) -> bluer::Result<AdvertisementHandle> {
+async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     let mut manufacturer_data = BTreeMap::new();
     manufacturer_data.insert(constant::MANUFACTURER_ID, vec![0x21, 0x22, 0x23, 0x24]);
     let le_advertisement = Advertisement {
         service_uuids: vec![constant::SERVICE_UUID.parse::<Uuid>().unwrap()].into_iter().collect(),
         manufacturer_data,
         discoverable: Some(true),
-        local_name: Some(constant::LOCAL_NAME.to_owned()),
+//        local_name: Some(constant::LOCAL_NAME.to_owned()),
         ..Default::default()
     };
     let adv_handle = adapter.advertise(le_advertisement).await?;
@@ -56,7 +52,7 @@ pub fn create_cancel() -> (mpsc::Sender<()>, mpsc::Receiver<()>) {
     mpsc::channel(1)
 }
 
-pub async fn listen(mut cancel: mpsc::Receiver<()>, values_rx: mpsc::Sender<message::Message>) -> bluer::Result<()> {
+pub async fn listen(mut cancel: mpsc::Receiver<()>, values_rx: mpsc::Sender<message::Message>) -> Result<()> {
     let adapter = first_adapter().await?;
     trace!("Bluetooth adapter {} found", adapter.name());
     let adv_handle = advertise(&adapter).await?;
@@ -91,5 +87,5 @@ pub async fn listen(mut cancel: mpsc::Receiver<()>, values_rx: mpsc::Sender<mess
     drop(adv_handle);
     time::sleep(Duration::from_millis(10)).await;
     trace!("Finished");
-    Ok::<(), bluer::Error>(())        
+    Ok(())        
 }
