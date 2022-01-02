@@ -1,5 +1,5 @@
 pub const SERVICE_UUID: &str = "27a70fc8-dc38-40c7-80bc-359462e4b808";
-pub const LOCAL_NAME: &str = "lipl";
+// pub const LOCAL_NAME: &str = "lipl";
 pub const MANUFACTURER_ID: u16 = 0xf00d;
 
 pub const CHARACTERISTIC_TEXT_UUID: &str = "04973569-c039-4ce9-ad96-861589a74f9e";
