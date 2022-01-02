@@ -37,7 +37,7 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
         service_uuids: vec![constant::SERVICE_UUID.parse::<Uuid>().unwrap()].into_iter().collect(),
         manufacturer_data,
         discoverable: Some(true),
-        local_name: Some(std::env::var("HOSTNAME").map_err(|_| Error::Hostname)?),
+        local_name: Some(constant::LOCAL_NAME.to_owned()),
         ..Default::default()
     };
     let adv_handle = adapter.advertise(le_advertisement).await?;
