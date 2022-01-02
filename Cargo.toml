@@ -9,7 +9,6 @@ lto = true
 [dependencies]
 bluer = { version = "0.13" }
 futures = "0.3"
-login-poweroff-reboot = { path = "./login-poweroff-reboot" }
 tokio = { version = "1", features = ["rt", "sync"] }
 thiserror = "1"
 tracing = "0.1"
@@ -17,6 +16,7 @@ tracing = "0.1"
 [dev-dependencies]
 tokio = { version = "1", features = ["rt", "macros"] }
 futures = "0.3"
+login-poweroff-reboot = { path = "./login-poweroff-reboot" }
 
 [features]
 secure = []
