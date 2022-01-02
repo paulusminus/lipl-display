@@ -1,0 +1,3 @@
+[submodule "login-poweroff-reboot"]
+	path = login-poweroff-reboot
+	url = ../login-poweroff-reboot/.git
