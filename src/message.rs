@@ -10,6 +10,7 @@ pub enum Message {
 #[derive(Debug, PartialEq)]
 pub enum Command {
     Poweroff,
+    Exit,
     Increase,
     Decrease,
     Light,
@@ -42,6 +43,10 @@ impl FromStr for Command {
 
         if s == "d" {
             return Ok(Command::Dark);
+        }
+
+        if s == "e" {
+            return Ok(Command::Exit);
         }
 
         Err(())

@@ -12,6 +12,7 @@ async fn main() -> Result<()> {
     };
 
     let task2 = async move {
+
         while let Some(message) = rx_values.next().await {
             match message {
                 Message::Part(part) => { println!("Received part: {}", part); },
