@@ -5,27 +5,18 @@ use dbus::arg;
 use dbus::blocking;
 
 pub trait OrgFreedesktopLogin1Manager {
-    fn power_off(&self, interactive: bool) -> Result<(), dbus::Error>;
-    fn power_off_with_flags(&self, flags: u64) -> Result<(), dbus::Error>;
-    fn reboot(&self, interactive: bool) -> Result<(), dbus::Error>;
-    fn reboot_with_flags(&self, flags: u64) -> Result<(), dbus::Error>;
+    fn schedule_shutdown(&self, type_: &str, usec: u64) -> Result<(), dbus::Error>;
+    fn cancel_scheduled_shutdown(&self) -> Result<bool, dbus::Error>;
 }
 
 impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target=T>> OrgFreedesktopLogin1Manager for blocking::Proxy<'a, C> {
 
-    fn power_off(&self, interactive: bool) -> Result<(), dbus::Error> {
-        self.method_call("org.freedesktop.login1.Manager", "PowerOff", (interactive, ))
+    fn schedule_shutdown(&self, type_: &str, usec: u64) -> Result<(), dbus::Error> {
+        self.method_call("org.freedesktop.login1.Manager", "ScheduleShutdown", (type_, usec, ))
     }
 
-    fn power_off_with_flags(&self, flags: u64) -> Result<(), dbus::Error> {
-        self.method_call("org.freedesktop.login1.Manager", "PowerOffWithFlags", (flags, ))
-    }
-
-    fn reboot(&self, interactive: bool) -> Result<(), dbus::Error> {
-        self.method_call("org.freedesktop.login1.Manager", "Reboot", (interactive, ))
-    }
-
-    fn reboot_with_flags(&self, flags: u64) -> Result<(), dbus::Error> {
-        self.method_call("org.freedesktop.login1.Manager", "RebootWithFlags", (flags, ))
+    fn cancel_scheduled_shutdown(&self) -> Result<bool, dbus::Error> {
+        self.method_call("org.freedesktop.login1.Manager", "CancelScheduledShutdown", ())
+            .and_then(|r: (bool, )| Ok(r.0, ))
     }
 }
