@@ -1,8 +1,8 @@
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use bluer::gatt::local::{Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError};
-use futures::{FutureExt, channel::mpsc};
-use futures::SinkExt;
+use futures::channel::{mpsc};
+use futures::{FutureExt, SinkExt};
 use bluer::Uuid;
 use crate::message::{Command, Message};
 use crate::constant::{CHARACTERISTIC_COMMAND_UUID, CHARACTERISTIC_STATUS_UUID, CHARACTERISTIC_TEXT_UUID};

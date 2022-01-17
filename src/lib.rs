@@ -8,8 +8,7 @@ use bluer::{
     },
 };
 use std::{collections::BTreeMap, sync::Arc, time::Duration};
-use futures::channel::{mpsc};
-use futures::StreamExt;
+use futures::{StreamExt, channel::mpsc};
 use tokio::{sync::Mutex, time};
 use bluer::Uuid;
 use tracing::{trace};
