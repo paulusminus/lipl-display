@@ -1,8 +1,11 @@
 [package]
-name = "display-gtk"
+name = "lipl-display-gtk"
 version = "0.1.1"
 authors = ["Paul Min <info@paulmin.nl>"]
 edition = "2021"
+
+[profile.release]
+lto = true
 
 [dependencies]
 anyhow = "1.0"
