@@ -7,7 +7,7 @@ use bluer::Uuid;
 use crate::message::{Command, Message};
 use crate::constant::{CHARACTERISTIC_COMMAND_UUID, CHARACTERISTIC_STATUS_UUID, CHARACTERISTIC_TEXT_UUID};
 
-pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u8>>>, sender: mpsc::Sender<crate::message::Message>) -> Characteristic {
+pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u8>>>, sender: mpsc::Sender<Message>) -> Characteristic {
     Characteristic {
         uuid,
         write: Some(CharacteristicWrite {
