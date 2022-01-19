@@ -570,7 +570,7 @@ dependencies = [
 [[package]]
 name = "lipl-gatt-bluer"
 version = "0.1.14"
-source = "git+ssh://paul@www.paulmin.nl/home/paul/repo/rust/lipl-gatt-bluer.git#a1a723ccc39fbaf73cb8121358f8a0a1c5e9add9"
+source = "git+git://paulmin.nl/lipl-gatt-bluer.git?branch=main#a1a723ccc39fbaf73cb8121358f8a0a1c5e9add9"
 dependencies = [
  "bluer",
  "futures",
