@@ -15,10 +15,8 @@ use eframe::{
     run_native,
     NativeOptions,
 };
-use futures::{StreamExt};
 use lipl_display::{LiplDisplay};
 use lipl_gatt_bluer::message::{Command, Message};
-use tracing::{trace, error};
 
 impl App for LiplDisplay {
     fn setup(&mut self, ctx: &CtxRef, _frame: &Frame, _storage: Option<&dyn Storage>) {
@@ -42,12 +40,7 @@ impl App for LiplDisplay {
                         Command::Decrease => { if self.config.font_size > 5.0 { self.config.font_size -= 3.0; }; self.configure_fonts(ctx); },
                         Command::Exit => { frame.quit(); },
                         Command::Poweroff => { 
-                            match self.close.try_send(()) {
-                                Ok(_) => {
-                                    frame.quit();
-                                },
-                                Err(e) => { error!("Error poweroff: {}", e); }
-                            };
+                            frame.quit();
                         },
                     }
                 }
@@ -79,48 +72,12 @@ fn fullscreen() -> NativeOptions {
 }
 
 fn main() {
-    let subscriber = tracing_subscriber::FmtSubscriber::builder().with_max_level(tracing::Level::TRACE).finish();
-    tracing::subscriber::set_global_default(subscriber).expect("Failed to initialize logging");
+    simple_logger::SimpleLogger::new().init().unwrap();
+    log::set_max_level(log::LevelFilter::Trace);
 
     let (tx, rx) = std::sync::mpsc::channel::<Message>();
-    let (cancel_tx, cancel_rx) = lipl_gatt_bluer::create_cancel();
-    std::thread::spawn(move || {
-        tracing::trace!("Background thread started");
+    lipl_gatt_bluer::listen_background(move |message| tx.send(message).map_err(|_| lipl_gatt_bluer::Error::Callback));
 
-        let (values_tx, mut values_rx) = lipl_gatt_bluer::create_channel();
-
-        let runtime = 
-            tokio::runtime::Builder::new_current_thread()
-            .enable_io()
-            .enable_time()
-            .build()
-            .unwrap();
-        
-
-        runtime.block_on(async move {
-            let task1 = async move {
-                trace!("Receiving values from Gatt Application");
-                while let Some(value) = values_rx.next().await {
-                    tx.send(value)?;
-                }
-                Ok::<(), Box<dyn std::error::Error>>(())
-            };
-    
-            let task2 = async move {
-                trace!("Start listening on gatt peripheral");
-                lipl_gatt_bluer::listen(cancel_rx, values_tx).await?;
-                Ok::<(), Box<dyn std::error::Error>>(())
-            };
-    
-            match tokio::try_join!(task1, task2) {
-                Ok(_) => {},
-                Err(e) => { error!("Error: {}", e); }
-            };
-        });
-
-    });
-
-    let app: LiplDisplay = LiplDisplay::new(rx, cancel_tx);
-
+    let app: LiplDisplay = LiplDisplay::new(rx);
     run_native(Box::new(app), fullscreen());
 }

@@ -1,6 +1,5 @@
 use std::borrow::Cow;
 use std::sync::mpsc::{Receiver};
-use futures::channel::mpsc::Sender;
 
 use eframe::egui::{
     CtxRef,
@@ -26,15 +25,13 @@ pub struct LiplDisplay {
     pub status: Option<String>,
     pub config: LiplDisplayConfig,
     pub receiver: Receiver<Message>,
-    pub close: Sender<()>,
 }
 
 impl LiplDisplay {
-    pub fn new(receiver: Receiver<Message>, close: Sender<()>) -> Self {
+    pub fn new(receiver: Receiver<Message>) -> Self {
         LiplDisplay {
             text: Some(TEXT_DEFAULT.to_owned()),
             status: None,
-            close,
             receiver,
             config: Default::default(),
         }
