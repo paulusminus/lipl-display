@@ -22,6 +22,23 @@ mod characteristic;
 
 pub use error::{Result, Error};
 
+pin_project! {
+    struct ValuesStream {
+        values_tx: futures::channel::mpsc::Sender<message::Message>,
+        #[pin]
+        values_rx: futures::channel::mpsc::Receiver<message::Message>,
+        adv_handle: AdvertisementHandle,
+        app_handle: ApplicationHandle,
+    }    
+}
+
+impl futures::Stream for ValuesStream {
+    type Item = message::Message;
+    fn poll_next(self: std::pin::Pin<&mut Self>, cx: &mut std::task::Context<'_>) -> std::task::Poll<Option<Self::Item>> {
+        self.project().values_rx.poll_next(cx)
+    }
+}
+
 async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
     let adapter_names = session.adapter_names().await?;
@@ -42,31 +59,6 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
         ..Default::default()
     };
     adapter.advertise(le_advertisement).await.map_err(Error::from)
-}
-
-pub fn create_channel() -> (mpsc::Sender<message::Message>, mpsc::Receiver<message::Message>) {
-    mpsc::channel(10)
-}
-
-pub fn create_cancel() -> (mpsc::Sender<()>, mpsc::Receiver<()>) {
-    mpsc::channel(1)
-}
-
-pin_project! {
-    struct ValuesStream {
-        values_tx: futures::channel::mpsc::Sender<message::Message>,
-        #[pin]
-        values_rx: futures::channel::mpsc::Receiver<message::Message>,
-        adv_handle: AdvertisementHandle,
-        app_handle: ApplicationHandle,
-    }    
-}
-
-impl futures::Stream for ValuesStream {
-    type Item = message::Message;
-    fn poll_next(self: std::pin::Pin<&mut Self>, cx: &mut std::task::Context<'_>) -> std::task::Poll<Option<Self::Item>> {
-        self.project().values_rx.poll_next(cx)
-    }
 }
 
 pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {

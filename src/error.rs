@@ -28,5 +28,4 @@ pub enum Error {
 
     #[error("Failed to call callback")]
     Callback,
-
 }
