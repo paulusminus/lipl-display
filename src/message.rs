@@ -1,13 +1,13 @@
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Message {
     Part(String),
     Status(String),
     Command(Command),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Command {
     Poweroff,
     Exit,
