@@ -560,14 +560,14 @@ dependencies = [
 [[package]]
 name = "lipl-gatt-bluer"
 version = "0.1.14"
-source = "git+git://paulmin.nl/lipl-gatt-bluer.git?branch=stream#b9f236f3a0c6b434e344b30c461bc38f52de614d"
+source = "git+git://paulmin.nl/lipl-gatt-bluer.git#ff4eecda1f1e04b833bddee53f706477201f7a2c"
 dependencies = [
  "bluer",
  "futures",
+ "log",
  "pin-project-lite",
  "thiserror",
  "tokio",
- "tracing",
 ]
 
 [[package]]
@@ -985,38 +985,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a31142970826733df8241ef35dc040ef98c679ab14d7c3e54d827099b3acecaa"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "tracing"
-version = "0.1.29"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "375a639232caf30edfc78e8d89b2d4c375515393e7af7e16f01cd96917fb2105"
-dependencies = [
- "cfg-if",
- "pin-project-lite",
- "tracing-attributes",
- "tracing-core",
-]
-
-[[package]]
-name = "tracing-attributes"
-version = "0.1.18"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4f480b8f81512e825f337ad51e94c1eb5d3bbdf2b363dcd01e2b19a9ffe3f8e"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "tracing-core"
-version = "0.1.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f4ed65637b8390770814083d20756f87bfa2c21bf2f110babdc5438351746e4"
-dependencies = [
- "lazy_static",
 ]
 
 [[package]]
