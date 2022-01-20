@@ -13,7 +13,8 @@ use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::{sync::Mutex};
 use bluer::Uuid;
 use log::{trace};
-use pin_project_lite::pin_project;
+use pin_project::{pin_project, pinned_drop};
+use std::pin::Pin;
 
 mod constant;
 pub mod message;
@@ -22,14 +23,28 @@ mod characteristic;
 
 pub use error::{Result, Error};
 
-pin_project! {
-    struct ValuesStream {
-        values_tx: futures::channel::mpsc::Sender<message::Message>,
-        #[pin]
-        values_rx: futures::channel::mpsc::Receiver<message::Message>,
-        adv_handle: AdvertisementHandle,
-        app_handle: ApplicationHandle,
-    }    
+#[pin_project(PinnedDrop)]
+struct ValuesStream {
+    values_tx: futures::channel::mpsc::Sender<message::Message>,
+    #[pin]
+    values_rx: futures::channel::mpsc::Receiver<message::Message>,
+    adv_handle: Option<AdvertisementHandle>,
+    app_handle: Option<ApplicationHandle>,
+}
+
+#[pinned_drop]
+impl PinnedDrop for ValuesStream {
+    fn drop(self: Pin<&mut Self>) {
+        let this = self.project();
+        if let Some(handle) = this.adv_handle.take() {
+            drop(handle);
+            log::trace!("Handle dropped for Advertisement");
+        };
+        if let Some(handle) = this.app_handle.take() {
+            drop(handle);
+            log::trace!("Handle dropped for Application");
+        };
+    }
 }
 
 impl futures::Stream for ValuesStream {
@@ -112,8 +127,8 @@ async fn listen_stream() -> Result<impl Stream<Item=message::Message>> {
         ValuesStream {
             values_tx,
             values_rx,
-            adv_handle,
-            app_handle,       
+            adv_handle: Some(adv_handle),
+            app_handle: Some(app_handle),       
         }
     )
 }
