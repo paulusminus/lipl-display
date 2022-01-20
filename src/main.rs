@@ -2,11 +2,16 @@ use anyhow::{Result};
 use gtk::prelude::*;
 use gtk::glib::MainContext;
 use lipl_gatt_bluer::{message::{Command, Message}};
-use tracing::{trace};
+use log::{trace};
 
 mod css;
 mod cursor;
 mod window;
+
+static GLIB_LOGGER: gtk::glib::GlibLogger = gtk::glib::GlibLogger::new(
+    gtk::glib::GlibLoggerFormat::Plain,
+    gtk::glib::GlibLoggerDomain::CrateTarget,
+);
 
 fn build_ui(application: &gtk::Application) -> Result<()> 
 {
@@ -67,16 +72,14 @@ fn build_ui(application: &gtk::Application) -> Result<()>
 }
 
 fn main() -> anyhow::Result<()> {
-
-    let subscriber = tracing_subscriber::FmtSubscriber::builder().with_max_level(tracing::Level::TRACE).finish();
-    tracing::subscriber::set_global_default(subscriber).expect("Failed to initialize logging");
+    log::set_logger(&GLIB_LOGGER).unwrap();
+    log::set_max_level(log::LevelFilter::Trace);
 
     let application: gtk::Application = 
         gtk::builders::ApplicationBuilder::new()
         .application_id("nl.paulmin.lipl.display")
         .flags(Default::default())
         .build();
-
 
     application.connect_activate(move |app| {
         if let Err(err) = build_ui(app) {

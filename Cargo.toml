@@ -10,6 +10,6 @@ lto = true
 [dependencies]
 anyhow = "1.0"
 gtk = "0.15"
+glib = { version = "0.15", features = ["log"] }
 lipl-gatt-bluer = { git = "git://paulmin.nl/lipl-gatt-bluer.git", branch = "stream" }
-tracing = "0.1"
-tracing-subscriber = "0.3"
+log = "0.4"
