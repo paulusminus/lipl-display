@@ -12,7 +12,7 @@ use std::{collections::BTreeMap, sync::Arc};
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::{sync::Mutex};
 use bluer::Uuid;
-use tracing::{trace};
+use log::{trace};
 use pin_project_lite::pin_project;
 
 mod constant;
