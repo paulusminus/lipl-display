@@ -1,16 +1,15 @@
-use lipl_gatt_bluer::{Result};
-use lipl_gatt_bluer::message::{Command, Message};
-use futures::StreamExt;
-
+use std::sync::mpsc::channel;
+use lipl_gatt_bluer::message::{Message};
+use lipl_gatt_bluer::Error;
 
 #[tokio::main(flavor = "current_thread")]
-async fn main() -> Result<()> {
-    let mut s = lipl_gatt_bluer::listen_stream().await?;
+async fn main() {
+    let (values_tx, values_rx) = channel::<Message>();
+    lipl_gatt_bluer::listen_background(move |message| {
+        values_tx.send(message).map_err(|_| Error::Callback)
+    });
 
-    while let Some(value) = s.next().await {
-        if value == Message::Command(Command::Poweroff) || value == Message::Command(Command::Exit) { break; }
-        println!("{:?}", value);
+    while let Ok(message) = values_rx.recv() {
+        println!("{:?}", message);
     }
-    
-    Ok(())
 }
