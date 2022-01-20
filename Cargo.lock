@@ -559,10 +559,8 @@ name = "lipl-display-gtk"
 version = "0.1.1"
 dependencies = [
  "anyhow",
- "futures",
  "gtk",
  "lipl-gatt-bluer",
- "tokio",
  "tracing",
  "tracing-subscriber",
 ]
@@ -570,10 +568,11 @@ dependencies = [
 [[package]]
 name = "lipl-gatt-bluer"
 version = "0.1.14"
-source = "git+ssh://paul@www.paulmin.nl/home/paul/repo/rust/lipl-gatt-bluer.git#a1a723ccc39fbaf73cb8121358f8a0a1c5e9add9"
+source = "git+git://paulmin.nl/lipl-gatt-bluer.git?branch=stream#b9f236f3a0c6b434e344b30c461bc38f52de614d"
 dependencies = [
  "bluer",
  "futures",
+ "pin-project-lite",
  "thiserror",
  "tokio",
  "tracing",
