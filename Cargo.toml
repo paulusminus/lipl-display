@@ -1,3 +1,5 @@
+cargo-features = ["strip"]
+
 [package]
 name = "lipl-display-gtk"
 version = "0.1.1"
@@ -6,10 +8,12 @@ edition = "2021"
 
 [profile.release]
 lto = true
+strip = true
+opt-level = "z"
 
 [dependencies]
 anyhow = "1.0"
 gtk = "0.15"
 glib = { version = "0.15", features = ["log"] }
-lipl-gatt-bluer = { git = "git://paulmin.nl/lipl-gatt-bluer.git" }
+lipl-gatt-bluer = { git = "git://paulmin.nl/rust/lipl-gatt-bluer.git" }
 log = "0.4"
