@@ -11,7 +11,7 @@ opt-level = "z"
 strip = true
 
 [dependencies]
-eframe = { version = "0.16", default-features = false, features = ["egui_glow"] }
+eframe = { version = "0.17", default-features = false, features = ["egui_glow"] }
 lipl-gatt-bluer = { git = "git://paulmin.nl/rust/lipl-gatt-bluer.git" }
 log = "0.4"
 simple_logger = "2"

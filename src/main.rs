@@ -4,7 +4,7 @@ mod visuals;
 use eframe::{
     egui::{
         CentralPanel,
-        CtxRef,
+        Context,
         TopBottomPanel,
     },
     epi::{
@@ -19,12 +19,12 @@ use lipl_display::{LiplDisplay};
 use lipl_gatt_bluer::message::{Command, Message};
 
 impl App for LiplDisplay {
-    fn setup(&mut self, ctx: &CtxRef, _frame: &Frame, _storage: Option<&dyn Storage>) {
+    fn setup(&mut self, ctx: &Context, _frame: &Frame, _storage: Option<&dyn Storage>) {
         self.configure_fonts(ctx);
         self.configure_visuals(ctx);
     }
 
-    fn update(&mut self, ctx: &CtxRef, frame: &Frame) {
+    fn update(&mut self, ctx: &Context, frame: &Frame) {
 
         ctx.request_repaint();
 

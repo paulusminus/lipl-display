@@ -28,9 +28,9 @@ fn widget_visuals(dark: bool) -> WidgetVisuals {
     WidgetVisuals {
         bg_fill: dark.background(),
         bg_stroke: Stroke { width: 0., color: dark.background() },
-        corner_radius: 1.0,
         fg_stroke: Stroke { width: 0., color: dark.foreground() },
         expansion: 1.0,
+        rounding: Default::default(),
     }
 }
 

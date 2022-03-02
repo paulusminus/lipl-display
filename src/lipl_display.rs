@@ -1,8 +1,7 @@
-use std::borrow::Cow;
-use std::sync::mpsc::{Receiver};
+use std::{sync::mpsc::{Receiver}};
 
 use eframe::egui::{
-    CtxRef,
+    Context,
     FontDefinitions,
     FontFamily,
     Label,
@@ -53,32 +52,32 @@ impl Default for LiplDisplayConfig {
 }
 
 impl LiplDisplay {
-    pub fn configure_fonts(&self, ctx: &CtxRef) {
+    pub fn configure_fonts(&self, ctx: &Context) {
         let mut font_defs = FontDefinitions::default();
         font_defs.font_data.insert(
             FONT_NAME.to_owned(),
-            FontData { font: Cow::Borrowed(FONT), index: 0 }
+            FontData::from_static(FONT),
         );
 
-        font_defs.family_and_size.insert(
-            TextStyle::Body,
-            (FontFamily::Proportional, self.config.font_size)
+        font_defs.families.get_mut(&FontFamily::Proportional).unwrap().insert(
+            0,
+            FONT_NAME.to_owned(),
         );
 
-        font_defs.family_and_size.insert(
-            TextStyle::Small,
-            (FontFamily::Proportional, self.config.font_size * FONT_SMALL_FACTOR)
-        );
-
-        font_defs.fonts_for_family.get_mut(&FontFamily::Proportional).unwrap().insert(
+        font_defs.families.get_mut(&FontFamily::Proportional).unwrap().insert(
             0,
             FONT_NAME.to_owned(),
         );
 
         ctx.set_fonts(font_defs);
+
+        let mut style = (*ctx.style()).clone();
+        style.text_styles.insert(TextStyle::Body, eframe::epaint::FontId { size: self.config.font_size, family: Default::default() });
+        style.text_styles.insert(TextStyle::Small, eframe::epaint::FontId { size: self.config.font_size * FONT_SMALL_FACTOR, family: Default::default() });
+        ctx.set_style(style);
     }
 
-    pub fn configure_visuals(&self, ctx: &CtxRef) {
+    pub fn configure_visuals(&self, ctx: &Context) {
         ctx.set_visuals(crate::visuals::visuals(self.config.dark));
     }
 
