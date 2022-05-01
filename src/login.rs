@@ -17,6 +17,6 @@ impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target=T>> OrgFreedes
 
     fn cancel_scheduled_shutdown(&self) -> Result<bool, dbus::Error> {
         self.method_call("org.freedesktop.login1.Manager", "CancelScheduledShutdown", ())
-            .and_then(|r: (bool, )| Ok(r.0, ))
+            .map(|r: (bool, )| r.0)
     }
 }
