@@ -57,7 +57,7 @@ impl futures::Stream for ValuesStream {
 async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
     let adapter_names = session.adapter_names().await?;
-    let adapter_name = adapter_names.first().ok_or_else(|| Error::NoBluetooth)?;
+    let adapter_name = adapter_names.first().ok_or(Error::NoBluetooth)?;
     let adapter: bluer::Adapter = session.adapter(adapter_name)?;
     adapter.set_powered(true).await?;
     Ok(adapter)
