@@ -1,13 +1,14 @@
 use std::str::FromStr;
+use serde::{Serialize};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub enum Message {
     Part(String),
     Status(String),
     Command(Command),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub enum Command {
     Poweroff,
     Exit,
