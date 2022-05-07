@@ -93,7 +93,7 @@ pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
     });
 }
 
-async fn listen_stream() -> Result<impl Stream<Item=message::Message>> {
+pub async fn listen_stream() -> Result<impl Stream<Item=message::Message>> {
     let (values_tx, values_rx) = mpsc::channel::<Message>(100);
 
     let adapter = first_adapter().await?;
