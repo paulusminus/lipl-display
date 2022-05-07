@@ -28,4 +28,7 @@ pub enum Error {
 
     #[error("Failed to call callback")]
     Callback,
+
+    #[error("Error creating tokio runtime")]
+    Runtime,
 }

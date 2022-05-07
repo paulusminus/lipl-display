@@ -54,6 +54,10 @@ impl futures::Stream for ValuesStream {
     }
 }
 
+pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
+    tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(|_| Error::Runtime)
+}
+
 async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
     let adapter_names = session.adapter_names().await?;
