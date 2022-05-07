@@ -31,4 +31,7 @@ pub enum Error {
 
     #[error("Error creating tokio runtime")]
     Runtime,
+
+    #[error("Json serialization")]
+    JsonSerialization,
 }
