@@ -1,5 +1,3 @@
-cargo-features = ["strip"]
-
 [package]
 name = "lipl-display-gtk"
 version = "0.1.1"
