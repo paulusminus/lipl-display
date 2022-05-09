@@ -1,16 +1,16 @@
 use std::str::FromStr;
-use serde::{Serialize};
+// use serde::{Serialize};
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Clone, Debug, PartialEq)]
+// #[serde(rename_all = "lowercase")]
 pub enum Message {
     Part(String),
     Status(String),
     Command(Command),
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Clone, Debug, PartialEq)]
+// #[serde(rename_all = "lowercase")]
 pub enum Command {
     Poweroff,
     Exit,
