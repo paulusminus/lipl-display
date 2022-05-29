@@ -7,7 +7,7 @@ edition = "2021"
 lto = true
 
 [dependencies]
-bluer = { version = "= 0.14", features = ["bluetoothd"] }
+bluer = { version = "0.15", features = ["bluetoothd"] }
 futures = "0.3"
 pin-project = "1"
 tokio = { version = "1", features = ["rt", "sync"] }
