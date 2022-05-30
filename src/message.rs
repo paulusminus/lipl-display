@@ -1,8 +1,6 @@
 use std::str::FromStr;
-// use serde::{Serialize};
 
 #[derive(Clone, Debug, PartialEq)]
-// #[serde(rename_all = "lowercase")]
 pub enum Message {
     Part(String),
     Status(String),
