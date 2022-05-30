@@ -21,6 +21,8 @@ impl Bluez {
         Connection::system().map_ok(|connection| Self { connection})
     }
 
+    
+
     pub async fn bluez_managed_objects(&self) -> Result<HashMap<OwnedObjectPath, Interfaces>> {
         let proxy = ObjectManagerProxy::builder(&self.connection).destination("org.bluez")?.path("/")?.build().await?;
         let om = proxy.get_managed_objects().await?;
