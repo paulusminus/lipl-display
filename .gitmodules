@@ -1,0 +1,4 @@
+[submodule "crates/bluer"]
+	path = crates/bluer
+	url = git://paulmin.nl/rust/bluer.git
+	branch = yocto
