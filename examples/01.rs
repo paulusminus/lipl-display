@@ -18,5 +18,6 @@ fn print_adapters(adapters: impl Iterator<Item = OwnedObjectPath>) {
 async fn main() -> zbus::Result<()> {
     Bluez::new()
     .and_then(|bluez| async move { bluez.list_adapters(gatt_capable).await })
-    .map_ok(print_adapters).await   
+    .map_ok(print_adapters)
+    .await   
 }
