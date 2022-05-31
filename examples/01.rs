@@ -1,8 +1,8 @@
 use std::{collections::HashMap};
 
-use zbus::{export::futures_util::TryFutureExt, Guid};
+use zbus::{export::futures_util::TryFutureExt};
 use zbus::zvariant::OwnedObjectPath;
-use zbus_bluez::{BluezDbusConnection, advertisement::Advertisement, gatt_capable, Interfaces};
+use zbus_bluez::{BluezDbusConnection, advertisement::{Advertisement, SERVICE_UUID}, gatt_capable, Interfaces};
 
 fn print_adapter(adapter: (&OwnedObjectPath, &Interfaces)) {
     println!("{}", adapter.0.as_str());
@@ -14,20 +14,20 @@ fn print_adapters(adapters: HashMap<OwnedObjectPath, Interfaces>) {
     adapters.iter().for_each(print_adapter);
 }
 
-fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
-    let mut hm = HashMap::new();
-    hm.insert(0xFF, vec![0x45]);
-    hm
-}
+// fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
+//     let mut hm = HashMap::new();
+//     hm.insert(0xFF, vec![0x45]);
+//     hm
+// }
 
 fn create_advertisement() -> (OwnedObjectPath, Advertisement) {
     (
         "/org/bluez/advertisement".try_into().unwrap(),
         Advertisement {
             advertisement_type: "peripheral".into(),
-            manufacturer_data: manufacturer_data(),
-            service_uuids: vec![Guid::generate()],
-            local_name: "jaja".into(),
+            // manufacturer_data: manufacturer_data(),
+            service_uuids: vec![SERVICE_UUID.into()],
+            local_name: "lipl-zbus".into(),
             include_tx_power: true,
         }
     )
