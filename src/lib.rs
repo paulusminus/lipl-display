@@ -18,12 +18,19 @@ pub struct BluezDbusConnection {
 
 impl BluezDbusConnection {
     pub async fn new(advertisement: (OwnedObjectPath, impl Interface)) -> Result<Self> {
-        let connection = ConnectionBuilder::system()?.serve_at(&advertisement.0, advertisement.1)?.build().await?;
+        let connection = 
+            ConnectionBuilder::system()?
+            .serve_at(&advertisement.0, advertisement.1)?
+            .build()
+            .await?;
         let bluez_dbus_connection = Self {connection};
         let adapters = bluez_dbus_connection.list_adapters(gatt_capable).await?;
         if let Some(adapter) = adapters.keys().map(|path| path.as_str()).min() {
+            log::info!("Found adapter {}", adapter);
             bluez_dbus_connection.power_on(adapter).await?;
+            log::info!("Adapter {} powered on and discoverable", adapter);
             bluez_dbus_connection.register_advertisement(&adapter.try_into()?, &advertisement.0).await?;
+            log::info!("Adapter {} advertisement registered", adapter);
         }
         Ok(bluez_dbus_connection)
     }

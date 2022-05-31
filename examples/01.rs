@@ -1,6 +1,6 @@
-use std::collections::HashMap;
+use std::{collections::HashMap};
 
-use zbus::export::futures_util::TryFutureExt;
+use zbus::{export::futures_util::TryFutureExt, Guid};
 use zbus::zvariant::OwnedObjectPath;
 use zbus_bluez::{BluezDbusConnection, advertisement::Advertisement, gatt_capable, Interfaces};
 
@@ -14,15 +14,20 @@ fn print_adapters(adapters: HashMap<OwnedObjectPath, Interfaces>) {
     adapters.iter().for_each(print_adapter);
 }
 
+fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
+    let mut hm = HashMap::new();
+    hm.insert(0xFF, vec![0x45]);
+    hm
+}
+
 fn create_advertisement() -> (OwnedObjectPath, Advertisement) {
     (
         "/org/bluez/advertisement".try_into().unwrap(),
         Advertisement {
             advertisement_type: "peripheral".into(),
-            manufacturer_data: HashMap::new(),
-            service_uuids: vec!["".into()],
-            sollicit_uuids: vec![],
-            name: "jaja".into(),
+            manufacturer_data: manufacturer_data(),
+            service_uuids: vec![Guid::generate()],
+            local_name: "jaja".into(),
             include_tx_power: true,
         }
     )
@@ -30,6 +35,7 @@ fn create_advertisement() -> (OwnedObjectPath, Advertisement) {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> zbus::Result<()> {
+    env_logger::init();
     BluezDbusConnection::new(create_advertisement())
     .and_then(|bluez| async move { bluez.list_adapters(gatt_capable).await })
     .map_ok(print_adapters)
