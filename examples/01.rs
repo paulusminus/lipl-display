@@ -1,45 +1,29 @@
-use std::{collections::HashMap};
+use std::vec;
 
-use zbus::{export::futures_util::TryFutureExt};
-use zbus::zvariant::OwnedObjectPath;
-use zbus_bluez::{BluezDbusConnection, advertisement::{Advertisement, SERVICE_UUID}, gatt_capable, Interfaces};
+use zbus_bluez::bluez_interfaces::Adapter1Proxy;
+use zbus_bluez::{BluezDbusConnection};
+use zbus_bluez::advertisement::PeripheralAdvertisement;
+use uuid::{uuid, Uuid};
 
-fn print_adapter(adapter: (&OwnedObjectPath, &Interfaces)) {
-    println!("{}", adapter.0.as_str());
-    adapter.1.keys().for_each(|s| { println!("  - {s}"); });
-    println!();
+pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
+
+async fn print_adapter(adapter: Adapter1Proxy<'_>) -> zbus::Result<()> {
+    let name = adapter.name().await?;
+    let address = adapter.address().await?;
+    println!("{} ({})", name, address);
+
+    Ok(())
 }
 
-fn print_adapters(adapters: HashMap<OwnedObjectPath, Interfaces>) {
-    adapters.iter().for_each(print_adapter);
-}
-
-// fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
-//     let mut hm = HashMap::new();
-//     hm.insert(0xFF, vec![0x45]);
-//     hm
-// }
-
-fn create_advertisement() -> (OwnedObjectPath, Advertisement) {
-    (
-        "/org/bluez/advertisement".try_into().unwrap(),
-        Advertisement {
-            advertisement_type: "peripheral".into(),
-            // manufacturer_data: manufacturer_data(),
-            service_uuids: vec![SERVICE_UUID.into()],
-            local_name: "lipl-zbus".into(),
-            include_tx_power: true,
-        }
-    )
-}
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> zbus::Result<()> {
     env_logger::init();
-    BluezDbusConnection::new(create_advertisement())
-    .and_then(|bluez| async move { bluez.list_adapters(gatt_capable).await })
-    .map_ok(print_adapters)
-    .await?;
+    let bluez = BluezDbusConnection::new().await?;
+    let adapter = bluez.adapter_proxy().await?;
+    print_adapter(adapter).await?;
+    let advertisement = PeripheralAdvertisement::new("fedora".into(), vec![SERVICE_UUID] );
+    bluez.register_advertisement(advertisement).await?;
 
     println!("Press <Enter> to stop advertising");
     let mut input = String::new();
