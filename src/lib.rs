@@ -71,7 +71,7 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     let mut manufacturer_data = BTreeMap::new();
     manufacturer_data.insert(constant::MANUFACTURER_ID, vec![0x21, 0x22, 0x23, 0x24]);
     let le_advertisement = Advertisement {
-        service_uuids: vec![constant::SERVICE_UUID.parse::<Uuid>().unwrap()].into_iter().collect(),
+        service_uuids: vec![constant::SERVICE_UUID].into_iter().collect(),
         manufacturer_data,
         discoverable: Some(true),
         local_name: Some(constant::LOCAL_NAME.to_owned()),
@@ -105,12 +105,11 @@ pub async fn listen_stream() -> Result<impl Stream<Item=message::Message>> {
 
     let adv_handle = advertise(&adapter).await?;
     trace!("Advertising started");        
-    let uuid: Uuid = constant::SERVICE_UUID.parse::<Uuid>().unwrap();
+    let uuid: Uuid = constant::SERVICE_UUID;
     let primary: bool = true;
     let characteristics: Vec<Characteristic> = 
         constant::CHARACTERISTICS
-        .iter()
-        .map(|s| s.parse::<Uuid>().unwrap())
+        .into_iter()
         .map(|c| (c, Arc::new(Mutex::new(vec![]))))
         .map(|v| characteristic::write_no_response_characteristic(v.0, v.1, values_tx.clone()))
         .collect();

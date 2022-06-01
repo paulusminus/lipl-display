@@ -22,13 +22,13 @@ pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u
                     *value = new_value;
 
                     if let Ok(received) = std::str::from_utf8(&send_value) {
-                        if uuid == CHARACTERISTIC_TEXT_UUID.parse::<Uuid>().unwrap() {
+                        if uuid == CHARACTERISTIC_TEXT_UUID {
                             s.send(Message::Part(received.to_owned())).await.map_err(|_| ReqError::Failed)?;
                         }
-                        if uuid == CHARACTERISTIC_STATUS_UUID.parse::<Uuid>().unwrap() {
+                        if uuid == CHARACTERISTIC_STATUS_UUID {
                             s.send(Message::Status(received.to_owned())).await.map_err(|_| ReqError::Failed)?;
                         }
-                        if uuid == CHARACTERISTIC_COMMAND_UUID.parse::<Uuid>().unwrap() {
+                        if uuid == CHARACTERISTIC_COMMAND_UUID {
                             let command = received.parse::<Command>().map_err(|_| ReqError::Failed)?;
                             s.send(Message::Command(command)).await.map_err(|_| ReqError::Failed)?;
                         }
