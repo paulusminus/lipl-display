@@ -3,12 +3,13 @@ use std::collections::HashMap;
 use uuid::Uuid;
 use zbus::{dbus_interface};
 
+#[derive(Clone)]
 pub struct Characteristic {
     pub uuid: Uuid,
     pub read: bool,
     pub write: bool,
     pub notify: bool,
-    pub service_path: String,
+    pub service_path: &'static str,
     pub descriptor_paths: Vec<String>,
     pub value: String,
 }
@@ -35,7 +36,7 @@ impl Characteristic {
 
     #[dbus_interface(property = "Service")]
     fn service(&self) -> String {
-        self.service_path.clone()
+        self.service_path.to_string()
     }
 
     #[dbus_interface(property = "UUID")]
@@ -46,6 +47,7 @@ impl Characteristic {
     #[dbus_interface(name = "WriteValue")]
     fn write_value(&mut self, value: Vec<u8>, _options: HashMap<String, zbus::zvariant::Value>) -> zbus::fdo::Result<()> {
         let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
+        log::info!("Characteristic {} received {}", self.uuid, s);
         self.set_value(s.to_owned());
         Ok(())
     }

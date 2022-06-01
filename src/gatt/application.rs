@@ -1,8 +1,56 @@
 use std::{collections::HashMap};
 
 use uuid::{uuid, Uuid};
-use zbus::{Connection, dbus_interface, zvariant::{OwnedObjectPath, OwnedValue}, fdo::PropertiesProxy, names::InterfaceName};
+use zbus::{
+    Connection,
+    dbus_interface,
+    zvariant::{
+        OwnedObjectPath,
+        OwnedValue
+    },
+    Interface,
+};
+use crate::bluez_interfaces::GattManager1Proxy;
+
 use super::{Service, Characteristic};
+
+const APP_1_PATH: &str = "/org/bluez/app1";
+pub const SERVICE_1_UUID: Uuid = uuid!("b7423a7c-08cc-483d-bdf6-d351a7656a70");
+const SERVICE_1_PATH: &str = "/org/bluez/app1/service1";
+const CHAR_1_UUID: Uuid = uuid!("d062f9a4-f41d-4b80-93af-0bf2a32c26bf");
+const CHAR_1_PATH: &str = "/org/bluez/app1/service1/char1";
+const CHAR_2_UUID: Uuid = uuid!("935d864b-61fe-4c55-8b9e-53be40919950");
+const CHAR_2_PATH: &str = "/org/bluez/app1/service1/char2";
+
+const CHAR1: Characteristic = Characteristic {
+    uuid: CHAR_1_UUID,
+    read: false,
+    write: true,
+    notify: false,
+    service_path: SERVICE_1_PATH,
+    descriptor_paths: vec![],
+    value: String::new(),
+};
+
+const CHAR2: Characteristic = Characteristic {
+    uuid: CHAR_2_UUID,
+    read: false,
+    write: true,
+    notify: false,
+    service_path: SERVICE_1_PATH,
+    descriptor_paths: vec![],
+    value: String::new(),
+};
+
+const SERVICE1: Service = Service {
+    primary: true,
+    uuid: SERVICE_1_UUID,
+    characteristic_paths: &[
+        CHAR_1_PATH,
+        CHAR_2_PATH,
+    ]
+};
+
 
 pub struct Application {
     objects: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>,
@@ -15,69 +63,53 @@ impl Application {
     }
 }
 
-async fn create_application(connection: Connection) -> zbus::Result<()>{
-    let create_path = |uuid: Uuid| format!("/org/bluez/app/lipl/{}", uuid);
+pub async fn register_application(connection: &Connection) -> zbus::Result<()>{
     let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
+    log::info!("Whatever");
 
-    let service1_uuid = uuid!("b7423a7c-08cc-483d-bdf6-d351a7656a70");
-    let char1_uuid = uuid!("d062f9a4-f41d-4b80-93af-0bf2a32c26bf");
-    let char2_uuid = uuid!("935d864b-61fe-4c55-8b9e-53be40919950");
+    connection.object_server().at(CHAR_1_PATH, CHAR1.clone()).await?;
+    log::info!("Characteristic 1 registered at {}", CHAR_1_PATH);
 
-    let char1 = Characteristic {
-        uuid: char1_uuid,
-        read: false,
-        write: true,
-        notify: false,
-        service_path: create_path(service1_uuid),
-        descriptor_paths: vec![],
-        value: String::new(),
-    };
-    connection.object_server().at(create_path(char1_uuid), char1).await?;
-    let proxy = PropertiesProxy::builder(&connection).path(create_path(char1_uuid))?.build().await?;
-    let char1_props = proxy.get_all(InterfaceName::try_from("org.bluez.GattCharacteristic1").unwrap()).await?;
+    let char1_props = CHAR1.get_all().await;
     hm.insert(
-        OwnedObjectPath::try_from(create_path(char1_uuid)).unwrap(),
+        OwnedObjectPath::try_from(CHAR_1_PATH).unwrap(),
         vec![("org.bluez.GattCharacteristic1".to_owned(), char1_props)].into_iter().collect()
     );
 
-    let char2 = Characteristic {
-        uuid: char2_uuid,
-        read: false,
-        write: true,
-        notify: false,
-        service_path: create_path(service1_uuid),
-        descriptor_paths: vec![],
-        value: String::new(),
-    };
-    connection.object_server().at(create_path(char2_uuid), char2).await?;
-    let proxy = PropertiesProxy::builder(&connection).path(create_path(char2_uuid))?.build().await?;
-    let char2_props = proxy.get_all(InterfaceName::try_from("org.bluez.GattCharacteristic1").unwrap()).await?;
+    connection.object_server().at(CHAR_2_PATH, CHAR2.clone()).await?;
+    log::info!("Characteristic 2 registered at {}", CHAR_2_PATH);
+    let char2_props = CHAR2.get_all().await;
     hm.insert(
-        OwnedObjectPath::try_from(create_path(char1_uuid)).unwrap(),
+        OwnedObjectPath::try_from(CHAR_2_PATH).unwrap(),
         vec![("org.bluez.GattCharacteristic1".to_owned(), char2_props)].into_iter().collect(),
     );
 
-    let service1 = Service {
-        primary: true,
-        uuid: service1_uuid,
-        characteristic_paths: vec![
-            create_path(char1_uuid),
-            create_path(char2_uuid),
-        ]
-    };
-    connection.object_server().at(create_path(service1_uuid), service1).await?;
-    let proxy = PropertiesProxy::builder(&connection).path(create_path(service1_uuid))?.build().await?;
-    let service1_props = proxy.get_all(InterfaceName::try_from("org.bluez.GattService1").unwrap()).await?;
+    connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
+    log::info!("Service 1 registered at {}", SERVICE_1_PATH);
+
+    let service1_props = SERVICE1.get_all().await;
     hm.insert(
-        OwnedObjectPath::try_from(create_path(service1_uuid)).unwrap(),
-        vec![("org.bluez.GattService1".to_owned(), service1_props)].into_iter().collect()
+        OwnedObjectPath::try_from(SERVICE_1_PATH).unwrap(),
+        vec![
+            ("org.bluez.GattService1".to_owned(), service1_props)
+        ]
+        .into_iter()
+        .collect()
     );
 
-    let app1_uuid = uuid!("db4b8967-d115-4393-8de4-23f4c1ea6d5c");
     let app = Application {
         objects: hm,
     };
-    connection.object_server().at(create_path(app1_uuid), app).await?;
+    connection.object_server().at(APP_1_PATH, app).await?;
+    log::info!("Application 1 registered at {}", APP_1_PATH);
+
+    let proxy = GattManager1Proxy::builder(connection).destination("org.bluez")?.path("/org/bluez/hci0")?.build().await?;
+    proxy.register_application(
+        &OwnedObjectPath::try_from(APP_1_PATH).unwrap(),
+        HashMap::new()
+    )
+    .await?;
+    log::info!("Application 1 registered with bluez");
 
     Ok(())
 }

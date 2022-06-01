@@ -9,6 +9,8 @@ use zbus::zvariant::{OwnedObjectPath, OwnedValue};
 use zbus::{fdo::ObjectManagerProxy, Connection, ConnectionBuilder};
 use zbus::{Result};
 
+pub use gatt::SERVICE_1_UUID;
+
 pub mod advertisement;
 pub mod bluez_interfaces;
 mod gatt;
@@ -76,19 +78,16 @@ impl BluezDbusConnection {
         proxy.set_discoverable(true).await
     }
 
-    pub async fn register_application(&mut self, application: &OwnedObjectPath) -> zbus::Result<()> {
-        self
-            .gatt_manager_proxy()
-            .await?
-            .register_application(application, HashMap::new())
-            .await?;
-        Ok(())
+    pub async fn register_application(&self) -> zbus::Result<()> {
+        gatt::register_application(&self.connection).await
     }
 
     pub async fn register_advertisement(&self, advertisement: PeripheralAdvertisement) -> zbus::Result<()> {
+        log::info!("register_advertisement called");
         let advertisement_path = OwnedObjectPath::try_from(ADVERTISEMENT_PATH).unwrap();
         let proxy = self.advertising_manager_proxy().await?;
         self.connection.object_server().at(&advertisement_path, advertisement).await?;
+        log::info!("Advertisement object registered in object server");
         proxy
             .register_advertisement(
                 &advertisement_path,
