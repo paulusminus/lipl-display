@@ -31,7 +31,7 @@ async fn main() -> zbus::Result<()> {
     println!("Press <Enter> to start register application");
     std::io::stdin().read_line(&mut input)?;
 
-    bluez.register_application().await?;
+    let _app = bluez.register_application().await?;
 
     println!("Press <Enter> to stop advertising");
     std::io::stdin().read_line(&mut input)?;

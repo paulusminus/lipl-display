@@ -51,21 +51,36 @@ const SERVICE1: Service = Service {
     ]
 };
 
-
+#[derive(Clone, Debug)]
 pub struct Application {
     objects: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>,
 }
 
 #[dbus_interface(name = "org.freedesktop.DBus.ObjectManager")]
 impl Application {
-    fn get_managed_object(&self) -> HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> {
+    #[dbus_interface(name = "GetManagedObjects")]
+    fn get_managed_objects(&self) -> HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> {
+        log::info!("Get managed objects called");
+        log::info!("{:#?}", self.objects);
         self.objects.clone()
     }
 }
 
-pub async fn register_application(connection: &Connection) -> zbus::Result<()>{
+pub async fn register_application(connection: &Connection) -> zbus::Result<Application>{
     let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
     log::info!("Whatever");
+
+    connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
+    log::info!("Service 1 registered at {}", SERVICE_1_PATH);
+    let service1_props = SERVICE1.get_all().await;
+    hm.insert(
+        OwnedObjectPath::try_from(SERVICE_1_PATH).unwrap(),
+        vec![
+            ("org.bluez.GattService1".to_owned(), service1_props)
+        ]
+        .into_iter()
+        .collect()
+    );
 
     connection.object_server().at(CHAR_1_PATH, CHAR1.clone()).await?;
     log::info!("Characteristic 1 registered at {}", CHAR_1_PATH);
@@ -84,23 +99,10 @@ pub async fn register_application(connection: &Connection) -> zbus::Result<()>{
         vec![("org.bluez.GattCharacteristic1".to_owned(), char2_props)].into_iter().collect(),
     );
 
-    connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
-    log::info!("Service 1 registered at {}", SERVICE_1_PATH);
-
-    let service1_props = SERVICE1.get_all().await;
-    hm.insert(
-        OwnedObjectPath::try_from(SERVICE_1_PATH).unwrap(),
-        vec![
-            ("org.bluez.GattService1".to_owned(), service1_props)
-        ]
-        .into_iter()
-        .collect()
-    );
-
     let app = Application {
         objects: hm,
     };
-    connection.object_server().at(APP_1_PATH, app).await?;
+    connection.object_server().at(APP_1_PATH, app.clone()).await?;
     log::info!("Application 1 registered at {}", APP_1_PATH);
 
     let proxy = GattManager1Proxy::builder(connection).destination("org.bluez")?.path("/org/bluez/hci0")?.build().await?;
@@ -111,5 +113,5 @@ pub async fn register_application(connection: &Connection) -> zbus::Result<()>{
     .await?;
     log::info!("Application 1 registered with bluez");
 
-    Ok(())
+    Ok(app)
 }

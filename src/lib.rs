@@ -4,6 +4,7 @@ use std::collections::hash_map::RandomState;
 use advertisement::PeripheralAdvertisement;
 use async_trait::async_trait;
 use bluez_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
+use gatt::Application;
 use zbus::names::OwnedInterfaceName;
 use zbus::zvariant::{OwnedObjectPath, OwnedValue};
 use zbus::{fdo::ObjectManagerProxy, Connection, ConnectionBuilder};
@@ -78,7 +79,7 @@ impl BluezDbusConnection {
         proxy.set_discoverable(true).await
     }
 
-    pub async fn register_application(&self) -> zbus::Result<()> {
+    pub async fn register_application(&self) -> zbus::Result<Application> {
         gatt::register_application(&self.connection).await
     }
 

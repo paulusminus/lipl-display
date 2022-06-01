@@ -1,7 +1,7 @@
 use uuid::Uuid;
-use zbus::dbus_interface;
+use zbus::{dbus_interface, zvariant::OwnedObjectPath};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Service {
     pub primary: bool,
     pub uuid: Uuid,
@@ -17,11 +17,12 @@ impl Service {
 
     #[dbus_interface(property = "UUID")]
     fn uuid(&self) -> String {
-        self.uuid.to_string()
+        log::info!("Service UUID: {}", self.uuid.to_string().to_uppercase());
+        self.uuid.simple().to_string().to_uppercase()
     }
 
     #[dbus_interface(property = "Characteristics")]
-    fn characteristics(&self) -> Vec<String> {
-        self.characteristic_paths.into_iter().map(|s| s.to_string()).collect()
+    fn characteristics(&self) -> Vec<OwnedObjectPath> {
+        self.characteristic_paths.into_iter().cloned().map(|s| OwnedObjectPath::try_from(s).unwrap()).collect()
     }
 }
