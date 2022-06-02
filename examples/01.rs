@@ -1,5 +1,6 @@
 use std::vec;
 
+use tokio::signal;
 use zbus_bluez::bluez_interfaces::Adapter1Proxy;
 use zbus_bluez::{BluezDbusConnection};
 use zbus_bluez::advertisement::PeripheralAdvertisement;
@@ -30,9 +31,8 @@ async fn main() -> zbus::Result<()> {
 
     let _app = bluez.register_application().await?;
 
-    println!("Press <Enter> to stop advertising");
-    let mut input = String::new();
-    std::io::stdin().read_line(&mut input)?;
+    println!("Press <Ctr-C> to stop advertising");
+    signal::ctrl_c().await?;
 
     unregister_advertisement().await?;
 

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, vec};
 use uuid::Uuid;
 use zbus::{dbus_interface};
 
@@ -16,13 +16,23 @@ fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
     hm
 }
 
+impl Default for PeripheralAdvertisement {
+    fn default() -> Self {
+        Self { 
+            service_uuids: vec![], 
+            manufacturer_data: manufacturer_data(), 
+            local_name: "".into(), 
+            include_tx_power: true 
+        }
+    }
+}
+
 impl PeripheralAdvertisement {
     pub fn new(local_name: String, services: Vec<Uuid>) -> Self {
         Self { 
             service_uuids: services,
-            manufacturer_data: manufacturer_data(),
             local_name: local_name,
-            include_tx_power: true,
+            ..Default::default()
         }
     }
 }
@@ -44,17 +54,17 @@ impl PeripheralAdvertisement {
             .collect()
     }
 
-    #[dbus_interface(property = "ServiceUUIDs")]
+    #[dbus_interface(property, name = "ServiceUUIDs")]
     fn service_uuids(&self) -> Vec<String> {
-        self.service_uuids.iter().map(|uuid| uuid.to_string()).collect()
+        self.service_uuids.iter().map(|uuid| uuid.to_string().to_uppercase()).collect()
     }
 
-    #[dbus_interface(property = "LocalName")]
+    #[dbus_interface(property)]
     fn local_name(&self) -> String {
         self.local_name.clone()
     }
 
-    #[dbus_interface(property = "IncludeTxPower")]
+    #[dbus_interface(property)]
     fn include_tx_power(&self) -> bool {
         self.include_tx_power
     }

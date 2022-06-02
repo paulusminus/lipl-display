@@ -49,11 +49,9 @@ impl Characteristic {
     }
 
     #[dbus_interface(name = "WriteValue")]
-    fn write_value(&self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
+    fn write_value(&self, value: Vec<u8>, _options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
         let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
-        log::info!("Write options: {:#?}", options);
         log::info!("Characteristic {} received {}", self.uuid, s);
-        // self.set_value(s.to_owned());
         Ok(())
     }
 

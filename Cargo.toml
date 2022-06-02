@@ -12,6 +12,6 @@ uuid = "1"
 zbus = { version = "2", default-features = false, features = ["tokio"] }
 
 [dev-dependencies]
-tokio = { version = "1", features = ["rt", "macros"]}
+tokio = { version = "1", features = ["rt", "macros", "signal"]}
 env_logger = "0.9"
 uuid = "1"
