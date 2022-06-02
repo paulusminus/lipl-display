@@ -6,12 +6,30 @@ use advertisement::PeripheralAdvertisement;
 use async_trait::async_trait;
 use bluez_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use gatt::Application;
-use zbus::export::futures_util::FutureExt;
-use zbus::names::OwnedInterfaceName;
-use zbus::zvariant::{OwnedObjectPath, OwnedValue};
-use zbus::{fdo::ObjectManagerProxy, Connection, ConnectionBuilder};
-use zbus::{Result};
-use zbus::export::futures_core::future::Future;
+use zbus::{
+    Connection,
+    ConnectionBuilder,
+    Interface,
+    Result,
+    fdo::{
+        ObjectManagerProxy,
+    },
+    names::{
+        OwnedInterfaceName,
+    },
+    export::{
+        futures_core::{
+            future::{
+                Future,
+            },
+        },
+        futures_util::FutureExt,
+    },
+    zvariant::{
+        OwnedObjectPath,
+        OwnedValue,
+    },
+};
 
 pub use gatt::SERVICE_1_UUID;
 

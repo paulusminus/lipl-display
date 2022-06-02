@@ -2,7 +2,7 @@ use std::{collections::HashMap, vec};
 use uuid::Uuid;
 use zbus::{dbus_interface};
 
-
+#[derive(Debug)]
 pub struct PeripheralAdvertisement {
     pub service_uuids: Vec<Uuid>,
     pub manufacturer_data: HashMap<u16, Vec<u8>>,
@@ -39,7 +39,7 @@ impl PeripheralAdvertisement {
 
 #[dbus_interface(name = "org.bluez.LEAdvertisement1")]
 impl PeripheralAdvertisement {
-    #[dbus_interface(property = "Type")]
+    #[dbus_interface(property, name = "Type")]
     fn advertisement_type(&self) -> String {
         "peripheral".into()
     }
