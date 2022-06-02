@@ -60,15 +60,12 @@ pub struct Application {
 impl Application {
     #[dbus_interface(name = "GetManagedObjects")]
     fn get_managed_objects(&self) -> HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> {
-        log::info!("Get managed objects called");
-        log::info!("{:#?}", self.objects);
         self.objects.clone()
     }
 }
 
 pub async fn register_application(connection: &Connection) -> zbus::Result<Application>{
     let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
-    log::info!("Whatever");
 
     connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
     log::info!("Service 1 registered at {}", SERVICE_1_PATH);

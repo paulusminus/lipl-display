@@ -10,19 +10,17 @@ pub struct Service {
 
 #[dbus_interface(name = "org.bluez.GattService1")]
 impl Service {
-    #[dbus_interface(property = "Primary")]
+    #[dbus_interface(property, name = "Primary")]
     fn primary(&self) -> bool {
         self.primary
     }
 
-    #[dbus_interface(property = "UUID")]
-    #[allow(non_snake_case)]
-    fn UUID(&self) -> String {
-        log::info!("Service UUID: {}", self.uuid.to_string().to_uppercase());
+    #[dbus_interface(property, name = "UUID")]
+    fn uuid(&self) -> String {
         self.uuid.to_string().to_uppercase()
     }
 
-    #[dbus_interface(property = "Characteristics")]
+    #[dbus_interface(property, name = "Characteristics")]
     fn characteristics(&self) -> Vec<OwnedObjectPath> {
         self.characteristic_paths.into_iter().cloned().map(|s| OwnedObjectPath::try_from(s).unwrap()).collect()
     }

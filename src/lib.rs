@@ -84,11 +84,10 @@ impl BluezDbusConnection {
     }
 
     pub async fn register_advertisement(&self, advertisement: PeripheralAdvertisement) -> zbus::Result<()> {
-        log::info!("register_advertisement called");
         let advertisement_path = OwnedObjectPath::try_from(ADVERTISEMENT_PATH).unwrap();
         let proxy = self.advertising_manager_proxy().await?;
         self.connection.object_server().at(&advertisement_path, advertisement).await?;
-        log::info!("Advertisement object registered in object server");
+        log::info!("Advertisement registered at {}", ADVERTISEMENT_PATH);
         proxy
             .register_advertisement(
                 &advertisement_path,

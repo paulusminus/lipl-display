@@ -8,7 +8,7 @@ async fn print_adapter(adapter: Adapter1Proxy<'_>) -> zbus::Result<()> {
     let name = adapter.name().await?;
     let address = adapter.address().await?;
     let path = adapter.path();
-    println!("{} ({}) on path {} powered on and discoverable", name, address, path);
+    log::info!("{} ({}) on path {} powered on and discoverable", name, address, path);
 
     Ok(())
 }
@@ -27,9 +27,6 @@ async fn main() -> zbus::Result<()> {
     );
     bluez.register_advertisement(advertisement).await?;
     log::info!("Advertising started");
-
-    println!("Press <Enter> to start register application");
-    std::io::stdin().read_line(&mut input)?;
 
     let _app = bluez.register_application().await?;
 
