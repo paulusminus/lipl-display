@@ -9,7 +9,6 @@ use gatt::Application;
 use zbus::{
     Connection,
     ConnectionBuilder,
-    Interface,
     Result,
     fdo::{
         ObjectManagerProxy,

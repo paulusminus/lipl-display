@@ -22,35 +22,6 @@ const CHAR_1_PATH: &str = "/org/bluez/app1/service1/char1";
 const CHAR_2_UUID: Uuid = uuid!("935d864b-61fe-4c55-8b9e-53be40919950");
 const CHAR_2_PATH: &str = "/org/bluez/app1/service1/char2";
 
-const CHAR1: Characteristic = Characteristic {
-    uuid: CHAR_1_UUID,
-    read: false,
-    write: true,
-    notify: false,
-    service_path: SERVICE_1_PATH,
-    descriptor_paths: vec![],
-    value: String::new(),
-};
-
-const CHAR2: Characteristic = Characteristic {
-    uuid: CHAR_2_UUID,
-    read: false,
-    write: true,
-    notify: false,
-    service_path: SERVICE_1_PATH,
-    descriptor_paths: vec![],
-    value: String::new(),
-};
-
-const SERVICE1: Service = Service {
-    primary: true,
-    uuid: SERVICE_1_UUID,
-    characteristic_paths: &[
-        CHAR_1_PATH,
-        CHAR_2_PATH,
-    ]
-};
-
 #[derive(Clone, Debug)]
 pub struct Application {
     objects: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>,
@@ -67,9 +38,20 @@ impl Application {
 pub async fn register_application(connection: &Connection, adapter: &OwnedObjectPath) -> zbus::Result<Application>{
     let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
 
-    connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
+    let service1: Service = Service {
+        primary: true,
+        uuid: SERVICE_1_UUID,
+        characteristic_paths: &[
+            CHAR_1_PATH,
+            CHAR_2_PATH,
+        ]
+    };
+    let char1 = Characteristic::new_write_only(CHAR_1_UUID, SERVICE_1_PATH.into());
+    let char2 = Characteristic::new_write_only(CHAR_2_UUID, SERVICE_1_PATH.into());
+    
+    connection.object_server().at(SERVICE_1_PATH, service1.clone()).await?;
     log::info!("Service 1 registered at {}", SERVICE_1_PATH);
-    let service1_props = SERVICE1.get_all().await;
+    let service1_props = service1.get_all().await;
     hm.insert(
         OwnedObjectPath::try_from(SERVICE_1_PATH).unwrap(),
         vec![
@@ -79,18 +61,18 @@ pub async fn register_application(connection: &Connection, adapter: &OwnedObject
         .collect()
     );
 
-    connection.object_server().at(CHAR_1_PATH, CHAR1.clone()).await?;
+    let char1_props = char1.get_all().await;
+    connection.object_server().at(CHAR_1_PATH, char1).await?;
     log::info!("Characteristic 1 registered at {}", CHAR_1_PATH);
 
-    let char1_props = CHAR1.get_all().await;
     hm.insert(
         OwnedObjectPath::try_from(CHAR_1_PATH).unwrap(),
         vec![("org.bluez.GattCharacteristic1".to_owned(), char1_props)].into_iter().collect()
     );
 
-    connection.object_server().at(CHAR_2_PATH, CHAR2.clone()).await?;
+    let char2_props = char2.get_all().await;
+    connection.object_server().at(CHAR_2_PATH, char2).await?;
     log::info!("Characteristic 2 registered at {}", CHAR_2_PATH);
-    let char2_props = CHAR2.get_all().await;
     hm.insert(
         OwnedObjectPath::try_from(CHAR_2_PATH).unwrap(),
         vec![("org.bluez.GattCharacteristic1".to_owned(), char2_props)].into_iter().collect(),

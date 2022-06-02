@@ -31,7 +31,7 @@ async fn main() -> zbus::Result<()> {
 
     let _app = bluez.register_application().await?;
 
-    println!("Press <Ctr-C> to stop advertising");
+    log::info!("Press <Ctr-C> to quit service");
     signal::ctrl_c().await?;
 
     unregister_advertisement().await?;
