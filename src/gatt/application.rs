@@ -64,7 +64,7 @@ impl Application {
     }
 }
 
-pub async fn register_application(connection: &Connection) -> zbus::Result<Application>{
+pub async fn register_application(connection: &Connection, adapter: &OwnedObjectPath) -> zbus::Result<Application>{
     let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
 
     connection.object_server().at(SERVICE_1_PATH, SERVICE1.clone()).await?;
@@ -102,7 +102,7 @@ pub async fn register_application(connection: &Connection) -> zbus::Result<Appli
     connection.object_server().at(APP_1_PATH, app.clone()).await?;
     log::info!("Application 1 registered at {}", APP_1_PATH);
 
-    let proxy = GattManager1Proxy::builder(connection).destination("org.bluez")?.path("/org/bluez/hci0")?.build().await?;
+    let proxy = GattManager1Proxy::builder(connection).destination("org.bluez")?.path(adapter)?.build().await?;
     proxy.register_application(
         &OwnedObjectPath::try_from(APP_1_PATH).unwrap(),
         HashMap::new()

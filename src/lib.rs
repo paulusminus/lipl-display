@@ -1,14 +1,17 @@
 use std::collections::HashMap;
 use std::collections::hash_map::RandomState;
+use std::pin::Pin;
 
 use advertisement::PeripheralAdvertisement;
 use async_trait::async_trait;
 use bluez_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use gatt::Application;
+use zbus::export::futures_util::FutureExt;
 use zbus::names::OwnedInterfaceName;
 use zbus::zvariant::{OwnedObjectPath, OwnedValue};
 use zbus::{fdo::ObjectManagerProxy, Connection, ConnectionBuilder};
 use zbus::{Result};
+use zbus::export::futures_core::future::Future;
 
 pub use gatt::SERVICE_1_UUID;
 
@@ -80,21 +83,35 @@ impl BluezDbusConnection {
     }
 
     pub async fn register_application(&self) -> zbus::Result<Application> {
-        gatt::register_application(&self.connection).await
+        gatt::register_application(&self.connection, &self.adapter).await
     }
 
-    pub async fn register_advertisement(&self, advertisement: PeripheralAdvertisement) -> zbus::Result<()> {
+    pub async fn register_advertisement<'a>(&'a self, advertisement: PeripheralAdvertisement) ->
+    zbus::Result<impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>>
+    {
         let advertisement_path = OwnedObjectPath::try_from(ADVERTISEMENT_PATH).unwrap();
         let proxy = self.advertising_manager_proxy().await?;
-        self.connection.object_server().at(&advertisement_path, advertisement).await?;
-        log::info!("Advertisement registered at {}", ADVERTISEMENT_PATH);
+        let connection = self.connection.clone();
+        connection.object_server().at(&advertisement_path, advertisement).await?;
+        log::info!("Advertisement registered with objectserver at {}", ADVERTISEMENT_PATH);
         proxy
             .register_advertisement(
                 &advertisement_path,
                 HashMap::new(),
             )
             .await?;
-        Ok(())
+        log::info!("Advertisement {} registered with bluez", ADVERTISEMENT_PATH);
+
+        Ok(
+            || async move {
+                proxy.unregister_advertisement(&advertisement_path).await?;
+                log::info!("Advertisement {} unregistered with bluez", ADVERTISEMENT_PATH);
+                connection.object_server().remove::<PeripheralAdvertisement, &OwnedObjectPath>(&advertisement_path).await?;
+                log::info!("Advertisement {} removed from objectserver", ADVERTISEMENT_PATH);
+                Ok::<(), zbus::fdo::Error>(())
+            }
+            .boxed()
+        )
     }
 }
 

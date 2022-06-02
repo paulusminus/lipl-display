@@ -16,7 +16,6 @@ async fn print_adapter(adapter: Adapter1Proxy<'_>) -> zbus::Result<()> {
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> zbus::Result<()> {
     env_logger::init();
-    let mut input = String::new();
 
     let bluez = BluezDbusConnection::new().await?;
     let adapter = bluez.adapter_proxy().await?;
@@ -25,12 +24,17 @@ async fn main() -> zbus::Result<()> {
         "lipl".into(),
         vec![zbus_bluez::SERVICE_1_UUID],
     );
-    bluez.register_advertisement(advertisement).await?;
+
+    let unregister_advertisement = bluez.register_advertisement(advertisement).await?;
     log::info!("Advertising started");
 
     let _app = bluez.register_application().await?;
 
     println!("Press <Enter> to stop advertising");
+    let mut input = String::new();
     std::io::stdin().read_line(&mut input)?;
+
+    unregister_advertisement().await?;
+
     Ok(())
 }

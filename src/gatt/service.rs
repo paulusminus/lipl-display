@@ -10,7 +10,7 @@ pub struct Service {
 
 #[dbus_interface(name = "org.bluez.GattService1")]
 impl Service {
-    #[dbus_interface(property, name = "Primary")]
+    #[dbus_interface(property)]
     fn primary(&self) -> bool {
         self.primary
     }
@@ -20,7 +20,7 @@ impl Service {
         self.uuid.to_string().to_uppercase()
     }
 
-    #[dbus_interface(property, name = "Characteristics")]
+    #[dbus_interface(property)]
     fn characteristics(&self) -> Vec<OwnedObjectPath> {
         self.characteristic_paths.into_iter().cloned().map(|s| OwnedObjectPath::try_from(s).unwrap()).collect()
     }

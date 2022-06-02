@@ -17,7 +17,7 @@ pub struct Characteristic {
 #[dbus_interface(name = "org.bluez.GattCharacteristic1")]
 impl Characteristic {
 
-    #[dbus_interface(property, name = "Descriptors")]
+    #[dbus_interface(property)]
     fn descriptors(&self) -> Vec<OwnedObjectPath> {
         self.descriptor_paths
             .clone()
@@ -26,7 +26,7 @@ impl Characteristic {
             .collect()
     }
 
-    #[dbus_interface(property, name = "Flags")]
+    #[dbus_interface(property)]
     fn flags(&self) -> Vec<String> {
         let mut flags = vec![];
         if self.read {
@@ -38,7 +38,7 @@ impl Characteristic {
         flags
     }
 
-    #[dbus_interface(property, name = "Service")]
+    #[dbus_interface(property)]
     fn service(&self) -> OwnedObjectPath {
         OwnedObjectPath::try_from(self.service_path).unwrap()
     }
