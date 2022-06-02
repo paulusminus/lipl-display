@@ -16,9 +16,10 @@ impl Service {
     }
 
     #[dbus_interface(property = "UUID")]
-    fn uuid(&self) -> String {
+    #[allow(non_snake_case)]
+    fn UUID(&self) -> String {
         log::info!("Service UUID: {}", self.uuid.to_string().to_uppercase());
-        self.uuid.simple().to_string().to_uppercase()
+        self.uuid.to_string().to_uppercase()
     }
 
     #[dbus_interface(property = "Characteristics")]

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use uuid::Uuid;
-use zbus::{dbus_interface, zvariant::OwnedObjectPath};
+use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
 
 #[derive(Clone, Debug)]
 pub struct Characteristic {
@@ -44,18 +44,25 @@ impl Characteristic {
     }
 
     #[dbus_interface(property = "UUID")]
-    fn uuid(&self) -> String {
+    #[allow(non_snake_case)]
+    fn UUID(&self) -> String {
         self.uuid.to_string().to_uppercase()
     }
 
-    #[dbus_interface(name = "WriteValue")]
-    fn write_value(&mut self, value: Vec<u8>, _options: HashMap<String, zbus::zvariant::Value>) -> zbus::fdo::Result<()> {
-        let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
+    #[allow(non_snake_case)]
+    fn WriteValue(&self, param: (Vec<u8>, HashMap<String, Value>)) -> zbus::fdo::Result<()> {
+        let s = std::str::from_utf8(&param.0).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
         log::info!("Characteristic {} received {}", self.uuid, s);
         // self.set_value(s.to_owned());
         Ok(())
     }
 
+    #[allow(non_snake_case)]
+    fn ReadValue(&self) -> zbus::fdo::Result<(Vec<u8>, HashMap<String, Value>)> {
+        std::result::Result::Err(
+            zbus::fdo::Error::NotSupported("read".into())
+        )
+    }
     // #[dbus_interface(property = "Value")]
     // fn value(&self) -> String {
     //     self.value.clone()
