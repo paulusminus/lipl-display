@@ -10,7 +10,7 @@ pub struct PeripheralAdvertisement {
     pub include_tx_power: bool,
 }
 
-fn manufacturer_data() -> HashMap<u16, Vec<u8>> {
+fn unregistered_manufacturer_data() -> HashMap<u16, Vec<u8>> {
     let mut hm = HashMap::new();
     hm.insert(0xFFFF, "PM".as_bytes().to_vec());
     hm
@@ -20,7 +20,7 @@ impl Default for PeripheralAdvertisement {
     fn default() -> Self {
         Self { 
             service_uuids: vec![], 
-            manufacturer_data: manufacturer_data(), 
+            manufacturer_data: unregistered_manufacturer_data(), 
             local_name: "".into(), 
             include_tx_power: true 
         }
