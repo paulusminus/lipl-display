@@ -7,11 +7,13 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1"
+futures-channel = "0.3"
 log = "0.4"
 uuid = "1"
 zbus = { version = "2", default-features = false, features = ["tokio"] }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["rt", "macros", "signal"]}
+futures-util = "0.3"
 env_logger = "0.9"
 uuid = "1"

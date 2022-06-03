@@ -1,4 +1,5 @@
 use std::{sync::{RwLock, Arc}, collections::HashMap};
+use futures_channel::{mpsc::Sender};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
@@ -13,10 +14,11 @@ pub struct Characteristic {
     pub service_path: String,
     pub descriptor_paths: Vec<String>,
     pub value: Arc<RwLock<String>>,
+    pub sender: Sender<(Uuid, String)>,
 }
 
 impl Characteristic {
-    pub fn new_write_only(object_path: String, uuid: Uuid, service_path: String) -> Self {
+    pub fn new_write_only(object_path: String, uuid: Uuid, service_path: String, sender: Sender<(Uuid, String)>) -> Self {
         Self {
             object_path,
             uuid,
@@ -26,6 +28,7 @@ impl Characteristic {
             service_path,
             descriptor_paths: vec![],
             value: Arc::new(RwLock::new(String::new())),
+            sender,
         }
     }
 }
@@ -68,9 +71,12 @@ impl Characteristic {
     fn write_value(&mut self, value: Vec<u8>, _options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
         let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
         self.set_value(s.to_owned());
-        log::info!("Characteristic {} received {}", self.uuid, s);
-        Ok(())
-    }
+        // log::info!("Characteristic {} received {}", self.uuid, s);
+        self
+            .sender
+            .try_send((self.uuid, s.to_owned()))
+            .map_err(|e| zbus::fdo::Error::Failed(e.to_string())) 
+    }   
 
     #[dbus_interface(property = "Value")]
     fn value(&self) -> String {

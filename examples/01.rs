@@ -1,5 +1,6 @@
 use std::vec;
 
+use futures_util::{StreamExt};
 use tokio::signal;
 use uuid::uuid;
 use zbus_bluez::{
@@ -34,11 +35,21 @@ async fn main() -> zbus::Result<()> {
 
     let bluez = BluezDbusConnection::new().await?;
 
-    let dispose = bluez.run(gatt_application_config.into()).await?;
-    log::info!("Advertising started");
+    let (mut rx, dispose) = bluez.run(gatt_application_config).await?;
+    log::info!("Advertising and Gatt application started");
 
     log::info!("Press <Ctr-C> or send signal SIGINT to end service");
-    signal::ctrl_c().await?;
+
+    loop {
+        tokio::select! {
+            Some((uuid, s)) = rx.next() => {
+                    log::info!("Received value {s} from characteristic with uuid {uuid}");
+            },
+            _ = signal::ctrl_c() => {
+                break;
+            }
+        }
+    }
 
     dispose().await?;
 

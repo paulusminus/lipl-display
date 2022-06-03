@@ -4,7 +4,9 @@ use std::pin::Pin;
 
 use advertisement::PeripheralAdvertisement;
 use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
+use futures_channel::mpsc::Receiver;
 use gatt::Application;
+use uuid::Uuid;
 use zbus::{
     Connection,
     ConnectionBuilder,
@@ -26,9 +28,8 @@ use zbus::{
 };
 use connection_extension::ConnectionExt;
 
+use crate::gatt::{Service, Characteristic};
 use crate::gatt_application::GattApplication;
-
-// use crate::gatt::{Characteristic, Service};
 
 mod advertisement;
 pub(crate) mod adapter_interfaces;
@@ -37,9 +38,7 @@ mod gatt;
 mod gatt_application;
 
 pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
-
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
-// pub const ADVERTISEMENT_PATH: &str = "/org/bluez/advertisement";
 
 pub struct BluezDbusConnection<'a> {
     connection: Connection,
@@ -52,9 +51,9 @@ impl<'a> BluezDbusConnection<'a> {
         &self.gatt_manager_proxy
     }
 
-    /// Creates a connection. 
-    /// Finds the first capable adapter
-    /// Initialize proxies to interfaces
+    /// Creates a dbus connection to bluez 
+    /// Finds the first gatt capable adapter
+    /// Set adapter powered and discoverable1
     pub async fn new() -> zbus::Result<BluezDbusConnection<'a>> {
         let connection = 
             ConnectionBuilder::system()?
@@ -103,16 +102,19 @@ impl<'a> BluezDbusConnection<'a> {
         )
     }
 
+    /// Run a gatt application with advertising
     pub async fn run(&'a self, gatt_application_config: gatt_application::GattApplicationConfig) ->
-    zbus::Result<impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>>
+    zbus::Result<(Receiver<(Uuid, String)>, impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>)>
     {
-        let gatt_application: GattApplication = gatt_application_config.into();
+        let (tx, rx) = futures_channel::mpsc::channel::<(Uuid, String)>(10);
+        let object_server = self.connection.object_server();
+        let gatt_application: GattApplication = (gatt_application_config, tx).into();
+
         // Advertising
-        let advertisement: PeripheralAdvertisement = gatt_application.clone().into();
+        let advertisement = PeripheralAdvertisement::from(&gatt_application);
         let advertisement_path = OwnedObjectPath::try_from(format!("{}/advertisement", gatt_application.app_object_path).as_str()).unwrap();
-        let connection = self.connection.clone();
         let advertising_proxy = self.advertising_manager_proxy.clone();
-        connection.object_server().at(&advertisement_path, advertisement).await?;
+        object_server.at(&advertisement_path, advertisement).await?;
         log::info!("Advertisement {} added to object server", advertisement_path.as_str());
         self.advertising_manager_proxy
             .register_advertisement(
@@ -126,7 +128,7 @@ impl<'a> BluezDbusConnection<'a> {
         let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
 
         for service in gatt_application.services.clone() {
-            connection.object_server().at(service.object_path.clone(), service.clone()).await?;
+            object_server.at(service.object_path.clone(), service.clone()).await?;
             log::info!("Service {} added to object manager", service.object_path);
             let service_props = service.get_all().await;
             hm.insert(
@@ -140,7 +142,7 @@ impl<'a> BluezDbusConnection<'a> {
         }
 
         for characteristic in gatt_application.characteristics.clone() {
-            connection.object_server().at(characteristic.object_path.clone(), characteristic.clone()).await?;
+            object_server.at(characteristic.object_path.clone(), characteristic.clone()).await?;
             log::info!("Characteristic {} added to object server", characteristic.object_path);
             let char_props = characteristic.get_all().await;
             hm.insert(
@@ -157,8 +159,7 @@ impl<'a> BluezDbusConnection<'a> {
             objects: hm,
         };
         let app_object_path = OwnedObjectPath::try_from(gatt_application.clone().app_object_path.as_str()).unwrap();
-        connection
-            .object_server()
+        object_server
             .at(&app_object_path, app.clone())
             .await?;
         log::info!("Application {} added to object server", gatt_application.app_object_path);
@@ -177,31 +178,45 @@ impl<'a> BluezDbusConnection<'a> {
         let application = gatt_application;
 
         Ok(
-            || async move {
-                gatt_manager_proxy.unregister_application(&app_object_path).await?;
-                log::info!("Application {} unregistered with bluez", app_object_path.as_str());
-                connection.object_server().remove::<Application, &OwnedObjectPath>(&app_object_path).await?;
-                log::info!("Application {} removed from object server", app_object_path.as_str());
+            ( 
+                rx,
+                || async move {
+                    gatt_manager_proxy.unregister_application(&app_object_path).await?;
+                    log::info!("Application {} unregistered with bluez", app_object_path.as_str());
+                    advertising_proxy.unregister_advertisement(&advertisement_path).await?;
+                    log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
 
-                // for service in application.services.clone() {
-                //     let object_path = OwnedObjectPath::try_from(service.object_path.as_str()).unwrap();
-                //     connection.object_server().remove::<Service, &OwnedObjectPath>(&object_path).await?;
-                //     log::info!("Service {} removed from object server", object_path.as_str());
-                // }
+                    let removed_message = |removed: bool| if removed { "removed"} else {"could not be removed"};
 
-                // for characteristic in application.characteristics.clone() {
-                //     let object_path = OwnedObjectPath::try_from(characteristic.object_path.as_str()).unwrap();
-                //     connection.object_server().remove::<Characteristic, &OwnedObjectPath>(&object_path).await?;
-                //     log::info!("Characteristic {} removed from object server", object_path.as_str());
-                // }
+                    if let Ok(removed) = object_server.remove::<Application, _>(&app_object_path).await {
+                        log::info!("Application {} {} from object server", app_object_path.as_str(), removed_message(removed));
+                    };
 
-                advertising_proxy.unregister_advertisement(&advertisement_path).await?;
-                log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
-                connection.object_server().remove::<PeripheralAdvertisement, &OwnedObjectPath>(&advertisement_path).await?;
-                log::info!("Advertisement {} removed from objectserver", advertisement_path.as_str());
-                Ok::<(), zbus::fdo::Error>(())
-            }
-            .boxed()
+                    for service in application.services.clone() {
+                        match object_server.remove::<Service, _>(service.object_path.as_str()).await {
+                            Ok(removed) => {
+                                log::info!("Service {} {} from object server", service.object_path.as_str(), removed_message(removed));
+                            },
+                            Err(error) => {
+                                log::error!("Service {}: {}", service.object_path.as_str(), error);
+                            }
+                        };
+                    }
+
+                    for characteristic in application.characteristics.clone() {
+                        if let Ok(removed) = object_server.remove::<Characteristic, _>(characteristic.object_path.as_str()).await {
+                            log::info!("Characteristic {} {} from object server", characteristic.object_path.as_str(), removed_message(removed));
+                        }
+                    }
+
+                    log::info!("Service interface name: {}", Service::name().as_str());
+                    if let Ok(removed) = object_server.remove::<PeripheralAdvertisement, _>(&advertisement_path).await {
+                        log::info!("Advertisement {} {} from objectserver", advertisement_path.as_str(), removed_message(removed));
+                    }
+                    Ok::<(), zbus::fdo::Error>(())
+                }
+                .boxed(),
+            )
         )
     }
 }

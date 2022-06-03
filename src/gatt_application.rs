@@ -1,3 +1,5 @@
+use futures_channel::mpsc::Sender;
+
 use uuid::Uuid;
 
 use crate::gatt::{Service, Characteristic};
@@ -9,7 +11,6 @@ pub(crate) struct GattApplication {
     pub services: Vec<Service>,
     pub characteristics: Vec<Characteristic>,
 }
-
 
 pub struct GattCharacteristicConfig {
     pub uuid: Uuid,
@@ -27,16 +28,16 @@ pub struct GattApplicationConfig {
     pub services: Vec<GattServiceConfig>,
 }
 
-impl From<GattApplicationConfig> for GattApplication {
-    fn from(config: GattApplicationConfig) -> Self {
+impl From<(GattApplicationConfig, Sender<(Uuid, String)>)> for GattApplication {
+    fn from(config: (GattApplicationConfig, Sender<(Uuid, String)>)) -> Self {
         let mut services = vec![];
         let mut characteristics = vec![];
 
         let mut service_index = 0;
 
-        for service_config in config.services {
+        for service_config in config.0.services {
             service_index += 1;
-            let service_object_path = format!("{}/service{}", config.app_object_path, service_index);
+            let service_object_path = format!("{}/service{}", config.0.app_object_path, service_index);
 
             let service_characteristics = 
                 service_config
@@ -44,11 +45,12 @@ impl From<GattApplicationConfig> for GattApplication {
                 .iter()
                 .enumerate()
                 .map(
-                    |config| 
+                    |gatt_config| 
                         Characteristic::new_write_only(
-                            format!("{}/char{}", service_object_path, config.0 + 1),
-                            config.1.uuid,
+                            format!("{}/char{}", service_object_path, gatt_config.0 + 1),
+                            gatt_config.1.uuid,
                             service_object_path.clone(),
+                            config.1.clone(),
                         )
                 )
                 .collect::<Vec<_>>();
@@ -64,8 +66,8 @@ impl From<GattApplicationConfig> for GattApplication {
         }
 
         Self { 
-            local_name: config.local_name,
-            app_object_path: config.app_object_path,
+            local_name: config.0.local_name,
+            app_object_path: config.0.app_object_path,
             services, 
             characteristics,
         }

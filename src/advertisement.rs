@@ -30,8 +30,8 @@ impl Default for PeripheralAdvertisement {
     }
 }
 
-impl From<GattApplication> for PeripheralAdvertisement {
-    fn from(gatt_application: GattApplication) -> Self {
+impl From<&GattApplication> for PeripheralAdvertisement {
+    fn from(gatt_application: &GattApplication) -> Self {
         Self { 
             service_uuids: gatt_application.services.iter().map(|service| service.uuid).collect(), 
             local_name: gatt_application.local_name.clone(), 
