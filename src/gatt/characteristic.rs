@@ -1,29 +1,31 @@
-use std::{sync::RwLock, collections::HashMap};
+use std::{sync::{RwLock, Arc}, collections::HashMap};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Characteristic {
+    pub object_path: String,
     pub uuid: Uuid,
     pub read: bool,
     pub write: bool,
     pub notify: bool,
     pub service_path: String,
     pub descriptor_paths: Vec<String>,
-    pub value: RwLock<String>,
+    pub value: Arc<RwLock<String>>,
 }
 
 impl Characteristic {
-    pub fn new_write_only(uuid: Uuid, service_path: String) -> Self {
+    pub fn new_write_only(object_path: String, uuid: Uuid, service_path: String) -> Self {
         Self {
+            object_path,
             uuid,
             read: false,
             write: true,
             notify: false,
             service_path,
             descriptor_paths: vec![],
-            value: RwLock::new(String::new()),
+            value: Arc::new(RwLock::new(String::new())),
         }
     }
 }
@@ -77,7 +79,7 @@ impl Characteristic {
     }
 
     #[dbus_interface(property = "Value")]
-    fn set_value(&mut self, value: String) {
+    fn set_value(&self, value: String) {
         let mut locked_value = self.value.write().unwrap();
         *locked_value = value;
     }

@@ -1,18 +1,13 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, vec};
 use std::collections::hash_map::RandomState;
 use std::pin::Pin;
 
 use advertisement::PeripheralAdvertisement;
-use async_trait::async_trait;
-use bluez_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
+use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use gatt::Application;
 use zbus::{
     Connection,
     ConnectionBuilder,
-    Result,
-    fdo::{
-        ObjectManagerProxy,
-    },
     names::{
         OwnedInterfaceName,
     },
@@ -27,104 +22,183 @@ use zbus::{
     zvariant::{
         OwnedObjectPath,
         OwnedValue,
-    },
+    }, Interface,
 };
+use connection_extension::ConnectionExt;
 
-pub use gatt::SERVICE_1_UUID;
+use crate::gatt_application::GattApplication;
 
-pub mod advertisement;
-pub mod bluez_interfaces;
+// use crate::gatt::{Characteristic, Service};
+
+mod advertisement;
+pub(crate) mod adapter_interfaces;
+mod connection_extension;
 mod gatt;
+mod gatt_application;
 
-pub type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
-pub const ADVERTISEMENT_PATH: &str = "/org/bluez/advertisement";
+pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
 
-#[async_trait]
-pub trait ConnectionExt {
-    async fn first_gatt_capable_adapter(&self) -> Result<OwnedObjectPath>;
-}
+type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
+// pub const ADVERTISEMENT_PATH: &str = "/org/bluez/advertisement";
 
-#[async_trait]
-impl ConnectionExt for Connection {
-    async fn first_gatt_capable_adapter(&self) -> zbus::Result<OwnedObjectPath> {
-        let proxy = ObjectManagerProxy::builder(self).destination("org.bluez")?.path("/")?.build().await?;
-        let managed_objects = proxy.get_managed_objects().await?;
-
-        let adapters = 
-            managed_objects
-            .into_iter()
-            .filter(gatt_capable)
-            .map(|s| s.0)
-            .collect::<Vec<OwnedObjectPath>>();
-        
-        adapters
-        .into_iter()
-        .map(|o| o.as_str().to_owned()).min().ok_or_else(|| zbus::Error::Unsupported)
-        .map(|s| OwnedObjectPath::try_from(s).unwrap())
-    }
-}
-
-pub struct BluezDbusConnection {
+pub struct BluezDbusConnection<'a> {
     connection: Connection,
-    adapter: OwnedObjectPath,
+    gatt_manager_proxy: GattManager1Proxy<'a>,
+    advertising_manager_proxy: LEAdvertisingManager1Proxy<'a>,
 }
 
-impl BluezDbusConnection {
-    pub async fn new() -> zbus::Result<Self> {
+impl<'a> BluezDbusConnection<'a> {
+    fn gatt_manager(&'a self) -> &'a GattManager1Proxy {
+        &self.gatt_manager_proxy
+    }
+
+    /// Creates a connection. 
+    /// Finds the first capable adapter
+    /// Initialize proxies to interfaces
+    pub async fn new() -> zbus::Result<BluezDbusConnection<'a>> {
         let connection = 
             ConnectionBuilder::system()?
             .build()
             .await?;
-        let adapter = connection.first_gatt_capable_adapter().await?;
-        let bluez_dbus_connection = Self { connection, adapter };
-        bluez_dbus_connection.power_on().await?;
-        Ok(bluez_dbus_connection)
+
+        let adapter =
+            connection
+            .first_gatt_capable_adapter()
+            .await?;
+
+        let adapter_proxy = 
+            Adapter1Proxy::builder(&connection)
+            .destination("org.bluez")?
+            .path(adapter.clone())?
+            .build()
+            .await?;
+
+        let gatt_manager_proxy =
+            GattManager1Proxy::builder(&connection)
+            .destination("org.bluez")?
+            .path(adapter.clone())?
+            .build()
+            .await?;
+
+        let advertising_manager_proxy =
+            LEAdvertisingManager1Proxy::builder(&connection)
+            .destination("org.bluez")?
+            .path(adapter.clone())?
+            .build()
+            .await?;
+
+        adapter_proxy.set_powered(true).await?;
+        adapter_proxy.set_discoverable(true).await?;
+        let name = adapter_proxy.name().await?;
+        let address = adapter_proxy.address().await?;
+        let path = adapter_proxy.path();
+        log::info!("Adapter {} with address {} on {}", path.as_str(), address, name);
+
+        Ok( 
+            Self { 
+                connection,
+                gatt_manager_proxy,
+                advertising_manager_proxy,
+            }
+        )
     }
 
-    pub async fn adapter_proxy<'a>(&'a self) -> zbus::Result<Adapter1Proxy<'a>> {
-        Adapter1Proxy::builder(&self.connection).destination("org.bluez")?.path(&self.adapter)?.build().await
-    }
-
-    pub async fn gatt_manager_proxy<'a>(&'a self) -> zbus::Result<GattManager1Proxy<'a>> {
-        GattManager1Proxy::builder(&self.connection).destination("org.bluez")?.path(&self.adapter)?.build().await
-    }
-
-    pub async fn advertising_manager_proxy<'a>(&'a self) -> zbus::Result<LEAdvertisingManager1Proxy<'a>> {
-        LEAdvertisingManager1Proxy::builder(&self.connection).destination("org.bluez")?.path(&self.adapter)?.build().await
-    }
-
-    pub async fn power_on(&self) -> zbus::Result<()> {
-        let proxy = self.adapter_proxy().await?;
-        proxy.set_powered(true).await?;
-        proxy.set_discoverable(true).await
-    }
-
-    pub async fn register_application(&self) -> zbus::Result<Application> {
-        gatt::register_application(&self.connection, &self.adapter).await
-    }
-
-    pub async fn register_advertisement<'a>(&'a self, advertisement: PeripheralAdvertisement) ->
+    pub async fn run(&'a self, gatt_application_config: gatt_application::GattApplicationConfig) ->
     zbus::Result<impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>>
     {
-        let advertisement_path = OwnedObjectPath::try_from(ADVERTISEMENT_PATH).unwrap();
-        let proxy = self.advertising_manager_proxy().await?;
+        let gatt_application: GattApplication = gatt_application_config.into();
+        // Advertising
+        let advertisement: PeripheralAdvertisement = gatt_application.clone().into();
+        let advertisement_path = OwnedObjectPath::try_from(format!("{}/advertisement", gatt_application.app_object_path).as_str()).unwrap();
         let connection = self.connection.clone();
+        let advertising_proxy = self.advertising_manager_proxy.clone();
         connection.object_server().at(&advertisement_path, advertisement).await?;
-        log::info!("Advertisement registered with objectserver at {}", ADVERTISEMENT_PATH);
-        proxy
+        log::info!("Advertisement {} added to object server", advertisement_path.as_str());
+        self.advertising_manager_proxy
             .register_advertisement(
                 &advertisement_path,
                 HashMap::new(),
             )
             .await?;
-        log::info!("Advertisement {} registered with bluez", ADVERTISEMENT_PATH);
+        log::info!("Advertisement {} registered with bluez", advertisement_path.as_str());
+
+        // Gatt application
+        let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
+
+        for service in gatt_application.services.clone() {
+            connection.object_server().at(service.object_path.clone(), service.clone()).await?;
+            log::info!("Service {} added to object manager", service.object_path);
+            let service_props = service.get_all().await;
+            hm.insert(
+                OwnedObjectPath::try_from(service.object_path.as_str()).unwrap(),
+                vec![
+                    ("org.bluez.GattService1".to_owned(), service_props)
+                ]
+                .into_iter()
+                .collect()
+            );
+        }
+
+        for characteristic in gatt_application.characteristics.clone() {
+            connection.object_server().at(characteristic.object_path.clone(), characteristic.clone()).await?;
+            log::info!("Characteristic {} added to object server", characteristic.object_path);
+            let char_props = characteristic.get_all().await;
+            hm.insert(
+                OwnedObjectPath::try_from(characteristic.object_path.as_str()).unwrap(),
+                vec![
+                    ("org.bluez.GattCharacteristic1".to_owned(), char_props)
+                ]
+                .into_iter()
+                .collect(),
+            );
+        }
+
+        let app = Application {
+            objects: hm,
+        };
+        let app_object_path = OwnedObjectPath::try_from(gatt_application.clone().app_object_path.as_str()).unwrap();
+        connection
+            .object_server()
+            .at(&app_object_path, app.clone())
+            .await?;
+        log::info!("Application {} added to object server", gatt_application.app_object_path);
+
+        self
+            .gatt_manager()
+            .register_application(
+                &app_object_path,
+                HashMap::new(),
+            )
+            .await?;
+        log::info!("Application {} registered with bluez", gatt_application.app_object_path);
+        let gatt_manager_proxy = self.gatt_manager().clone();
+        // let gatt_manager_path = OwnedObjectPath::try_from(gatt_application.app_object_path.as_str()).unwrap();
+
+        let application = gatt_application;
 
         Ok(
             || async move {
-                proxy.unregister_advertisement(&advertisement_path).await?;
-                log::info!("Advertisement {} unregistered with bluez", ADVERTISEMENT_PATH);
+                gatt_manager_proxy.unregister_application(&app_object_path).await?;
+                log::info!("Application {} unregistered with bluez", app_object_path.as_str());
+                connection.object_server().remove::<Application, &OwnedObjectPath>(&app_object_path).await?;
+                log::info!("Application {} removed from object server", app_object_path.as_str());
+
+                // for service in application.services.clone() {
+                //     let object_path = OwnedObjectPath::try_from(service.object_path.as_str()).unwrap();
+                //     connection.object_server().remove::<Service, &OwnedObjectPath>(&object_path).await?;
+                //     log::info!("Service {} removed from object server", object_path.as_str());
+                // }
+
+                // for characteristic in application.characteristics.clone() {
+                //     let object_path = OwnedObjectPath::try_from(characteristic.object_path.as_str()).unwrap();
+                //     connection.object_server().remove::<Characteristic, &OwnedObjectPath>(&object_path).await?;
+                //     log::info!("Characteristic {} removed from object server", object_path.as_str());
+                // }
+
+                advertising_proxy.unregister_advertisement(&advertisement_path).await?;
+                log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
                 connection.object_server().remove::<PeripheralAdvertisement, &OwnedObjectPath>(&advertisement_path).await?;
-                log::info!("Advertisement {} removed from objectserver", ADVERTISEMENT_PATH);
+                log::info!("Advertisement {} removed from objectserver", advertisement_path.as_str());
                 Ok::<(), zbus::fdo::Error>(())
             }
             .boxed()
@@ -132,11 +206,6 @@ impl BluezDbusConnection {
     }
 }
 
-pub fn gatt_capable(item: &(OwnedObjectPath, Interfaces)) -> bool {
-    item.1.contains_key("org.bluez.Adapter1")
-    && item.1.contains_key("org.bluez.GattManager1") 
-    && item.1.contains_key("org.bluez.LEAdvertisingManager1")
-}
 
 #[cfg(test)]
 mod tests {}

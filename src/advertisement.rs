@@ -2,6 +2,9 @@ use std::{collections::HashMap, vec};
 use uuid::Uuid;
 use zbus::{dbus_interface};
 
+use crate::gatt_application::GattApplication;
+const MANUFACTURER_NAME: &str = "PM";
+
 #[derive(Debug)]
 pub struct PeripheralAdvertisement {
     pub service_uuids: Vec<Uuid>,
@@ -12,7 +15,7 @@ pub struct PeripheralAdvertisement {
 
 fn unregistered_manufacturer_data() -> HashMap<u16, Vec<u8>> {
     let mut hm = HashMap::new();
-    hm.insert(0xFFFF, "PM".as_bytes().to_vec());
+    hm.insert(0xFFFF, MANUFACTURER_NAME.as_bytes().to_vec());
     hm
 }
 
@@ -27,11 +30,11 @@ impl Default for PeripheralAdvertisement {
     }
 }
 
-impl PeripheralAdvertisement {
-    pub fn new(local_name: String, services: Vec<Uuid>) -> Self {
+impl From<GattApplication> for PeripheralAdvertisement {
+    fn from(gatt_application: GattApplication) -> Self {
         Self { 
-            service_uuids: services,
-            local_name: local_name,
+            service_uuids: gatt_application.services.iter().map(|service| service.uuid).collect(), 
+            local_name: gatt_application.local_name.clone(), 
             ..Default::default()
         }
     }

@@ -1,40 +1,46 @@
 use std::vec;
 
 use tokio::signal;
-use zbus_bluez::bluez_interfaces::Adapter1Proxy;
-use zbus_bluez::{BluezDbusConnection};
-use zbus_bluez::advertisement::PeripheralAdvertisement;
-
-async fn print_adapter(adapter: Adapter1Proxy<'_>) -> zbus::Result<()> {
-    let name = adapter.name().await?;
-    let address = adapter.address().await?;
-    let path = adapter.path();
-    log::info!("{} ({}) on path {} powered on and discoverable", name, address, path);
-
-    Ok(())
-}
+use uuid::uuid;
+use zbus_bluez::{
+    BluezDbusConnection,
+    GattApplicationConfig,
+    GattCharacteristicConfig,
+    GattServiceConfig,
+};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> zbus::Result<()> {
     env_logger::init();
 
-    let bluez = BluezDbusConnection::new().await?;
-    let adapter = bluez.adapter_proxy().await?;
-    print_adapter(adapter).await?;
-    let advertisement = PeripheralAdvertisement::new(
-        "lipl".into(),
-        vec![zbus_bluez::SERVICE_1_UUID],
-    );
+    let gatt_application_config = GattApplicationConfig {
+        app_object_path: "/org/bluez/app".into(),
+        local_name: "lipl".into(),
+        services: vec![
+            GattServiceConfig {
+                primary: true,
+                uuid: uuid!("5117859b-f9b1-4e8c-bacf-a9d900237d3a"),
+                characteristics: vec![
+                    GattCharacteristicConfig {
+                        uuid: uuid!("82000e45-a116-4ab6-a88c-a5b7f9d5e9e6"),
+                    },
+                    GattCharacteristicConfig {
+                        uuid: uuid!("4460e7a6-4684-4657-9ad7-70a52595e196"),
+                    }
+                ]
+            }
+        ],
+    };
 
-    let unregister_advertisement = bluez.register_advertisement(advertisement).await?;
+    let bluez = BluezDbusConnection::new().await?;
+
+    let dispose = bluez.run(gatt_application_config.into()).await?;
     log::info!("Advertising started");
 
-    let _app = bluez.register_application().await?;
-
-    log::info!("Press <Ctr-C> to quit service");
+    log::info!("Press <Ctr-C> or send signal SIGINT to end service");
     signal::ctrl_c().await?;
 
-    unregister_advertisement().await?;
+    dispose().await?;
 
     Ok(())
 }
