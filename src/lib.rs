@@ -40,13 +40,13 @@ mod gatt_application;
 pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
 
-pub struct BluezDbusConnection<'a> {
+pub struct PeripheralConnection<'a> {
     connection: Connection,
     gatt_manager_proxy: GattManager1Proxy<'a>,
     advertising_manager_proxy: LEAdvertisingManager1Proxy<'a>,
 }
 
-impl<'a> BluezDbusConnection<'a> {
+impl<'a> PeripheralConnection<'a> {
     fn gatt_manager(&'a self) -> &'a GattManager1Proxy {
         &self.gatt_manager_proxy
     }
@@ -54,7 +54,7 @@ impl<'a> BluezDbusConnection<'a> {
     /// Creates a dbus connection to bluez 
     /// Finds the first gatt capable adapter
     /// Set adapter powered and discoverable1
-    pub async fn new() -> zbus::Result<BluezDbusConnection<'a>> {
+    pub async fn new() -> zbus::Result<PeripheralConnection<'a>> {
         let connection = 
             ConnectionBuilder::system()?
             .build()

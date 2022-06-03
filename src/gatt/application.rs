@@ -10,7 +10,6 @@ use zbus::{
 
 #[derive(Clone, Debug)]
 pub struct Application {
-    // object_path: String,
     pub objects: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>>,
 }
 

@@ -17,6 +17,47 @@ pub struct Characteristic {
     pub sender: Sender<(Uuid, String)>,
 }
 
+pub struct WriteOptions {
+    mtu: Option<u16>,
+    device: Option<String>,
+    offset: Option<u16>,
+}
+
+impl From<HashMap<String, Value<'_>>> for WriteOptions {
+    fn from(options: HashMap<String, Value>) -> Self {
+        let mtu = options.get("mtu").and_then(|mtu| match mtu {
+            zbus::zvariant::Value::U16(value) => Some(value.clone()),
+            _ => None,
+        });
+        let device = options.get("device").and_then(|device| match device {
+            zbus::zvariant::Value::ObjectPath(value) => Some(value.to_string()),
+            _ => None,
+        });
+        let offset = options.get("offset").and_then(|mtu| match mtu {
+            zbus::zvariant::Value::U16(value) => Some(value.clone()),
+            _ => None,
+        });
+
+        Self { mtu, device, offset }
+    }
+}
+
+impl std::fmt::Display for WriteOptions {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut v = vec![];
+        if let Some(mtu) = self.mtu {
+            v.push(format!("mtu: {}", mtu));
+        }
+        if let Some(device) = &self.device {
+            v.push(format!("device: {}", device));
+        }
+        if let Some(offset) = self.offset {
+            v.push(format!("offset: {}", offset));
+        }
+        write!(f, "{}", v.join(", "))
+    }
+}
+
 impl Characteristic {
     pub fn new_write_only(object_path: String, uuid: Uuid, service_path: String, sender: Sender<(Uuid, String)>) -> Self {
         Self {
@@ -52,7 +93,7 @@ impl Characteristic {
             flags.push("read".to_owned());
         }
         if self.write {
-            flags.push("write".to_owned());
+            flags.push("write-without-response".to_owned());
         }
         flags
     }
@@ -68,10 +109,14 @@ impl Characteristic {
     }
 
     #[dbus_interface(name = "WriteValue")]
-    fn write_value(&mut self, value: Vec<u8>, _options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
+    fn write_value(&mut self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
         let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
         self.set_value(s.to_owned());
-        // log::info!("Characteristic {} received {}", self.uuid, s);
+
+        log::info!("Characteristic {} write with data {}", self.uuid, s);
+
+        let write_options: WriteOptions = options.into();
+        log::info!("Write options: {}", write_options);
         self
             .sender
             .try_send((self.uuid, s.to_owned()))

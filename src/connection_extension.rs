@@ -25,16 +25,11 @@ impl ConnectionExt for Connection {
         let proxy = ObjectManagerProxy::builder(self).destination("org.bluez")?.path("/")?.build().await?;
         let managed_objects = proxy.get_managed_objects().await?;
 
-        let adapters = 
-            managed_objects
-            .into_iter()
-            .filter(gatt_capable)
-            .map(|s| s.0)
-            .collect::<Vec<OwnedObjectPath>>();
-        
-        adapters
+        managed_objects
         .into_iter()
-        .map(|o| o.as_str().to_owned()).min().ok_or_else(|| zbus::Error::Unsupported)
+        .filter(gatt_capable)
+        .map(|s| s.0)
+        .map(|o| o.as_str().to_owned()).min().ok_or(zbus::Error::Unsupported)
         .map(|s| OwnedObjectPath::try_from(s).unwrap())
     }
 }
