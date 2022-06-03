@@ -3,6 +3,7 @@ use futures_channel::{mpsc::Sender};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
+use crate::object_path_extensions::OwnedObjectPathExtensions;
 
 #[derive(Clone, Debug)]
 pub struct Characteristic {
@@ -82,7 +83,7 @@ impl Characteristic {
         self.descriptor_paths
             .clone()
             .into_iter()
-            .map(|s| OwnedObjectPath::try_from(s).unwrap())
+            .map(|s| s.to_owned_object_path())
             .collect()
     }
 
@@ -100,7 +101,7 @@ impl Characteristic {
 
     #[dbus_interface(property)]
     fn service(&self) -> OwnedObjectPath {
-        OwnedObjectPath::try_from(self.service_path.as_str()).unwrap()
+        self.service_path.to_owned_object_path()
     }
 
     #[dbus_interface(property, name = "UUID")]

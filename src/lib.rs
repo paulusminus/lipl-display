@@ -1,3 +1,13 @@
+//! # Gatt Remote Control Libray
+//! 
+//! ## Purpose
+//! 
+//! 
+//! 
+//! 
+//! 
+//! 
+
 use std::{collections::HashMap, vec};
 use std::collections::hash_map::RandomState;
 use std::pin::Pin;
@@ -27,6 +37,7 @@ use zbus::{
     }, Interface,
 };
 use connection_extension::ConnectionExt;
+use object_path_extensions::OwnedObjectPathExtensions;
 
 use crate::gatt::{Service, Characteristic};
 use crate::gatt_application::GattApplication;
@@ -36,6 +47,7 @@ pub(crate) mod adapter_interfaces;
 mod connection_extension;
 mod gatt;
 mod gatt_application;
+mod object_path_extensions;
 
 pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
@@ -112,7 +124,7 @@ impl<'a> PeripheralConnection<'a> {
 
         // Advertising
         let advertisement = PeripheralAdvertisement::from(&gatt_application);
-        let advertisement_path = OwnedObjectPath::try_from(format!("{}/advertisement", gatt_application.app_object_path).as_str()).unwrap();
+        let advertisement_path = format!("{}/advertisement", gatt_application.app_object_path).to_owned_object_path();
         let advertising_proxy = self.advertising_manager_proxy.clone();
         object_server.at(&advertisement_path, advertisement).await?;
         log::info!("Advertisement {} added to object server", advertisement_path.as_str());
@@ -132,7 +144,7 @@ impl<'a> PeripheralConnection<'a> {
             log::info!("Service {} added to object manager", service.object_path);
             let service_props = service.get_all().await;
             hm.insert(
-                OwnedObjectPath::try_from(service.object_path.as_str()).unwrap(),
+                service.object_path.to_owned_object_path(),
                 vec![
                     ("org.bluez.GattService1".to_owned(), service_props)
                 ]
@@ -146,7 +158,7 @@ impl<'a> PeripheralConnection<'a> {
             log::info!("Characteristic {} added to object server", characteristic.object_path);
             let char_props = characteristic.get_all().await;
             hm.insert(
-                OwnedObjectPath::try_from(characteristic.object_path.as_str()).unwrap(),
+                characteristic.object_path.to_owned_object_path(),
                 vec![
                     ("org.bluez.GattCharacteristic1".to_owned(), char_props)
                 ]
@@ -158,7 +170,7 @@ impl<'a> PeripheralConnection<'a> {
         let app = Application {
             objects: hm,
         };
-        let app_object_path = OwnedObjectPath::try_from(gatt_application.clone().app_object_path.as_str()).unwrap();
+        let app_object_path = gatt_application.clone().app_object_path.to_owned_object_path();
         object_server
             .at(&app_object_path, app.clone())
             .await?;
@@ -173,7 +185,6 @@ impl<'a> PeripheralConnection<'a> {
             .await?;
         log::info!("Application {} registered with bluez", gatt_application.app_object_path);
         let gatt_manager_proxy = self.gatt_manager().clone();
-        // let gatt_manager_path = OwnedObjectPath::try_from(gatt_application.app_object_path.as_str()).unwrap();
 
         let application = gatt_application;
 

@@ -4,6 +4,7 @@ use zbus::zvariant::OwnedObjectPath;
 use zbus::Result;
 use zbus::Connection;
 use crate::Interfaces;
+use crate::object_path_extensions::OwnedObjectPathExtensions;
 
 // Predicate for filtering gatt capable adapters
 pub fn gatt_capable(item: &(OwnedObjectPath, Interfaces)) -> bool {
@@ -30,6 +31,6 @@ impl ConnectionExt for Connection {
         .filter(gatt_capable)
         .map(|s| s.0)
         .map(|o| o.as_str().to_owned()).min().ok_or(zbus::Error::Unsupported)
-        .map(|s| OwnedObjectPath::try_from(s).unwrap())
+        .map(|s| s.to_owned_object_path())
     }
 }
