@@ -3,7 +3,8 @@ use uuid::{uuid, Uuid};
 
 pub mod error;
 
-pub type Result<T> = std::result::Result<T, error::Error>;
+pub use error::Error;
+pub type Result<T> = std::result::Result<T, Error>;
 
 pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
 pub const LOCAL_NAME: &str = "lipl";
