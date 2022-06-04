@@ -58,6 +58,19 @@ pub struct PeripheralConnection<'a> {
     advertising_manager_proxy: LEAdvertisingManager1Proxy<'a>,
 }
 
+macro_rules! remove_from_server {
+    ($server:expr, $type:ty, $path:expr, $name:literal) => {
+        match $server.remove::<$type, _>($path).await {
+            Ok(removed) => {
+                log::info!("{} {} {} from object server", $name, $path, if removed { "removed"} else {"could not be removed"});
+            },
+            Err(error) => {
+                log::error!("{} {}: {}", $name, $path, error);
+            }
+        };
+    };
+}
+
 impl<'a> PeripheralConnection<'a> {
     fn gatt_manager(&'a self) -> &'a GattManager1Proxy {
         &self.gatt_manager_proxy
@@ -197,50 +210,20 @@ impl<'a> PeripheralConnection<'a> {
                 || async move {
                     gatt_manager_proxy.unregister_application(&app_object_path).await?;
                     log::info!("Application {app_op} unregistered with bluez");
+
                     advertising_proxy.unregister_advertisement(&advertisement_path).await?;
                     log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
 
-                    let removed_message = |removed: bool| if removed { "removed"} else {"could not be removed"};
-
                     for characteristic in application.characteristics.clone() {
-                        match object_server.remove::<Characteristic, _>(characteristic.object_path.as_str()).await {
-                            Ok(removed) => {
-                                log::info!("Characteristic {} {} from object server", characteristic.object_path.as_str(), removed_message(removed));
-                            },
-                            Err(error) => {
-                                log::error!("Characteristic {}: {}", characteristic.object_path.as_str(), error);
-                            }
-                        }
+                        remove_from_server!(object_server, Characteristic, characteristic.object_path.as_str(), "Characteristic");
                     }
 
                     for service in application.services.clone() {
-                        match object_server.remove::<Service, _>(service.object_path.as_str()).await {
-                            Ok(removed) => {
-                                log::info!("Service {} {} from object server", service.object_path.as_str(), removed_message(removed));
-                            },
-                            Err(error) => {
-                                log::error!("Service {}: {}", service.object_path.as_str(), error);
-                            }
-                        };
+                        remove_from_server!(object_server, Service, service.object_path.as_str(), "Service");
                     }
 
-                    match object_server.remove::<PeripheralAdvertisement, _>(&advertisement_path).await {
-                        Ok(removed) => {
-                            log::info!("Advertisement {} {} from objectserver", advertisement_path.as_str(), removed_message(removed));
-                        },
-                        Err(error) => {
-                            log::error!("Advertisement {}: {}", advertisement_path.as_str(), error);
-                        }
-                    }
-
-                    match object_server.remove::<Application, _>(&app_object_path).await {
-                        Ok(removed) => {
-                            log::info!("Application {} {} from object server", app_object_path.as_str(), removed_message(removed));
-                        },
-                        Err(error) => {
-                            log::error!("Application {}: {}", app_object_path.as_str(), error);
-                        },
-                    };
+                    remove_from_server!(object_server, PeripheralAdvertisement, advertisement_path.as_str(), "Advertisement");
+                    remove_from_server!(object_server, Application, app_object_path.as_str(), "Application");
 
                     Ok::<(), zbus::fdo::Error>(())
                 }

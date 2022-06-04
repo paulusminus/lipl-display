@@ -24,22 +24,25 @@ pub struct WriteOptions {
     offset: Option<u16>,
 }
 
-impl From<HashMap<String, Value<'_>>> for WriteOptions {
-    fn from(options: HashMap<String, Value>) -> Self {
-        let mtu = options.get("mtu").and_then(|mtu| match mtu {
-            zbus::zvariant::Value::U16(value) => Some(value.clone()),
-            _ => None,
-        });
-        let device = options.get("device").and_then(|device| match device {
-            zbus::zvariant::Value::ObjectPath(value) => Some(value.to_string()),
-            _ => None,
-        });
-        let offset = options.get("offset").and_then(|mtu| match mtu {
-            zbus::zvariant::Value::U16(value) => Some(value.clone()),
-            _ => None,
-        });
+macro_rules! option_convert {
+    ($option:expr, $key:literal, $output:ty, $variant:path, $convert:ident) => {
+        $option.get($key).and_then(|option| {
+            match option {
+                $variant(value) => Some(value.$convert()),
+                _ => None,
+            }
+        })
+        
+    };
+}
 
-        Self { mtu, device, offset }
+impl From<&HashMap<String, Value<'_>>> for WriteOptions {
+    fn from(options: &HashMap<String, Value>) -> Self {
+        Self { 
+            mtu: option_convert!(options, "mtu", u16, Value::U16, clone),
+            device: option_convert!(options, "device", String, Value::ObjectPath, to_string),
+            offset: option_convert!(options, "offset", u16, Value::U16, clone),
+        }
     }
 }
 
@@ -116,7 +119,7 @@ impl Characteristic {
 
         log::info!("Characteristic {} write with data {}", self.uuid, s);
 
-        let write_options: WriteOptions = options.into();
+        let write_options: WriteOptions = (&options).into();
         log::info!("Write options: {}", write_options);
         self
             .sender
