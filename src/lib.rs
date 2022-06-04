@@ -102,8 +102,8 @@ impl<'a> PeripheralConnection<'a> {
         adapter_proxy.set_discoverable(true).await?;
         let name = adapter_proxy.name().await?;
         let address = adapter_proxy.address().await?;
-        let path = adapter_proxy.path();
-        log::info!("Adapter {} with address {} on {}", path.as_str(), address, name);
+        let path = adapter_proxy.path().as_str();
+        log::info!("Adapter {path} with address {address} on {name}");
 
         Ok( 
             Self { 
@@ -141,7 +141,8 @@ impl<'a> PeripheralConnection<'a> {
 
         for service in gatt_application.services.clone() {
             object_server.at(service.object_path.clone(), service.clone()).await?;
-            log::info!("Service {} added to object manager", service.object_path);
+            let op = service.object_path.as_str();
+            log::info!("Service {op} added to object manager");
             let service_props = service.get_all().await;
             hm.insert(
                 service.object_path.to_owned_object_path(),
@@ -155,7 +156,8 @@ impl<'a> PeripheralConnection<'a> {
 
         for characteristic in gatt_application.characteristics.clone() {
             object_server.at(characteristic.object_path.clone(), characteristic.clone()).await?;
-            log::info!("Characteristic {} added to object server", characteristic.object_path);
+            let op = characteristic.object_path.as_str();
+            log::info!("Characteristic {op} added to object server");
             let char_props = characteristic.get_all().await;
             hm.insert(
                 characteristic.object_path.to_owned_object_path(),
@@ -174,7 +176,8 @@ impl<'a> PeripheralConnection<'a> {
         object_server
             .at(&app_object_path, app.clone())
             .await?;
-        log::info!("Application {} added to object server", gatt_application.app_object_path);
+        let app_op = gatt_application.app_object_path.clone();
+        log::info!("Application {app_op} added to object server");
 
         self
             .gatt_manager()
@@ -183,7 +186,7 @@ impl<'a> PeripheralConnection<'a> {
                 HashMap::new(),
             )
             .await?;
-        log::info!("Application {} registered with bluez", gatt_application.app_object_path);
+        log::info!("Application {app_op} registered with bluez");
         let gatt_manager_proxy = self.gatt_manager().clone();
 
         let application = gatt_application;
@@ -193,15 +196,22 @@ impl<'a> PeripheralConnection<'a> {
                 rx,
                 || async move {
                     gatt_manager_proxy.unregister_application(&app_object_path).await?;
-                    log::info!("Application {} unregistered with bluez", app_object_path.as_str());
+                    log::info!("Application {app_op} unregistered with bluez");
                     advertising_proxy.unregister_advertisement(&advertisement_path).await?;
                     log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
 
                     let removed_message = |removed: bool| if removed { "removed"} else {"could not be removed"};
 
-                    if let Ok(removed) = object_server.remove::<Application, _>(&app_object_path).await {
-                        log::info!("Application {} {} from object server", app_object_path.as_str(), removed_message(removed));
-                    };
+                    for characteristic in application.characteristics.clone() {
+                        match object_server.remove::<Characteristic, _>(characteristic.object_path.as_str()).await {
+                            Ok(removed) => {
+                                log::info!("Characteristic {} {} from object server", characteristic.object_path.as_str(), removed_message(removed));
+                            },
+                            Err(error) => {
+                                log::error!("Characteristic {}: {}", characteristic.object_path.as_str(), error);
+                            }
+                        }
+                    }
 
                     for service in application.services.clone() {
                         match object_server.remove::<Service, _>(service.object_path.as_str()).await {
@@ -214,16 +224,24 @@ impl<'a> PeripheralConnection<'a> {
                         };
                     }
 
-                    for characteristic in application.characteristics.clone() {
-                        if let Ok(removed) = object_server.remove::<Characteristic, _>(characteristic.object_path.as_str()).await {
-                            log::info!("Characteristic {} {} from object server", characteristic.object_path.as_str(), removed_message(removed));
+                    match object_server.remove::<PeripheralAdvertisement, _>(&advertisement_path).await {
+                        Ok(removed) => {
+                            log::info!("Advertisement {} {} from objectserver", advertisement_path.as_str(), removed_message(removed));
+                        },
+                        Err(error) => {
+                            log::error!("Advertisement {}: {}", advertisement_path.as_str(), error);
                         }
                     }
 
-                    log::info!("Service interface name: {}", Service::name().as_str());
-                    if let Ok(removed) = object_server.remove::<PeripheralAdvertisement, _>(&advertisement_path).await {
-                        log::info!("Advertisement {} {} from objectserver", advertisement_path.as_str(), removed_message(removed));
-                    }
+                    match object_server.remove::<Application, _>(&app_object_path).await {
+                        Ok(removed) => {
+                            log::info!("Application {} {} from object server", app_object_path.as_str(), removed_message(removed));
+                        },
+                        Err(error) => {
+                            log::error!("Application {}: {}", app_object_path.as_str(), error);
+                        },
+                    };
+
                     Ok::<(), zbus::fdo::Error>(())
                 }
                 .boxed(),
