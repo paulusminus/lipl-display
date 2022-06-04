@@ -72,3 +72,27 @@ impl FromStr for Command {
         )
     }
 }
+
+
+impl TryFrom<(&str, Uuid)> for Message {
+    type Error = Error;
+    fn try_from(received: (&str, Uuid)) -> Result<Self> {
+        let uuid = received.1;
+        let s = received.0.to_owned();
+
+        if uuid == CHARACTERISTIC_TEXT_UUID {
+            return Ok(Message::Part(s));
+        }
+
+        if uuid == CHARACTERISTIC_STATUS_UUID {
+            return Ok(Message::Status(s));
+        }
+
+        if uuid == CHARACTERISTIC_COMMAND_UUID {
+            let command = received.0.parse::<Command>()?;
+            return Ok(Message::Command(command));
+        }
+
+        Err(Error::GattCharaceristicValueParsingFailed(s))
+    }
+}
