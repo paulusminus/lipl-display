@@ -15,8 +15,7 @@ use std::pin::Pin;
 use advertisement::PeripheralAdvertisement;
 use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use futures_channel::mpsc::Receiver;
-use gatt::Application;
-use uuid::Uuid;
+use gatt::{Application, Request};
 use zbus::{
     Connection,
     ConnectionBuilder,
@@ -45,7 +44,7 @@ use crate::gatt_application::GattApplication;
 mod advertisement;
 pub(crate) mod adapter_interfaces;
 mod connection_extension;
-mod gatt;
+pub mod gatt;
 mod gatt_application;
 mod object_path_extensions;
 
@@ -148,9 +147,9 @@ impl<'a> PeripheralConnection<'a> {
 
     /// Run a gatt application with advertising
     pub async fn run(&'a self, gatt_application_config: gatt_application::GattApplicationConfig) ->
-    zbus::Result<(Receiver<(Uuid, String)>, impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>)>
+    zbus::Result<(Receiver<Request>, impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>)>
     {
-        let (tx, rx) = futures_channel::mpsc::channel::<(Uuid, String)>(10);
+        let (tx, rx) = futures_channel::mpsc::channel::<Request>(10);
         let object_server = self.connection.object_server();
         let gatt_application: GattApplication = (gatt_application_config, tx).into();
 

@@ -1,5 +1,5 @@
-use std::{sync::{RwLock, Arc}, collections::HashMap};
-use futures_channel::{mpsc::Sender};
+use std::{collections::HashMap};
+use futures_channel::{mpsc, oneshot};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
@@ -14,14 +14,31 @@ pub struct Characteristic {
     pub notify: bool,
     pub service_path: String,
     pub descriptor_paths: Vec<String>,
-    pub value: Arc<RwLock<String>>,
-    pub sender: Sender<(Uuid, String)>,
+    pub sender: mpsc::Sender<Request>,
 }
 
-pub struct WriteOptions {
-    mtu: Option<u16>,
-    device: Option<String>,
-    offset: Option<u16>,
+#[derive(Debug)]
+pub struct WriteRequest {
+    pub uuid: Uuid,
+    pub value: Vec<u8>,
+    pub mtu: Option<u16>,
+    pub device: Option<String>,
+    pub offset: Option<u16>,
+}
+
+#[derive(Debug)]
+pub struct ReadRequest {
+    pub uuid: Uuid,
+    pub mtu: Option<u16>,
+    pub device: Option<String>,
+    pub offset: Option<u16>,
+    pub sender: Option<oneshot::Sender<Vec<u8>>>,
+}
+
+#[derive(Debug)]
+pub enum Request {
+    Read(ReadRequest),
+    Write(WriteRequest),
 }
 
 macro_rules! option_convert {
@@ -36,43 +53,76 @@ macro_rules! option_convert {
     };
 }
 
-impl From<&HashMap<String, Value<'_>>> for WriteOptions {
-    fn from(options: &HashMap<String, Value>) -> Self {
-        Self { 
-            mtu: option_convert!(options, "mtu", u16, Value::U16, clone),
-            device: option_convert!(options, "device", String, Value::ObjectPath, to_string),
-            offset: option_convert!(options, "offset", u16, Value::U16, clone),
+impl From<(Uuid, Vec<u8>, &HashMap<String, Value<'_>>)> for WriteRequest {
+    fn from(options: (Uuid, Vec<u8>, &HashMap<String, Value>)) -> Self {
+        WriteRequest {
+            uuid: options.0,
+            value: options.1,
+            mtu: option_convert!(options.2, "mtu", u16, Value::U16, clone),
+            device: option_convert!(options.2, "device", String, Value::ObjectPath, to_string),
+            offset: option_convert!(options.2, "offset", u16, Value::U16, clone),
         }
     }
 }
 
-impl std::fmt::Display for WriteOptions {
+impl From<(Uuid, &HashMap<String, Value<'_>>, oneshot::Sender<Vec<u8>>)> for ReadRequest {
+    fn from(options: (Uuid, &HashMap<String, Value<'_>>, oneshot::Sender<Vec<u8>>)) -> Self {
+        ReadRequest {
+            uuid: options.0,
+            mtu: option_convert!(options.1, "mtu", u16, Value::U16, clone),
+            device: option_convert!(options.1, "device", String, Value::ObjectPath, to_string),
+            offset: option_convert!(options.1, "offset", u16, Value::U16, clone),
+            sender: Some(options.2),
+        }
+    }
+}
+
+
+impl std::fmt::Display for Request {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut v = vec![];
-        if let Some(mtu) = self.mtu {
-            v.push(format!("mtu: {}", mtu));
-        }
-        if let Some(device) = &self.device {
-            v.push(format!("device: {}", device));
-        }
-        if let Some(offset) = self.offset {
-            v.push(format!("offset: {}", offset));
+
+        match self {
+            Request::Write(request) => {
+                v.push(format!("operation: write"));
+                if let Some(mtu) = request.mtu {
+                    v.push(format!("mtu: {}", mtu));
+                }
+                if let Some(device) = &request.device {
+                    v.push(format!("device: {}", device));
+                }
+                if let Some(offset) = request.offset {
+                    v.push(format!("offset: {}", offset));
+                }
+                v.push(format!("value: {:?}", request.value));
+            },
+            Request::Read(request) => {
+                v.push(format!("operation: read"));
+                if let Some(mtu) = request.mtu {
+                    v.push(format!("mtu: {}", mtu));
+                }
+                if let Some(device) = &request.device {
+                    v.push(format!("device: {}", device));
+                }
+                if let Some(offset) = request.offset {
+                    v.push(format!("offset: {}", offset));
+                }
+            },
         }
         write!(f, "{}", v.join(", "))
     }
 }
 
 impl Characteristic {
-    pub fn new_write_only(object_path: String, uuid: Uuid, service_path: String, sender: Sender<(Uuid, String)>) -> Self {
+    pub fn new_read_write(object_path: String, uuid: Uuid, service_path: String, sender: mpsc::Sender<Request>) -> Self {
         Self {
             object_path,
             uuid,
-            read: false,
+            read: true,
             write: true,
             notify: false,
             service_path,
             descriptor_paths: vec![],
-            value: Arc::new(RwLock::new(String::new())),
             sender,
         }
     }
@@ -112,30 +162,25 @@ impl Characteristic {
         self.uuid.to_string().to_uppercase()
     }
 
+    #[dbus_interface(name = "ReadValue")]
+    async fn read_value(&mut self, options: HashMap<String, Value<'_>>) -> zbus::fdo::Result<Vec<u8>> {
+        let (tx, rx) = oneshot::channel::<Vec<u8>>();
+        let read_request: ReadRequest = (self.uuid, &options, tx).into();
+        self.sender
+            .try_send(Request::Read(read_request))
+            .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))?;
+        let result = rx.await.map_err(|error| zbus::fdo::Error::IOError(error.to_string()))?;
+        Ok(result)
+
+    }
+
     #[dbus_interface(name = "WriteValue")]
     fn write_value(&mut self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
-        let s = std::str::from_utf8(&value).map_err(|_| zbus::fdo::Error::IOError("conversion failed".into()))?;
-        self.set_value(s.to_owned());
-
-        log::info!("Characteristic {} write with data {}", self.uuid, s);
-
-        let write_options: WriteOptions = (&options).into();
-        log::info!("Write options: {}", write_options);
+        let write_request: WriteRequest = (self.uuid, value.clone(), &options).into();
         self
             .sender
-            .try_send((self.uuid, s.to_owned()))
+            .try_send(Request::Write(write_request))
             .map_err(|e| zbus::fdo::Error::Failed(e.to_string())) 
     }   
 
-    #[dbus_interface(property = "Value")]
-    fn value(&self) -> String {
-        let locked_value = self.value.read().unwrap();
-        locked_value.clone()
-    }
-
-    #[dbus_interface(property = "Value")]
-    fn set_value(&self, value: String) {
-        let mut locked_value = self.value.write().unwrap();
-        *locked_value = value;
-    }
 }

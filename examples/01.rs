@@ -1,3 +1,5 @@
+use std::{collections::HashMap, vec};
+
 use futures_util::{
     StreamExt,
 };
@@ -13,6 +15,7 @@ use zbus_bluez::{
     GattApplicationConfig,
     GattCharacteristicConfig,
     GattServiceConfig,
+    gatt::Request,
 };
 
 pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
@@ -56,10 +59,39 @@ async fn main() -> zbus::Result<()> {
 
     log::info!("Press <Ctr-C> or send signal SIGINT to end service");
 
+    let mut map: HashMap<Uuid, Vec<u8>> = HashMap::new();
+    map.insert(CHARACTERISTIC_TEXT_UUID, vec![]);
+    map.insert(CHARACTERISTIC_STATUS_UUID, vec![]);
+    map.insert(CHARACTERISTIC_COMMAND_UUID, vec![]);
+
     loop {
         tokio::select! {
-            Some((uuid, s)) = rx.next() => {
-                    log::info!("Received value ´{s}' from characteristic with uuid {uuid}");
+            Some(mut request) = rx.next() => {
+                match &mut request {
+                    Request::Write(write_request) => {
+                        if write_request.offset.is_none() {
+                            if let Ok(s) = std::str::from_utf8(&write_request.value) {
+                                let uuid = write_request.uuid;
+                                map.entry(uuid).and_modify(|e| *e = write_request.value.clone());
+                                log::info!("Received value '{s}' for {uuid}");
+                            }
+                        }
+                    },
+                    Request::Read(read_request) => {
+                        log::info!("Read requested");
+                        if read_request.offset.is_none() {
+                            let uuid = read_request.uuid;
+                            let data = map[&uuid].clone();
+                            if let Some(sender) = read_request.sender.take() {
+                                match sender.send(data) {
+                                    Ok(_) => { log::info!("Read request answered")},
+                                    Err(error) => { log::error!("Error answering read request: {:?}", error);}
+                                }
+                            }
+                        }
+                        
+                    },
+                }
             },
             _ = signal::ctrl_c() => {
                 break;

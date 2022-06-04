@@ -2,7 +2,7 @@ use futures_channel::mpsc::Sender;
 
 use uuid::Uuid;
 
-use crate::gatt::{Service, Characteristic};
+use crate::gatt::{Service, Characteristic, Request};
 
 #[derive(Clone, Debug)]
 pub(crate) struct GattApplication {
@@ -28,8 +28,8 @@ pub struct GattApplicationConfig {
     pub services: Vec<GattServiceConfig>,
 }
 
-impl From<(GattApplicationConfig, Sender<(Uuid, String)>)> for GattApplication {
-    fn from(config: (GattApplicationConfig, Sender<(Uuid, String)>)) -> Self {
+impl From<(GattApplicationConfig, Sender<Request>)> for GattApplication {
+    fn from(config: (GattApplicationConfig, Sender<Request>)) -> Self {
         let mut services = vec![];
         let mut characteristics = vec![];
 
@@ -46,7 +46,7 @@ impl From<(GattApplicationConfig, Sender<(Uuid, String)>)> for GattApplication {
                 .enumerate()
                 .map(
                     |gatt_config| 
-                        Characteristic::new_write_only(
+                        Characteristic::new_read_write(
                             format!("{}/char{}", service_object_path, gatt_config.0 + 1),
                             gatt_config.1.uuid,
                             service_object_path.clone(),
