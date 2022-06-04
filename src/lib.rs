@@ -1,6 +1,10 @@
 use std::str::FromStr;
 use uuid::{uuid, Uuid};
 
+pub mod error;
+
+pub type Result<T> = std::result::Result<T, error::Error>;
+
 pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
 pub const LOCAL_NAME: &str = "lipl";
 pub const MANUFACTURER_ID: u16 = 0xffff;
@@ -27,11 +31,13 @@ pub enum Command {
 }
 
 impl FromStr for Command {
-    type Err = (); 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = error::Error; 
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
 
         if s.is_empty() {
-            return Err(());
+            return Err(
+                error::Error::GattCharaceristicValueParsingFailed("Empty".into())
+            );
         }
 
         if s == "+" {
@@ -58,6 +64,10 @@ impl FromStr for Command {
             return Ok(Command::Exit);
         }
 
-        Err(())
+        Err(
+            error::Error::GattCharaceristicValueParsingFailed(
+                format!("Unknown command {s} received")
+            )
+        )
     }
 }
