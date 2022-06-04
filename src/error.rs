@@ -1,5 +1,5 @@
 use thiserror::Error;
-use futures::channel::mpsc::TrySendError;
+use lipl_display_common::Error as CommonError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -8,30 +8,6 @@ pub enum Error {
     #[error("Bluer error: {0}")]
     Bluer(#[from] bluer::Error),
 
-    #[error("IO error: {0}")]
-    IO(#[from] std::io::Error),
-
-    #[error("Send error: {0}")]
-    Send(#[from] TrySendError<()>),
-
-    #[error("No bluetooth adapter found")]
-    NoBluetooth,
-
-    #[error("Cancelled")]
-    Cancelled,
-
-    #[error("Cannot send poweroff to login")]
-    Poweroff,
-
-    #[error("Hostname environment variable no set!")]
-    Hostname,
-
-    #[error("Failed to call callback")]
-    Callback,
-
-    #[error("Error creating tokio runtime")]
-    Runtime,
-
-    #[error("Json serialization")]
-    JsonSerialization,
+    #[error("Common error: {0}")]
+    Common(#[from] CommonError),
 }
