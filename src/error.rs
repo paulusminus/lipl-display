@@ -1,4 +1,4 @@
-use std::sync::mpsc::TrySendError;
+use std::sync::mpsc::{SendError, TrySendError};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -6,8 +6,11 @@ pub enum Error {
     #[error("IO error: {0}")]
     IO(#[from] std::io::Error),
 
+    #[error("Try Send error: {0}")]
+    TrySend(#[from] TrySendError<()>),
+
     #[error("Send error: {0}")]
-    Send(#[from] TrySendError<()>),
+    Send(#[from] SendError<()>),
 
     #[error("No bluetooth adapter found")]
     NoBluetooth,
