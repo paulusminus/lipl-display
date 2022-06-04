@@ -71,6 +71,24 @@ macro_rules! remove_from_server {
     };
 }
 
+macro_rules! add_to_server {
+    ($server:expr, $object:expr, $hm:expr, $interface_name:literal) => {
+        $server.at($object.object_path.clone(), $object.clone()).await?;
+        let op = $object.object_path.as_str();
+        log::info!("Service {op} added to object manager");
+        let props = $object.get_all().await;
+        $hm.insert(
+            $object.object_path.to_owned_object_path(),
+            vec![
+                ($interface_name.to_owned(), props)
+            ]
+            .into_iter()
+            .collect()
+        );
+    };            
+}
+
+
 impl<'a> PeripheralConnection<'a> {
     fn gatt_manager(&'a self) -> &'a GattManager1Proxy {
         &self.gatt_manager_proxy
@@ -113,6 +131,7 @@ impl<'a> PeripheralConnection<'a> {
 
         adapter_proxy.set_powered(true).await?;
         adapter_proxy.set_discoverable(true).await?;
+
         let name = adapter_proxy.name().await?;
         let address = adapter_proxy.address().await?;
         let path = adapter_proxy.path().as_str();
@@ -153,33 +172,11 @@ impl<'a> PeripheralConnection<'a> {
         let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
 
         for service in gatt_application.services.clone() {
-            object_server.at(service.object_path.clone(), service.clone()).await?;
-            let op = service.object_path.as_str();
-            log::info!("Service {op} added to object manager");
-            let service_props = service.get_all().await;
-            hm.insert(
-                service.object_path.to_owned_object_path(),
-                vec![
-                    ("org.bluez.GattService1".to_owned(), service_props)
-                ]
-                .into_iter()
-                .collect()
-            );
+            add_to_server!(object_server, service, hm, "org.bluez.GattService1");
         }
 
         for characteristic in gatt_application.characteristics.clone() {
-            object_server.at(characteristic.object_path.clone(), characteristic.clone()).await?;
-            let op = characteristic.object_path.as_str();
-            log::info!("Characteristic {op} added to object server");
-            let char_props = characteristic.get_all().await;
-            hm.insert(
-                characteristic.object_path.to_owned_object_path(),
-                vec![
-                    ("org.bluez.GattCharacteristic1".to_owned(), char_props)
-                ]
-                .into_iter()
-                .collect(),
-            );
+            add_to_server!(object_server, characteristic, hm, "org.bluez.GattCharacteristic1");
         }
 
         let app = Application {
