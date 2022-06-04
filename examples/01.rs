@@ -81,15 +81,19 @@ async fn main() -> zbus::Result<()> {
                         log::info!("Read requested");
                         if read_request.offset.is_none() {
                             let uuid = read_request.uuid;
-                            let data = map[&uuid].clone();
-                            if let Some(sender) = read_request.sender.take() {
-                                match sender.send(data) {
-                                    Ok(_) => { log::info!("Read request answered")},
-                                    Err(error) => { log::error!("Error answering read request: {:?}", error);}
+                            match read_request.sender.take() {
+                                Some(sender) => {
+                                    let data = map[&uuid].clone();
+                                    if let Err(error) = sender.send(data) {
+                                        log::error!("Error answering read request: {:?}", error); 
+                                    }
+                                },
+                                None => {
+                                    log::error!("Read request without channel");
                                 }
                             }
                         }
-                        
+                           
                     },
                 }
             },
