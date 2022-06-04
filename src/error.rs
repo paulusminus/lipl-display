@@ -10,7 +10,7 @@ pub enum Error {
     TrySend(#[from] TrySendError<()>),
 
     #[error("Send error: {0}")]
-    Send(#[from] SendError<()>),
+    Send(#[from] SendError<crate::Message>),
 
     #[error("No bluetooth adapter found")]
     NoBluetooth,
