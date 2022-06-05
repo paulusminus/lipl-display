@@ -22,7 +22,7 @@ use bluer::{
     },
     Uuid,
 };
-use lipl_display_common::{
+pub use lipl_display_common::{
     Command,
     Message
 };
