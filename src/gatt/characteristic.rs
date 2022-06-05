@@ -3,7 +3,7 @@ use futures_channel::{mpsc, oneshot};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
-use crate::object_path_extensions::OwnedObjectPathExtensions;
+use crate::{object_path_extensions::OwnedObjectPathExtensions, GattCharacteristicConfig};
 
 #[derive(Clone, Debug)]
 pub struct Characteristic {
@@ -17,6 +17,20 @@ pub struct Characteristic {
     pub sender: mpsc::Sender<Request>,
 }
 
+impl From<(usize, &GattCharacteristicConfig, String, mpsc::Sender<Request>)> for Characteristic {
+    fn from(gatt_char_config: (usize, &GattCharacteristicConfig, String, mpsc::Sender<Request>)) -> Self {
+        Characteristic::new(
+            format!("{}/char{}", gatt_char_config.2, gatt_char_config.0 + 1),
+            gatt_char_config.1.uuid,
+            gatt_char_config.2.clone(),
+            gatt_char_config.3.clone(),
+            gatt_char_config.1.read,
+            gatt_char_config.1.write,
+        )
+
+    }
+}
+
 #[derive(Debug)]
 pub struct WriteRequest {
     pub uuid: Uuid,
@@ -24,6 +38,7 @@ pub struct WriteRequest {
     pub mtu: Option<u16>,
     pub device: Option<String>,
     pub offset: Option<u16>,
+    pub write_type: Option<String>,
 }
 
 #[derive(Debug)]
@@ -61,6 +76,7 @@ impl From<(Uuid, Vec<u8>, &HashMap<String, Value<'_>>)> for WriteRequest {
             mtu: option_convert!(options.2, "mtu", u16, Value::U16, clone),
             device: option_convert!(options.2, "device", String, Value::ObjectPath, to_string),
             offset: option_convert!(options.2, "offset", u16, Value::U16, clone),
+            write_type: option_convert!(options.2, "type", String, Value::Str, to_string),
         }
     }
 }
@@ -114,12 +130,19 @@ impl std::fmt::Display for Request {
 }
 
 impl Characteristic {
-    pub fn new_read_write(object_path: String, uuid: Uuid, service_path: String, sender: mpsc::Sender<Request>) -> Self {
+    pub fn new(
+        object_path: String,
+        uuid: Uuid,
+        service_path: String,
+        sender: mpsc::Sender<Request>,
+        read: bool,
+        write: bool,
+    ) -> Self {
         Self {
             object_path,
             uuid,
-            read: true,
-            write: true,
+            read,
+            write,
             notify: false,
             service_path,
             descriptor_paths: vec![],
@@ -144,10 +167,10 @@ impl Characteristic {
     fn flags(&self) -> Vec<String> {
         let mut flags = vec![];
         if self.read {
-            flags.push("read".to_owned());
+            flags.push("encrypt-authenticated-read".into());
         }
         if self.write {
-            flags.push("write-without-response".to_owned());
+            flags.push("encrypt-authenticated-write".to_owned());
         }
         flags
     }
@@ -164,6 +187,7 @@ impl Characteristic {
 
     #[dbus_interface(name = "ReadValue")]
     async fn read_value(&mut self, options: HashMap<String, Value<'_>>) -> zbus::fdo::Result<Vec<u8>> {
+        if !self.read { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
         let (tx, rx) = oneshot::channel::<Vec<u8>>();
         let read_request: ReadRequest = (self.uuid, &options, tx).into();
         self.sender
@@ -171,11 +195,11 @@ impl Characteristic {
             .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))?;
         let result = rx.await.map_err(|error| zbus::fdo::Error::IOError(error.to_string()))?;
         Ok(result)
-
     }
 
     #[dbus_interface(name = "WriteValue")]
     fn write_value(&mut self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
+        if !self.write { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
         let write_request: WriteRequest = (self.uuid, value.clone(), &options).into();
         self
             .sender

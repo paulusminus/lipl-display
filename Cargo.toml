@@ -17,3 +17,5 @@ tokio = { version = "1", features = ["rt", "macros", "signal"]}
 futures-util = "0.3"
 env_logger = "0.9"
 uuid = "1"
+lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
+zvariant = "2"

@@ -4,6 +4,8 @@ use uuid::Uuid;
 
 use crate::gatt::{Service, Characteristic, Request};
 
+pub trait CharacteristicTypeTrait: Clone + Default + Send + Sync {}
+
 #[derive(Clone, Debug)]
 pub(crate) struct GattApplication {
     pub local_name: String,
@@ -14,6 +16,8 @@ pub(crate) struct GattApplication {
 
 pub struct GattCharacteristicConfig {
     pub uuid: Uuid,
+    pub read: bool,
+    pub write: bool,
 }
 
 pub struct GattServiceConfig {
@@ -33,11 +37,8 @@ impl From<(GattApplicationConfig, Sender<Request>)> for GattApplication {
         let mut services = vec![];
         let mut characteristics = vec![];
 
-        let mut service_index = 0;
-
-        for service_config in config.0.services {
-            service_index += 1;
-            let service_object_path = format!("{}/service{}", config.0.app_object_path, service_index);
+        for (service_index, service_config) in config.0.services.iter().enumerate() {
+            let service_object_path = format!("{}/service{}", config.0.app_object_path, service_index + 1);
 
             let service_characteristics = 
                 service_config
@@ -45,13 +46,8 @@ impl From<(GattApplicationConfig, Sender<Request>)> for GattApplication {
                 .iter()
                 .enumerate()
                 .map(
-                    |gatt_config| 
-                        Characteristic::new_read_write(
-                            format!("{}/char{}", service_object_path, gatt_config.0 + 1),
-                            gatt_config.1.uuid,
-                            service_object_path.clone(),
-                            config.1.clone(),
-                        )
+                    |gatt_char_config|
+                        Characteristic::from((gatt_char_config.0, gatt_char_config.1, service_object_path.clone(), config.1.clone()))
                 )
                 .collect::<Vec<_>>();
 

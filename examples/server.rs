@@ -7,7 +7,6 @@ use tokio::{
     signal,
 };
 use uuid::{
-    uuid,
     Uuid,
 };
 use zbus_bluez::{
@@ -17,13 +16,15 @@ use zbus_bluez::{
     GattServiceConfig,
     gatt::{Request, WriteRequest, ReadRequest},
 };
-
-pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
-pub const LOCAL_NAME: &str = "lipl";
-
-pub const CHARACTERISTIC_TEXT_UUID: Uuid = uuid!("04973569-c039-4ce9-ad96-861589a74f9e");
-pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c69dbb7aeb");
-pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
+use lipl_display_common::{
+    Command,
+    Message,
+    CHARACTERISTIC_TEXT_UUID,
+    CHARACTERISTIC_STATUS_UUID,
+    CHARACTERISTIC_COMMAND_UUID,
+    LOCAL_NAME,
+    SERVICE_UUID
+};
 
 fn gatt_application_config() -> GattApplicationConfig {
     GattApplicationConfig {
@@ -36,12 +37,18 @@ fn gatt_application_config() -> GattApplicationConfig {
                 characteristics: vec![
                     GattCharacteristicConfig {
                         uuid: CHARACTERISTIC_TEXT_UUID,
+                        write: true,
+                        read: false,
                     },
                     GattCharacteristicConfig {
                         uuid: CHARACTERISTIC_STATUS_UUID,
+                        write: true,
+                        read: false,
                     },
                     GattCharacteristicConfig {
                         uuid: CHARACTERISTIC_COMMAND_UUID,
+                        write: true,
+                        read: false,
                     },
                 ],
             },
@@ -49,12 +56,21 @@ fn gatt_application_config() -> GattApplicationConfig {
     }
 }
 
-fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid, Vec<u8>>) {
-    if write_request.offset.is_none() {
-        if let Ok(s) = std::str::from_utf8(&write_request.value) {
-            let uuid = write_request.uuid;
-            map.entry(uuid).and_modify(|e| *e = write_request.value.clone());
-            log::info!("Received value '{s}' for {uuid}");
+fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid, Vec<u8>>) -> Option<Message> {
+    let uuid = write_request.uuid;
+    match write_request.offset {
+        Some(offset) => {
+            log::error!("Cannot handle write request for {uuid} with offset {offset}");
+            None
+        },
+        None => {
+            match std::str::from_utf8(&write_request.value) {
+                Ok(s) => {
+                    map.entry(uuid).and_modify(|e| *e = write_request.value.clone());
+                    Message::try_from((s, uuid)).ok()
+                }
+                Err(_) => None,
+            }    
         }
     }
 }
@@ -97,7 +113,12 @@ async fn main() -> zbus::Result<()> {
             Some(mut request) = rx.next() => {
                 match &mut request {
                     Request::Write(write_request) => {
-                        handle_write_request(write_request, &mut map);
+                        if let Some(message) = handle_write_request(write_request, &mut map) {
+                            log::info!("{:?}", message);
+                            if message == Message::Command(Command::Poweroff) || message == Message::Command(Command::Exit) {
+                                break;
+                            }
+                        };
                     },
                     Request::Read(read_request) => {
                         handle_read_request(read_request, &map);                           

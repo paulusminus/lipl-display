@@ -33,7 +33,8 @@ use zbus::{
     zvariant::{
         OwnedObjectPath,
         OwnedValue,
-    }, Interface,
+    },
+    Interface,
 };
 use connection_extension::ConnectionExt;
 use object_path_extensions::OwnedObjectPathExtensions;
@@ -47,14 +48,15 @@ mod connection_extension;
 pub mod gatt;
 mod gatt_application;
 mod object_path_extensions;
+pub use zbus::zvariant::Value;
 
 pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
-
 pub struct PeripheralConnection<'a> {
     connection: Connection,
     gatt_manager_proxy: GattManager1Proxy<'a>,
     advertising_manager_proxy: LEAdvertisingManager1Proxy<'a>,
+    adapter_proxy: Adapter1Proxy<'a>,
 }
 
 macro_rules! remove_from_server {
@@ -141,8 +143,13 @@ impl<'a> PeripheralConnection<'a> {
                 connection,
                 gatt_manager_proxy,
                 advertising_manager_proxy,
+                adapter_proxy,
             }
         )
+    }
+
+    pub fn adapter(&'a self) -> Adapter1Proxy<'a> {
+        self.adapter_proxy.clone()
     }
 
     /// Run a gatt application with advertising
