@@ -10,4 +10,7 @@ pub enum Error {
 
     #[error("Common error: {0}")]
     Common(#[from] CommonError),
+
+    #[error("Callback")]
+    Callback,
 }
