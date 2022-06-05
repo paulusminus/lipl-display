@@ -15,7 +15,7 @@ use eframe::{
     NativeOptions,
 };
 use lipl_display::{LiplDisplay};
-use lipl_gatt_bluer::message::{Command, Message};
+use lipl_gatt_bluer::{Command, Message};
 
 pub const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 

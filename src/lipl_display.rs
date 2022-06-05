@@ -8,7 +8,7 @@ use eframe::egui::{
     RichText,
 };
 
-use lipl_gatt_bluer::message::Message;
+use lipl_gatt_bluer::Message;
 
 pub const FONT_SIZE: f32 = 40.;
 
