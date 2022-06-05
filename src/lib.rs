@@ -22,10 +22,9 @@ use bluer::{
     },
     Uuid,
 };
-pub use lipl_display_common::{
-    Command,
-    Message
-};
+pub use lipl_display_common::Command;
+pub use lipl_display_common::Message;
+
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::{sync::Mutex};
 use log::{trace};
