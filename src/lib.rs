@@ -16,6 +16,7 @@ use advertisement::PeripheralAdvertisement;
 use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use futures_channel::mpsc::Receiver;
 use gatt::{Application, Request};
+use zbus::fdo::ObjectManagerProxy;
 use zbus::{
     Connection,
     ConnectionBuilder,
@@ -45,13 +46,16 @@ use crate::gatt_application::GattApplication;
 mod advertisement;
 pub(crate) mod adapter_interfaces;
 mod connection_extension;
+#[allow(non_snake_case)]
+mod device;
 pub mod gatt;
 mod gatt_application;
 mod object_path_extensions;
 pub use zbus::zvariant::Value;
 
-pub use gatt_application::{GattApplicationConfig, GattServiceConfig, GattCharacteristicConfig};
+pub use gatt_application::{GattApplicationConfig, GattApplicationConfigBuilder, GattServiceConfigBuilder, GattCharacteristicConfigBuilder, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
+
 pub struct PeripheralConnection<'a> {
     connection: Connection,
     gatt_manager_proxy: GattManager1Proxy<'a>,
@@ -93,6 +97,18 @@ macro_rules! add_to_server {
 impl<'a> PeripheralConnection<'a> {
     fn gatt_manager(&'a self) -> &'a GattManager1Proxy {
         &self.gatt_manager_proxy
+    }
+
+    pub async fn object_manager(&'a self) -> zbus::Result<ObjectManagerProxy<'a>> {
+        self.connection.object_manager_proxy().await
+    }
+
+    pub fn connection(&'a self) -> &'a Connection {
+        &self.connection
+    }
+
+    pub async fn device(&'a self, path: &'a str) -> zbus::Result<device::Device1Proxy<'a>> {
+        device::Device1Proxy::builder(&self.connection).destination("org.bluez")?.path(path)?.build().await
     }
 
     /// Creates a dbus connection to bluez 

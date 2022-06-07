@@ -12,8 +12,9 @@ use uuid::{
 use zbus_bluez::{
     PeripheralConnection,
     GattApplicationConfig,
-    GattCharacteristicConfig,
-    GattServiceConfig,
+    GattApplicationConfigBuilder,
+    GattCharacteristicConfigBuilder,
+    GattServiceConfigBuilder,
     gatt::{Request, WriteRequest, ReadRequest},
 };
 use lipl_display_common::{
@@ -27,33 +28,46 @@ use lipl_display_common::{
 };
 
 fn gatt_application_config() -> GattApplicationConfig {
-    GattApplicationConfig {
-        app_object_path: "/org/bluez/app".into(),
-        local_name: LOCAL_NAME.into(),
-        services: vec![
-            GattServiceConfig {
-                primary: true,
-                uuid: SERVICE_UUID,
-                characteristics: vec![
-                    GattCharacteristicConfig {
-                        uuid: CHARACTERISTIC_TEXT_UUID,
-                        write: true,
-                        read: false,
-                    },
-                    GattCharacteristicConfig {
-                        uuid: CHARACTERISTIC_STATUS_UUID,
-                        write: true,
-                        read: false,
-                    },
-                    GattCharacteristicConfig {
-                        uuid: CHARACTERISTIC_COMMAND_UUID,
-                        write: true,
-                        read: false,
-                    },
-                ],
-            },
-        ],
-    }
+    let char_text_config = 
+        GattCharacteristicConfigBuilder::default()
+        .uuid(CHARACTERISTIC_TEXT_UUID)
+        .build()
+        .unwrap();
+
+    let char_status_config = 
+        GattCharacteristicConfigBuilder::default()
+        .uuid(CHARACTERISTIC_STATUS_UUID)
+        .build()
+        .unwrap();
+
+    let char_command_config = 
+        GattCharacteristicConfigBuilder::default()
+        .uuid(CHARACTERISTIC_COMMAND_UUID)
+        .build()
+        .unwrap();
+
+    let service_config =
+        GattServiceConfigBuilder::default()
+        .uuid(SERVICE_UUID)
+        .characteristics(vec![
+            char_text_config,
+            char_status_config,
+            char_command_config,
+        ])
+        .build()
+        .unwrap();
+
+    
+
+    GattApplicationConfigBuilder::default()
+    .local_name(LOCAL_NAME.into())
+    .services(
+        vec![
+            service_config,
+        ]
+    )
+    .build()
+    .unwrap()
 }
 
 fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid, Vec<u8>>) -> Option<Message> {

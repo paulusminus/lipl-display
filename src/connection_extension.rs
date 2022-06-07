@@ -16,6 +16,7 @@ pub fn gatt_capable(item: &(OwnedObjectPath, Interfaces)) -> bool {
 #[async_trait]
 pub trait ConnectionExt {
     async fn first_gatt_capable_adapter(&self) -> Result<OwnedObjectPath>;
+    async fn object_manager_proxy(&self) -> Result<ObjectManagerProxy>;
 }
 
 #[async_trait]
@@ -32,5 +33,9 @@ impl ConnectionExt for Connection {
         .map(|s| s.0)
         .map(|o| o.as_str().to_owned()).min().ok_or(zbus::Error::Unsupported)
         .map(|s| s.to_owned_object_path())
+    }
+
+    async fn object_manager_proxy(&self) -> Result<ObjectManagerProxy> {
+        ObjectManagerProxy::builder(self).destination("org.bluez")?.path("/")?.build().await
     }
 }

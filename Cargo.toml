@@ -7,14 +7,16 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1"
+derive_builder = "0.11.2"
 futures-channel = "0.3"
 log = "0.4"
 uuid = "1"
 zbus = { version = "2", default-features = false, features = ["tokio"] }
 
 [dev-dependencies]
-tokio = { version = "1", features = ["rt", "macros", "signal"]}
+tokio = { version = "1", features = ["rt", "macros", "signal", "time"]}
 futures-util = "0.3"
 env_logger = "0.9"
 uuid = "1"
 lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
+futures-channel = "0.3"

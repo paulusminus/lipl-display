@@ -93,39 +93,59 @@ impl From<(Uuid, &HashMap<String, Value<'_>>, oneshot::Sender<Vec<u8>>)> for Rea
     }
 }
 
+fn option_display<T: std::fmt::Display>(name: &str, option: &Option<T>) -> Option<String> {
+    option.as_ref().map(|v| format!("{name}: {v}"))
+}
+
+struct VecU8<'a>(&'a Vec<u8>);
+
+impl<'a> VecU8<'a> {
+    fn display(&'a self) -> Option<&str> {
+        std::str::from_utf8(self.0.as_slice()).ok()
+    }
+}
+
+trait Joiner {
+    fn join(&self, seperator: &'static str) -> String;
+}
+
+impl Joiner for [Option<String>] {
+    fn join(&self, seperator: &'static str) -> String {
+        self.iter().flatten().cloned().collect::<Vec<_>>().join(seperator)
+    }
+}
 
 impl std::fmt::Display for Request {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut v = vec![];
-
         match self {
             Request::Write(request) => {
-                v.push(format!("operation: write"));
-                if let Some(mtu) = request.mtu {
-                    v.push(format!("mtu: {}", mtu));
-                }
-                if let Some(device) = &request.device {
-                    v.push(format!("device: {}", device));
-                }
-                if let Some(offset) = request.offset {
-                    v.push(format!("offset: {}", offset));
-                }
-                v.push(format!("value: {:?}", request.value));
+                write!(
+                    f,
+                    "{}",
+                    [
+                        option_display("operation", &Some("write")),
+                        option_display("mtu", &request.mtu),
+                        option_display("device", &request.device),
+                        option_display("offset", &request.offset),
+                        option_display("value", &VecU8(&request.value).display()),
+                    ]
+                    .join(", ")
+                )
             },
             Request::Read(request) => {
-                v.push(format!("operation: read"));
-                if let Some(mtu) = request.mtu {
-                    v.push(format!("mtu: {}", mtu));
-                }
-                if let Some(device) = &request.device {
-                    v.push(format!("device: {}", device));
-                }
-                if let Some(offset) = request.offset {
-                    v.push(format!("offset: {}", offset));
-                }
+                write!(
+                    f,
+                    "{}",
+                    [
+                        option_display("operation", &Some("read")),
+                        option_display("mtu", &request.mtu),
+                        option_display("device", &request.device),
+                        option_display("offset", &request.offset),
+                    ]
+                    .join(", ")
+                )
             },
         }
-        write!(f, "{}", v.join(", "))
     }
 }
 
@@ -200,7 +220,7 @@ impl Characteristic {
     #[dbus_interface(name = "WriteValue")]
     fn write_value(&mut self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
         if !self.write { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
-        let write_request: WriteRequest = (self.uuid, value.clone(), &options).into();
+        let write_request: WriteRequest = (self.uuid, value, &options).into();
         self
             .sender
             .try_send(Request::Write(write_request))

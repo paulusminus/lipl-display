@@ -1,6 +1,6 @@
 use futures_channel::mpsc::Sender;
-
 use uuid::Uuid;
+use derive_builder::Builder;
 
 use crate::gatt::{Service, Characteristic, Request};
 
@@ -14,20 +14,28 @@ pub(crate) struct GattApplication {
     pub characteristics: Vec<Characteristic>,
 }
 
-pub struct GattCharacteristicConfig {
-    pub uuid: Uuid,
-    pub read: bool,
-    pub write: bool,
-}
-
+#[derive(Builder, Clone, Debug, Default)]
 pub struct GattServiceConfig {
+    #[builder(default = "true")]
     pub primary: bool,
     pub uuid: Uuid,
     pub characteristics: Vec<GattCharacteristicConfig>,
 }
 
+#[derive(Builder, Clone, Debug, Default)]
+pub struct GattCharacteristicConfig {
+    pub uuid: Uuid,
+    #[builder(default = "false")]
+    pub read: bool,
+    #[builder(default = "true")]
+    pub write: bool,
+}
+
+#[derive(Builder, Clone, Debug, Default)]
 pub struct GattApplicationConfig {
+    #[builder(default = "\"lipl\".to_string()")]
     pub local_name: String,
+    #[builder(default = "\"/org/bluez/app\".to_string()")]
     pub app_object_path: String,
     pub services: Vec<GattServiceConfig>,
 }
