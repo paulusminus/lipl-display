@@ -1,4 +1,4 @@
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap};
 use std::time::Duration;
 
 use device::Device1Proxy;
@@ -125,7 +125,7 @@ async fn main() -> zbus::Result<()> {
 
             if uuid == &CHARACTERISTIC_TEXT_UUID.to_string().to_lowercase() {
                 log::info!("Text Uuid Path: {path}");
-                proxy.write_value("Oh kindeke klein".as_bytes(), HashMap::new()).await?;
+                proxy.write_value("Oh kindeke klein\nOh kindeke teer".as_bytes(), HashMap::new()).await?;
             }
 
             if uuid == &CHARACTERISTIC_STATUS_UUID.to_string().to_lowercase() {

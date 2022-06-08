@@ -27,24 +27,21 @@ use lipl_display_common::{
     SERVICE_UUID
 };
 
-fn gatt_application_config() -> GattApplicationConfig {
+fn gatt_application_config() -> std::result::Result<GattApplicationConfig, Box<dyn std::error::Error>> {
     let char_text_config = 
         GattCharacteristicConfigBuilder::default()
         .uuid(CHARACTERISTIC_TEXT_UUID)
-        .build()
-        .unwrap();
+        .build()?;
 
     let char_status_config = 
         GattCharacteristicConfigBuilder::default()
         .uuid(CHARACTERISTIC_STATUS_UUID)
-        .build()
-        .unwrap();
+        .build()?;
 
     let char_command_config = 
         GattCharacteristicConfigBuilder::default()
         .uuid(CHARACTERISTIC_COMMAND_UUID)
-        .build()
-        .unwrap();
+        .build()?;
 
     let service_config =
         GattServiceConfigBuilder::default()
@@ -54,20 +51,18 @@ fn gatt_application_config() -> GattApplicationConfig {
             char_status_config,
             char_command_config,
         ])
-        .build()
-        .unwrap();
+        .build()?;
 
-    
-
-    GattApplicationConfigBuilder::default()
+    let app_config = GattApplicationConfigBuilder::default()
     .local_name(LOCAL_NAME.into())
     .services(
         vec![
             service_config,
         ]
     )
-    .build()
-    .unwrap()
+    .build()?;
+
+    Ok(app_config)
 }
 
 fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid, Vec<u8>>) -> Option<Message> {
@@ -112,7 +107,7 @@ async fn main() -> zbus::Result<()> {
 
     let bluez = PeripheralConnection::new().await?;
 
-    let (mut rx, dispose) = bluez.run(gatt_application_config()).await?;
+    let (mut rx, dispose) = bluez.run(gatt_application_config().unwrap()).await?;
     log::info!("Advertising and Gatt application started");
 
     log::info!("Press <Ctr-C> or send signal SIGINT to end service");
