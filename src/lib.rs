@@ -17,7 +17,7 @@ use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1
 use futures_channel::mpsc::Receiver;
 use futures_util::{TryFutureExt, StreamExt};
 use gatt::{Application, Request};
-use lipl_display_common::{Message, Command};
+pub use lipl_display_common::{Message, Command};
 use zbus::fdo::ObjectManagerProxy;
 use zbus::{
     Connection,
