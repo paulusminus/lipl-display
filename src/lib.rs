@@ -15,7 +15,9 @@ use std::pin::Pin;
 use advertisement::PeripheralAdvertisement;
 use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
 use futures_channel::mpsc::Receiver;
+use futures_util::{TryFutureExt, StreamExt};
 use gatt::{Application, Request};
+use lipl_display_common::{Message, Command};
 use zbus::fdo::ObjectManagerProxy;
 use zbus::{
     Connection,
@@ -42,6 +44,7 @@ use object_path_extensions::OwnedObjectPathExtensions;
 
 use crate::gatt::{Service, Characteristic};
 use crate::gatt_application::GattApplication;
+use crate::message_handler::{characteristics_map, handle_write_request};
 
 mod advertisement;
 pub(crate) mod adapter_interfaces;
@@ -50,11 +53,52 @@ mod connection_extension;
 mod device;
 pub mod gatt;
 mod gatt_application;
+mod message_handler;
 mod object_path_extensions;
 pub use zbus::zvariant::Value;
 
 pub use gatt_application::{GattApplicationConfig, GattApplicationConfigBuilder, GattServiceConfigBuilder, GattCharacteristicConfigBuilder, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
+
+
+pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+    std::thread::spawn(move || {
+        let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
+
+        runtime.block_on(async move {
+            let bluez =
+                PeripheralConnection::new()
+                .await
+                .map_err(|_| lipl_display_common::Error::NoBluetooth)?;
+
+            let (mut rx, dispose) = 
+                bluez
+                .run(message_handler::gatt_application_config().unwrap())
+                .map_err(|_| lipl_display_common::Error::NoBluetooth)
+                .await?;
+
+            log::info!("Advertising and Gatt application started");
+        
+            log::info!("Press <Ctr-C> or send signal SIGINT to end service");
+        
+            let mut map = characteristics_map();
+
+            while let Some(request) = rx.next().await {
+                if let Request::Write(mut write_request) = request {
+                    if let Some(message) = handle_write_request(&mut write_request, &mut map) {
+                        cb(message.clone())?;
+                        if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
+                            break;
+                        }        
+                    }
+                }
+            }
+            dispose().await.map_err(|_| lipl_display_common::Error::Cancelled)?;
+            Ok::<(), lipl_display_common::Error>(())
+        })
+    });
+}
+
 
 pub struct PeripheralConnection<'a> {
     connection: Connection,
