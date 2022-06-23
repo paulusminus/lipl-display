@@ -62,7 +62,7 @@ type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, Random
 
 pub use error::{Error, Result};
 
-pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
     std::thread::spawn(move || {
         let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
 
