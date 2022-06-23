@@ -1,5 +1,5 @@
 [package]
-name = "zbus-bluez"
+name = "lipl-gatt-zbus"
 version = "0.1.0"
 edition = "2021"
 

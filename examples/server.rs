@@ -65,8 +65,9 @@ fn gatt_application_config() -> std::result::Result<GattApplicationConfig, Box<d
     Ok(app_config)
 }
 
-fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid, Vec<u8>>) -> Option<Message> {
+fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<(Uuid, Uuid), Vec<u8>>) -> Option<Message> {
     let uuid = write_request.uuid;
+    let service_uuid = write_request.service_uuid;
     match write_request.offset {
         Some(offset) => {
             log::error!("Cannot handle write request for {uuid} with offset {offset}");
@@ -75,7 +76,7 @@ fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid
         None => {
             match std::str::from_utf8(&write_request.value) {
                 Ok(s) => {
-                    map.entry(uuid).and_modify(|e| *e = write_request.value.clone());
+                    map.entry((service_uuid, uuid)).and_modify(|e| *e = write_request.value.clone());
                     Message::try_from((s, uuid)).ok()
                 }
                 Err(_) => None,
@@ -84,12 +85,13 @@ fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<Uuid
     }
 }
 
-fn handle_read_request(read_request: &mut ReadRequest, map: &HashMap<Uuid, Vec<u8>>) {
+fn handle_read_request(read_request: &mut ReadRequest, map: &HashMap<(Uuid, Uuid), Vec<u8>>) {
     if read_request.offset.is_none() {
         let uuid = read_request.uuid;
+        let service_uuid = read_request.uuid;
         match read_request.sender.take() {
             Some(sender) => {
-                let data = map[&uuid].clone();
+                let data = map[&(service_uuid, uuid)].clone();
                 if let Err(error) = sender.send(data) {
                     log::error!("Error answering read request: {:?}", error); 
                 }
@@ -112,10 +114,10 @@ async fn main() -> zbus::Result<()> {
 
     log::info!("Press <Ctr-C> or send signal SIGINT to end service");
 
-    let mut map: HashMap<Uuid, Vec<u8>> = HashMap::new();
-    map.insert(CHARACTERISTIC_TEXT_UUID, vec![]);
-    map.insert(CHARACTERISTIC_STATUS_UUID, vec![]);
-    map.insert(CHARACTERISTIC_COMMAND_UUID, vec![]);
+    let mut map: HashMap<(Uuid, Uuid), Vec<u8>> = HashMap::new();
+    map.insert((SERVICE_UUID, CHARACTERISTIC_TEXT_UUID), vec![]);
+    map.insert((SERVICE_UUID, CHARACTERISTIC_STATUS_UUID), vec![]);
+    map.insert((SERVICE_UUID, CHARACTERISTIC_COMMAND_UUID), vec![]);
 
     loop {
         tokio::select! {

@@ -55,7 +55,7 @@ impl From<(GattApplicationConfig, Sender<Request>)> for GattApplication {
                 .enumerate()
                 .map(
                     |gatt_char_config|
-                        Characteristic::from((gatt_char_config.0, gatt_char_config.1, service_object_path.clone(), config.1.clone()))
+                        Characteristic::from((gatt_char_config.0, gatt_char_config.1, service_object_path.clone(), config.1.clone(), service_config.uuid))
                 )
                 .collect::<Vec<_>>();
 
