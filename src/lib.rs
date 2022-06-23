@@ -51,15 +51,16 @@ pub(crate) mod adapter_interfaces;
 mod connection_extension;
 #[allow(non_snake_case)]
 mod device;
-pub mod gatt;
+mod error;
+mod gatt;
 mod gatt_application;
 mod message_handler;
 mod object_path_extensions;
-pub use zbus::zvariant::Value;
 
-pub use gatt_application::{GattApplicationConfig, GattApplicationConfigBuilder, GattServiceConfigBuilder, GattCharacteristicConfigBuilder, GattCharacteristicConfig};
+use gatt_application::{GattApplicationConfig, GattApplicationConfigBuilder, GattServiceConfigBuilder, GattCharacteristicConfigBuilder, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
 
+pub use error::{Error, Result};
 
 pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
     std::thread::spawn(move || {

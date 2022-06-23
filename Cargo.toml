@@ -13,6 +13,7 @@ futures-util = "0.3"
 lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
 log = "0.4"
 uuid = "1"
+thiserror = "1"
 tokio = { version = "1", features = ["rt"]}
 zbus = { version = "2", default-features = false, features = ["tokio"] }
 
