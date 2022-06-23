@@ -1,7 +1,8 @@
 use std::sync::mpsc::channel;
 use simple_logger::SimpleLogger;
+use tokio::main;
 
-#[tokio::main(flavor = "current_thread")]
+#[main(flavor = "current_thread")]
 async fn main() {
     SimpleLogger::new().init().unwrap();
     log::set_max_level(log::LevelFilter::Trace);
