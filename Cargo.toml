@@ -1,7 +1,7 @@
 [package]
 name = "lipl-gatt-zbus"
 version = "0.1.0"
-edition = "2021"
+edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,7 +10,7 @@ async-trait = "0.1"
 derive_builder = "0.11.2"
 futures-channel = "0.3"
 futures-util = "0.3"
-lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
+lipl-display-common = { version = "0.1.0", registry = "paulmin-nl" }
 log = "0.4"
 uuid = "1"
 thiserror = "1"
@@ -21,4 +21,3 @@ zbus = { version = "2", default-features = false, features = ["tokio"] }
 tokio = { version = "1", features = ["rt", "macros", "signal", "time"]}
 futures-util = "0.3"
 simple_logger = "2"
-lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
