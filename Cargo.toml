@@ -1,7 +1,11 @@
 [package]
 name = "login-poweroff-reboot-zbus"
-version = "0.1.0"
+description = "reboot or poweroff machine by sending dbus message to login manager"
+version = "0.1.1"
 edition = "2018"
+repository = "git://paulmin.nl/rust/login-poweroff-reboot-zbus.git"
+homepage = "https://www.paulmin.nl/"
+license = "MIT"
 
 [dependencies]
 zbus = "2"

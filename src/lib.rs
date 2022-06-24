@@ -1,3 +1,6 @@
+//! Library to send messages through dbus to Login Manager
+
+
 mod login_manager;
 
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -33,10 +36,32 @@ fn shutdown(delay_milliseconds: u64, shutdown_type: &str) -> zbus::Result<()> {
     )
 }
 
+/// Poweroff machine the program is running on
+/// 
+/// ## Example
+/// 
+/// ```
+/// use login_poweroff_reboot_zbus::poweroff;
+/// if let Ok(_) = poweroff(1000) {
+///   println!("Command to poweroff machine was sent");
+/// }
+/// ```
+/// 
 pub fn poweroff(delay_milliseconds: u64) -> zbus::Result<()> {
     shutdown(delay_milliseconds, POWEROFF)
 }
 
+/// Reboot machine the program is running on
+/// 
+/// ## Example
+/// 
+/// ```
+/// use login_poweroff_reboot_zbus::reboot;
+/// if let Ok(_) = reboot(1000) {
+///   println!("Command to reboot machine was sent");
+/// }
+/// ```
+/// 
 pub fn reboot(delay_milliseconds: u64) -> zbus::Result<()> {
     shutdown(delay_milliseconds, REBOOT)
 }
