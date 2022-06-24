@@ -60,7 +60,7 @@ mod object_path_extensions;
 use gatt_application::{GattApplicationConfig, GattApplicationConfigBuilder, GattServiceConfigBuilder, GattCharacteristicConfigBuilder, GattCharacteristicConfig};
 type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
 
-pub use error::{Error, Result};
+pub use error::{Error, Result, CommonError};
 
 pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
     std::thread::spawn(move || {

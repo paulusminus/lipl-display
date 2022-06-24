@@ -1,5 +1,5 @@
 use thiserror::Error;
-use lipl_display_common::Error as CommonError;
+pub use lipl_display_common::Error as CommonError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
