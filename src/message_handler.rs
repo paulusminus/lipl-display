@@ -63,7 +63,7 @@ pub fn handle_write_request(write_request: &mut WriteRequest, map: &mut HashMap<
     let service_uuid = write_request.service_uuid;
     match write_request.offset {
         Some(offset) => {
-            log::error!("Cannot handle write request for {uuid} with offset {offset}");
+            tracing::error!("Cannot handle write request for {uuid} with offset {offset}");
             None
         },
         None => {

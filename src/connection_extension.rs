@@ -1,8 +1,10 @@
-use async_trait::async_trait;
-use zbus::fdo::ObjectManagerProxy;
-use zbus::zvariant::OwnedObjectPath;
-use zbus::Result;
-use zbus::Connection;
+use zbus::{
+    Connection,
+    Result,
+    fdo::ObjectManagerProxy,
+    export::async_trait::async_trait,
+    zvariant::OwnedObjectPath,
+};
 use crate::Interfaces;
 use crate::object_path_extensions::OwnedObjectPathExtensions;
 

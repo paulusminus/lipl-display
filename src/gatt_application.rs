@@ -1,4 +1,4 @@
-use futures_channel::mpsc::Sender;
+use async_channel::Sender;
 use uuid::Uuid;
 use derive_builder::Builder;
 

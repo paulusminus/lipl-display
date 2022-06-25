@@ -1,5 +1,5 @@
 use std::{collections::HashMap};
-use futures_channel::{mpsc, oneshot};
+use async_channel::{bounded, Sender};
 
 use uuid::Uuid;
 use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
@@ -14,12 +14,12 @@ pub struct Characteristic {
     pub notify: bool,
     pub service_path: String,
     pub descriptor_paths: Vec<String>,
-    pub sender: mpsc::Sender<Request>,
+    pub sender: Sender<Request>,
     pub service_uuid: Uuid,
 }
 
-impl From<(usize, &GattCharacteristicConfig, String, mpsc::Sender<Request>, Uuid)> for Characteristic {
-    fn from(gatt_char_config: (usize, &GattCharacteristicConfig, String, mpsc::Sender<Request>, Uuid)) -> Self {
+impl From<(usize, &GattCharacteristicConfig, String, Sender<Request>, Uuid)> for Characteristic {
+    fn from(gatt_char_config: (usize, &GattCharacteristicConfig, String, Sender<Request>, Uuid)) -> Self {
         Characteristic::new(
             format!("{}/char{}", gatt_char_config.2, gatt_char_config.0 + 1),
             gatt_char_config.1.uuid,
@@ -50,7 +50,7 @@ pub struct ReadRequest {
     pub mtu: Option<u16>,
     pub device: Option<String>,
     pub offset: Option<u16>,
-    pub sender: Option<oneshot::Sender<Vec<u8>>>,
+    pub sender: Option<Sender<Vec<u8>>>,
     pub service_uuid: Uuid,
 }
 
@@ -86,8 +86,8 @@ impl From<(Uuid, Vec<u8>, &HashMap<String, Value<'_>>, Uuid)> for WriteRequest {
     }
 }
 
-impl From<(Uuid, &HashMap<String, Value<'_>>, oneshot::Sender<Vec<u8>>, Uuid)> for ReadRequest {
-    fn from(options: (Uuid, &HashMap<String, Value<'_>>, oneshot::Sender<Vec<u8>>, Uuid)) -> Self {
+impl From<(Uuid, &HashMap<String, Value<'_>>, Sender<Vec<u8>>, Uuid)> for ReadRequest {
+    fn from(options: (Uuid, &HashMap<String, Value<'_>>, Sender<Vec<u8>>, Uuid)) -> Self {
         ReadRequest {
             uuid: options.0,
             mtu: option_convert!(options.1, "mtu", u16, Value::U16, clone),
@@ -160,7 +160,7 @@ impl Characteristic {
         object_path: String,
         uuid: Uuid,
         service_path: String,
-        sender: mpsc::Sender<Request>,
+        sender: Sender<Request>,
         read: bool,
         write: bool,
         service_uuid: Uuid,
@@ -216,12 +216,12 @@ impl Characteristic {
     #[dbus_interface(name = "ReadValue")]
     async fn read_value(&mut self, options: HashMap<String, Value<'_>>) -> zbus::fdo::Result<Vec<u8>> {
         if !self.read { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
-        let (tx, rx) = oneshot::channel::<Vec<u8>>();
+        let (tx, rx) = bounded::<Vec<u8>>(1);
         let read_request: ReadRequest = (self.uuid, &options, tx, self.service_uuid).into();
         self.sender
             .try_send(Request::Read(read_request))
             .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))?;
-        let result = rx.await.map_err(|error| zbus::fdo::Error::IOError(error.to_string()))?;
+        let result = rx.recv().await.map_err(|error| zbus::fdo::Error::IOError(error.to_string()))?;
         Ok(result)
     }
 

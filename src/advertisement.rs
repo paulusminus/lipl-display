@@ -73,6 +73,6 @@ impl PeripheralAdvertisement {
     }
 
     fn release(&self) {
-        log::info!("Released");
+        tracing::info!("Released");
     }
 }

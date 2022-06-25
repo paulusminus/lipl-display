@@ -1,13 +1,7 @@
 use lipl_gatt_zbus::listen_background;
 use std::sync::mpsc::channel;
-use simple_logger::SimpleLogger;
-use tokio::main;
 
-#[main(flavor = "current_thread")]
-async fn main() {
-    SimpleLogger::new().init().unwrap();
-    log::set_max_level(log::LevelFilter::Trace);
-
+fn main() {
     let (values_tx, values_rx) = channel();
     listen_background(move |message| {
         values_tx
@@ -17,6 +11,6 @@ async fn main() {
     });
 
     while let Ok(message) = values_rx.recv() {
-        log::info!("{:?}", message);
+        println!("{:?}", message);
     }
 }

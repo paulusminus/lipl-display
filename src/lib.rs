@@ -14,8 +14,8 @@ use std::pin::Pin;
 
 use advertisement::PeripheralAdvertisement;
 use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
-use futures_channel::mpsc::Receiver;
-use futures_util::{TryFutureExt, StreamExt};
+use async_channel::{unbounded, Receiver};
+use zbus::export::futures_util::{TryFutureExt, StreamExt};
 use gatt::{Application, Request};
 pub use lipl_display_common::{Message, Command};
 use zbus::fdo::ObjectManagerProxy;
@@ -64,9 +64,7 @@ pub use error::{Error, Result, CommonError};
 
 pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
     std::thread::spawn(move || {
-        let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
-
-        runtime.block_on(async move {
+        async_io::block_on(async move {
             let bluez =
                 PeripheralConnection::new()
                 .await
@@ -78,9 +76,9 @@ pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()>
                 .map_err(|_| lipl_display_common::Error::NoBluetooth)
                 .await?;
 
-            log::info!("Advertising and Gatt application started");
+            tracing::info!("Advertising and Gatt application started");
         
-            log::info!("Press <Ctr-C> or send signal SIGINT to end service");
+            tracing::info!("Press <Ctr-C> or send signal SIGINT to end service");
         
             let mut map = characteristics_map();
 
@@ -112,10 +110,10 @@ macro_rules! remove_from_server {
     ($server:expr, $type:ty, $path:expr, $name:literal) => {
         match $server.remove::<$type, _>($path).await {
             Ok(removed) => {
-                log::info!("{} {} {} from object server", $name, $path, if removed { "removed"} else {"could not be removed"});
+                tracing::info!("{} {} {} from object server", $name, $path, if removed { "removed"} else {"could not be removed"});
             },
             Err(error) => {
-                log::error!("{} {}: {}", $name, $path, error);
+                tracing::error!("{} {}: {}", $name, $path, error);
             }
         };
     };
@@ -125,7 +123,7 @@ macro_rules! add_to_server {
     ($server:expr, $object:expr, $hm:expr, $interface_name:literal) => {
         $server.at($object.object_path.clone(), $object.clone()).await?;
         let op = $object.object_path.as_str();
-        log::info!("Service {op} added to object manager");
+        tracing::info!("Service {op} added to object manager");
         let props = $object.get_all().await;
         $hm.insert(
             $object.object_path.to_owned_object_path(),
@@ -197,7 +195,7 @@ impl<'a> PeripheralConnection<'a> {
         let name = adapter_proxy.name().await?;
         let address = adapter_proxy.address().await?;
         let path = adapter_proxy.path().as_str();
-        log::info!("Adapter {path} with address {address} on {name}");
+        tracing::info!("Adapter {path} with address {address} on {name}");
 
         Ok( 
             Self { 
@@ -217,7 +215,7 @@ impl<'a> PeripheralConnection<'a> {
     pub async fn run(&'a self, gatt_application_config: gatt_application::GattApplicationConfig) ->
     zbus::Result<(Receiver<Request>, impl FnOnce() -> Pin<Box<(dyn Future<Output = zbus::fdo::Result<()>> + 'a + Send)>>)>
     {
-        let (tx, rx) = futures_channel::mpsc::channel::<Request>(10);
+        let (tx, rx) = unbounded::<Request>();
         let object_server = self.connection.object_server();
         let gatt_application: GattApplication = (gatt_application_config, tx).into();
 
@@ -226,14 +224,14 @@ impl<'a> PeripheralConnection<'a> {
         let advertisement_path = format!("{}/advertisement", gatt_application.app_object_path).to_owned_object_path();
         let advertising_proxy = self.advertising_manager_proxy.clone();
         object_server.at(&advertisement_path, advertisement).await?;
-        log::info!("Advertisement {} added to object server", advertisement_path.as_str());
+        tracing::info!("Advertisement {} added to object server", advertisement_path.as_str());
         self.advertising_manager_proxy
             .register_advertisement(
                 &advertisement_path,
                 HashMap::new(),
             )
             .await?;
-        log::info!("Advertisement {} registered with bluez", advertisement_path.as_str());
+        tracing::info!("Advertisement {} registered with bluez", advertisement_path.as_str());
 
         // Gatt application
         let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> = HashMap::new();
@@ -254,7 +252,7 @@ impl<'a> PeripheralConnection<'a> {
             .at(&app_object_path, app.clone())
             .await?;
         let app_op = gatt_application.app_object_path.clone();
-        log::info!("Application {app_op} added to object server");
+        tracing::info!("Application {app_op} added to object server");
 
         self
             .gatt_manager()
@@ -263,7 +261,7 @@ impl<'a> PeripheralConnection<'a> {
                 HashMap::new(),
             )
             .await?;
-        log::info!("Application {app_op} registered with bluez");
+        tracing::info!("Application {app_op} registered with bluez");
         let gatt_manager_proxy = self.gatt_manager().clone();
 
         let application = gatt_application;
@@ -273,10 +271,10 @@ impl<'a> PeripheralConnection<'a> {
                 rx,
                 || async move {
                     gatt_manager_proxy.unregister_application(&app_object_path).await?;
-                    log::info!("Application {app_op} unregistered with bluez");
+                    tracing::info!("Application {app_op} unregistered with bluez");
 
                     advertising_proxy.unregister_advertisement(&advertisement_path).await?;
-                    log::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
+                    tracing::info!("Advertisement {} unregistered with bluez", advertisement_path.as_str());
 
                     for characteristic in application.characteristics.clone() {
                         remove_from_server!(object_server, Characteristic, characteristic.object_path.as_str(), "Characteristic");
