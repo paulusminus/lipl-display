@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use std::convert::TryFrom;
 use uuid::{uuid, Uuid};
 
 pub mod error;
