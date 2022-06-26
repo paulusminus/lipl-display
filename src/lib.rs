@@ -13,7 +13,7 @@ use std::collections::hash_map::RandomState;
 use std::pin::Pin;
 
 use advertisement::PeripheralAdvertisement;
-use adapter_interfaces::{Adapter1Proxy, LEAdvertisingManager1Proxy, GattManager1Proxy};
+use proxy::{Adapter1Proxy, Device1Proxy, GattManager1Proxy, LEAdvertisingManager1Proxy};
 use async_channel::{unbounded, Receiver};
 use zbus::export::futures_util::{TryFutureExt, StreamExt};
 use gatt::{Application, Request};
@@ -47,10 +47,9 @@ use crate::gatt_application::GattApplication;
 use crate::message_handler::{characteristics_map, handle_write_request};
 
 mod advertisement;
-pub(crate) mod adapter_interfaces;
+pub(crate) mod proxy;
 mod connection_extension;
 #[allow(non_snake_case)]
-mod device;
 mod error;
 mod gatt;
 mod gatt_application;
@@ -150,8 +149,8 @@ impl<'a> PeripheralConnection<'a> {
         &self.connection
     }
 
-    pub async fn device(&'a self, path: &'a str) -> zbus::Result<device::Device1Proxy<'a>> {
-        device::Device1Proxy::builder(&self.connection).destination("org.bluez")?.path(path)?.build().await
+    pub async fn device(&'a self, path: &'a str) -> zbus::Result<Device1Proxy<'a>> {
+        Device1Proxy::builder(&self.connection).destination("org.bluez")?.path(path)?.build().await
     }
 
     /// Creates a dbus connection to bluez 
