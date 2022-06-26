@@ -1,16 +1,13 @@
 [package]
 name = "lipl-gatt-zbus"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2018"
-
-[patch.crates-io]
-lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git", branch = "main" }
 
 [dependencies]
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.11.2"
-lipl-display-common = "0.1"
+lipl-display-common = { version = "0.1.1", git = "git://paulmin.nl/rust/lipl-display-common.git", branch = "main" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"
