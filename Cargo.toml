@@ -1,13 +1,13 @@
 [package]
 name = "lipl-gatt-zbus"
-version = "0.1.3"
+version = "0.2.0"
 edition = "2018"
 
 [dependencies]
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.11.2"
-lipl-display-common = { version = "0.1.1", git = "git://paulmin.nl/rust/lipl-display-common.git", branch = "main" }
+lipl-display-common = { version = "0.2.0", git = "git://paulmin.nl/rust/lipl-display-common.git", tag = "v0.2" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"
