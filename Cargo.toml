@@ -7,7 +7,7 @@ edition = "2018"
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.11.2"
-lipl-display-common = { version = "0.2.0", git = "git://paulmin.nl/rust/lipl-display-common.git" }
+lipl-display-common = { version = "0.2.0", git = "git://paulmin.nl/rust/lipl-display-common.git", rev = "d44be84523834506fde19a2273aabbced7464446" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"
