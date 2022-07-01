@@ -2,7 +2,7 @@
 name = "login-poweroff-reboot-zbus"
 description = "reboot or poweroff machine by sending dbus message to login manager"
 version = "0.2.0"
-edition = "2018"
+edition = "2021"
 repository = "git://paulmin.nl/rust/login-poweroff-reboot-zbus.git"
 homepage = "https://www.paulmin.nl/"
 license = "MIT"
