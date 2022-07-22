@@ -34,7 +34,7 @@ use std::pin::Pin;
 mod error;
 mod characteristic;
 
-pub use error::{Error, Result};
+pub use error::{CommonError, Error, Result};
 
 #[pin_project(PinnedDrop)]
 struct ValuesStream {
@@ -67,9 +67,13 @@ impl futures::Stream for ValuesStream {
     }
 }
 
-// pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
-//     tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(|_| lipl_display_common::Error::Runtime)
-// }
+pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
+    tokio::runtime::Builder::new_current_thread()
+    .enable_all()
+    .build()
+    .map_err(|_| lipl_display_common::Error::Runtime)
+    .map_err(Error::Common)
+}
 
 async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
