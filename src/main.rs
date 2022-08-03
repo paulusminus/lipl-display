@@ -1,7 +1,7 @@
 use anyhow::{Result};
 use gtk::prelude::*;
 use gtk::glib::MainContext;
-use lipl_gatt_bluer::{message::{Command, Message}};
+use lipl_gatt_bluer::{Command, Message};
 use log::{trace};
 
 mod css;
