@@ -11,4 +11,4 @@ lipl-display-common = { version = "0.2.0", git = "git://paulmin.nl/rust/lipl-dis
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"
-zbus = "2"
+zbus = "3"
