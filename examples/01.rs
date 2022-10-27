@@ -1,11 +1,10 @@
 use std::sync::mpsc::channel;
-use simple_logger::SimpleLogger;
 use tokio::main;
 
 #[main(flavor = "current_thread")]
 async fn main() {
-    SimpleLogger::new().init().unwrap();
-    log::set_max_level(log::LevelFilter::Trace);
+    let filter = std::env::var("RUST_LOG").unwrap_or("info".to_owned());
+    tracing_subscriber::fmt().with_env_filter(filter).init();
 
     let (values_tx, values_rx) = channel();
     lipl_gatt_bluer::listen_background(move |message| {
@@ -16,6 +15,6 @@ async fn main() {
     });
 
     while let Ok(message) = values_rx.recv() {
-        log::info!("{:?}", message);
+        tracing::info!("{:?}", message);
     }
 }
