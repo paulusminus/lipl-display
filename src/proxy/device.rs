@@ -1,6 +1,9 @@
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.bluez.Device1")]
+#[dbus_proxy(
+    interface = "org.bluez.Device1",
+    default_service = "org.bluez"
+)]
 trait Device1 {
     /// CancelPairing method
     fn cancel_pairing(&self) -> zbus::Result<()>;

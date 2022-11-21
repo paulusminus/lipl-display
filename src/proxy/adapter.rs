@@ -1,6 +1,9 @@
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.bluez.Adapter1")]
+#[dbus_proxy(
+    interface = "org.bluez.Adapter1",
+    default_service = "org.bluez"
+)]
 pub trait Adapter1 {
     /// GetDiscoveryFilters method
     fn get_discovery_filters(&self) -> zbus::Result<Vec<String>>;

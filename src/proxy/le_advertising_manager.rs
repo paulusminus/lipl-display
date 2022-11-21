@@ -1,6 +1,9 @@
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.bluez.LEAdvertisingManager1")]
+#[dbus_proxy(
+    interface = "org.bluez.LEAdvertisingManager1",
+    default_service = "org.bluez"
+)]
 pub trait LEAdvertisingManager1 {
     /// RegisterAdvertisement method
     fn register_advertisement(
