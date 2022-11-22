@@ -21,7 +21,10 @@
 
 use zbus::dbus_proxy;
 
-#[dbus_proxy(interface = "org.freedesktop.login1.Manager")]
+#[dbus_proxy(
+    interface = "org.freedesktop.login1.Manager",
+    default_service = "org.freedesktop.login1"
+)]
 trait Manager {
     /// ActivateSession method
     fn activate_session(&self, session_id: &str) -> zbus::Result<()>;
