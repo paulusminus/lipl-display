@@ -55,9 +55,9 @@ impl App for LiplDisplay {
                         Command::Light => { self.config.dark = false; visuals::set_dark_mode(ctx, self.config.dark); },
                         Command::Increase => { self.config.font_size += 3.0; style::set_font_size(ctx, self.config.font_size) },
                         Command::Decrease => { if self.config.font_size > 5.0 { self.config.font_size -= 3.0; style::set_font_size(ctx, self.config.font_size) }; },
-                        Command::Exit => { frame.quit(); },
+                        Command::Exit => { frame.close(); },
                         Command::Poweroff => { 
-                            frame.quit();
+                            frame.close();
                         },
                     }
                 }
