@@ -1,6 +1,22 @@
-//! Library to send messages through dbus to Login Manager
+/*! 
 
+Library for sending dbus messages to [`Systemd Login Manager`]. This manager accepts various calls.
+This library only handles calls for powering off or shutting down the machine.
 
+[`Systemd Login Manager`]: https://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
+
+# Usage
+
+You can use this crate by adding a git dependency to your projects `Cargo.toml`.
+
+```toml
+[dependencies]
+login-poweroff-reboot-zbus = { git = "git://paulmin.nl/rust/login-poweroff-reboot-zbus.git" }
+```
+
+*/
+
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
 mod login_manager;
 
 use std::time::{SystemTime, UNIX_EPOCH};
