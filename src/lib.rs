@@ -20,8 +20,8 @@ fn time(delay_millis: u64) -> zbus::Result<u64> {
     .map_err(|_| zbus::Error::Unsupported)
 }
 
-fn manager<'a>(connection: &'a Connection) -> zbus::Result<ManagerProxyBlocking<'a>> {
-    login_manager::ManagerProxyBlocking::builder(&connection)
+fn manager(connection: &Connection) -> zbus::Result<ManagerProxyBlocking<'_>> {
+    login_manager::ManagerProxyBlocking::builder(connection)
         .destination(LOGIN)?
         .path(PATH)?
         .build()

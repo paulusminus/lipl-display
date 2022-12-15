@@ -19,12 +19,10 @@
 //!
 //! …consequently `zbus-xmlgen` did not generate code for the above interfaces.
 
+
 use zbus::dbus_proxy;
 
-#[dbus_proxy(
-    interface = "org.freedesktop.login1.Manager",
-    default_service = "org.freedesktop.login1"
-)]
+#[dbus_proxy(interface = "org.freedesktop.login1.Manager", default_service = "org.freedesktop.login1")]
 trait Manager {
     /// ActivateSession method
     fn activate_session(&self, session_id: &str) -> zbus::Result<()>;
@@ -73,6 +71,7 @@ trait Manager {
     fn cancel_scheduled_shutdown(&self) -> zbus::Result<bool>;
 
     /// CreateSession method
+    #[allow(clippy::too_many_arguments, clippy::type_complexity)]
     fn create_session(
         &self,
         uid: u32,
@@ -152,12 +151,14 @@ trait Manager {
     fn kill_user(&self, uid: u32, signal_number: i32) -> zbus::Result<()>;
 
     /// ListInhibitors method
+    #[allow(clippy::type_complexity)]
     fn list_inhibitors(&self) -> zbus::Result<Vec<(String, String, String, String, u32, u32)>>;
 
     /// ListSeats method
     fn list_seats(&self) -> zbus::Result<Vec<(String, zbus::zvariant::OwnedObjectPath)>>;
 
     /// ListSessions method
+    #[allow(clippy::type_complexity)]
     fn list_sessions(
         &self,
     ) -> zbus::Result<Vec<(String, u32, String, String, zbus::zvariant::OwnedObjectPath)>>;
