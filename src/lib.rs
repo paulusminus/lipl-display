@@ -1,9 +1,10 @@
 /*! 
 
-Library for sending dbus messages to [`Systemd Login Manager`]. This manager accepts various calls.
-This library only handles calls for powering off or shutting down the machine.
+Library for calling specific functions on [`Systemd Login Manager`] exposed by [`D-Bus`].
+The specific functions are for powering off or shutting down the machine.
 
 [`Systemd Login Manager`]: https://www.freedesktop.org/software/systemd/man/systemd-logind.service.html
+[`D-Bus`]: https://dbus.freedesktop.org/doc/dbus-specification.html
 
 # Usage
 
