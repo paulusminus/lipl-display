@@ -34,7 +34,8 @@ use std::pin::Pin;
 mod error;
 mod characteristic;
 
-pub use error::{CommonError, Error, Result};
+pub use error::{CommonError, Error};
+pub type Result<T> = std::result::Result<T, Error>;
 
 #[pin_project(PinnedDrop)]
 struct ValuesStream {
