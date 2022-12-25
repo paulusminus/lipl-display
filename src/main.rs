@@ -71,7 +71,7 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     Ok(())
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
     log::set_logger(&GLIB_LOGGER).unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 

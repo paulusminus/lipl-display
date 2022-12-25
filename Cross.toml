@@ -1,9 +1,3 @@
 [target.aarch64-unknown-linux-gnu]
-image = "paulmin.nl/crossgtk:aarch64-unknown-linux-gnu"
-
-[build.env]
-passthrough = [
-    "RUSTFLAGS",
-    "PKG_CONFIG_PATH",
-    "PKG_CONFIG_SYSROOT_DIR",
-]
+image = "paulmin.nl/cross:aarch64-unknown-linux-gnu"
+xargo = false

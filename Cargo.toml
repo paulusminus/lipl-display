@@ -11,7 +11,7 @@ opt-level = "z"
 
 [dependencies]
 anyhow = "1.0"
-gtk = "0.15"
-glib = { version = "0.15", features = ["log"] }
+gtk = "0.16"
+glib = { version = "0.16", features = ["log"] }
 lipl-gatt-bluer = { git = "git://paulmin.nl/rust/lipl-gatt-bluer.git" }
 log = "0.4"
