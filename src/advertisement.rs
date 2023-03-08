@@ -47,7 +47,7 @@ impl PeripheralAdvertisement {
         "peripheral".into()
     }
 
-    #[dbus_interface(property = "ManufacturerData")]
+    #[dbus_interface(property, name = "ManufacturerData")]
     fn manufacturer_data(&self) -> HashMap<u16, zbus::zvariant::Value> {
         self
             .manufacturer_data
