@@ -7,15 +7,15 @@ edition = "2021"
 lto = true
 
 [dependencies]
-bluer = { version = "0.15.4", features = ["bluetoothd"] }
-futures = "0.3.25"
+bluer = { version = "0.15", features = ["bluetoothd"] }
+futures = "0.3"
 lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
-log = "0.4.17"
-pin-project = "1.0.12"
-thiserror = "1.0.37"
-tokio = { version = "1.23.0", features = ["rt", "sync"] }
-tracing = "0.1.37"
-uuid = "1.2.2"
+log = "0.4"
+pin-project = "1.0"
+thiserror = "1.0"
+tokio = { version = "1", features = ["rt", "sync"] }
+tracing = "0.1"
+uuid = "1"
 
 [dev-dependencies]
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
