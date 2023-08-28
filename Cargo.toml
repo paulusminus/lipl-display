@@ -1,8 +1,12 @@
 [package]
 name = "lipl-display-gtk"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Paul Min <info@paulmin.nl>"]
 edition = "2021"
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+xargo = false
+image = "paulmin.nl/cross:aarch64-unknown-linux-gnu"
 
 [profile.release]
 lto = true
@@ -11,7 +15,7 @@ opt-level = "z"
 
 [dependencies]
 anyhow = "1.0"
-gtk = "0.16"
-glib = { version = "0.16", features = ["log"] }
+gtk = "0.18"
+glib = { version = "0.18", features = ["log"] }
 lipl-gatt-bluer = { git = "git://paulmin.nl/rust/lipl-gatt-bluer.git" }
 log = "0.4"

@@ -1,4 +1,4 @@
-use gtk::{ApplicationWindow};
+use gtk::ApplicationWindow;
 use gtk::traits::WidgetExt;
 
 pub fn hide(window: &ApplicationWindow) {

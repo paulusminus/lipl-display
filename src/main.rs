@@ -1,8 +1,8 @@
-use anyhow::{Result};
+use anyhow::Result;
 use gtk::prelude::*;
 use gtk::glib::MainContext;
 use lipl_gatt_bluer::{Command, Message};
-use log::{trace};
+use log::trace;
 
 mod css;
 mod cursor;
@@ -16,7 +16,7 @@ static GLIB_LOGGER: gtk::glib::GlibLogger = gtk::glib::GlibLogger::new(
 fn build_ui(application: &gtk::Application) -> Result<()> 
 {
     css::load(css::Theme::Dark);
-    let (values_tx, values_rx) = MainContext::channel::<Message>(gtk::glib::source::PRIORITY_DEFAULT);
+    let (values_tx, values_rx) = MainContext::channel::<Message>(gtk::glib::Priority::DEFAULT);
 
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
@@ -65,7 +65,7 @@ fn build_ui(application: &gtk::Application) -> Result<()>
             }
         }
 
-        gtk::glib::Continue(true)
+        gtk::glib::ControlFlow::Continue
     });
 
     Ok(())
@@ -76,7 +76,7 @@ fn main() -> Result<()> {
     log::set_max_level(log::LevelFilter::Trace);
 
     let application: gtk::Application = 
-        gtk::builders::ApplicationBuilder::new()
+        gtk::Application::builder()
         .application_id("nl.paulmin.lipl.display")
         .flags(Default::default())
         .build();
