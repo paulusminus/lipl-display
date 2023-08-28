@@ -31,6 +31,7 @@ fn widget_visuals(dark: bool) -> WidgetVisuals {
         fg_stroke: Stroke { width: 0., color: dark.foreground() },
         expansion: 1.0,
         rounding: Default::default(),
+        weak_bg_fill: Default::default(),
     }
 }
 

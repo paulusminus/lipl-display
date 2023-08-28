@@ -84,7 +84,7 @@ fn fullscreen() -> NativeOptions {
     }
 }
 
-fn main() {
+fn main() -> eframe::Result<()> {
     simple_logger::SimpleLogger::new().init().unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 
@@ -92,5 +92,5 @@ fn main() {
         "Lipl Display", 
         fullscreen(), 
         Box::new(|cc| Box::new(LiplDisplay::new(cc))),
-    );
+    )
 }
