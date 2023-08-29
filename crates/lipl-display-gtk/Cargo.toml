@@ -1,4 +1,5 @@
 [package]
+license = "MIT"
 name = "lipl-display-gtk"
 version = "0.1.2"
 authors = ["Paul Min <info@paulmin.nl>"]

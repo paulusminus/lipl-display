@@ -1,4 +1,5 @@
 [package]
+license = "MIT"
 name = "lipl-gatt-bluer"
 version = "0.1.16"
 edition = "2021"
