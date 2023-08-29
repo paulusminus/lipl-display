@@ -1,11 +1,15 @@
 [package]
+authors = ["Paul Min"]
+description = "Displaying part on the screen"
+edition = "2021"
+homepage = "https://paulusminus.github.io/lipl-book/"
 license = "MIT"
 name = "lipl-display-egui"
+repository = "https://github.com/paulusminus/lipl-display/"
 version = "0.1.1"
-edition = "2021"
 
 [dependencies]
 eframe = { version = "0.22", default-features = false, features = ["default_fonts", "glow"] }
-lipl-gatt-bluer = { path = "../lipl-gatt-bluer" }
+lipl-gatt-bluer = "0.1"
 log = "0.4"
 simple_logger = "4"
