@@ -1,12 +1,12 @@
 [package]
-authors = ["Paul Min"]
+authors.workspace = true
 description = "Models for Lipl Display"
-edition = "2021"
-homepage = "https://paulusminus.github.io/lipl-book/"
-license = "MIT"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
 name = "lipl-display-common"
-repository = "https://github.com/paulusminus/lipl-display/"
-version = "0.2.3"
+repository.workspace = true
+version = "0.2.4"
 
 [dependencies]
 thiserror = "1"

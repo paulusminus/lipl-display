@@ -1,12 +1,12 @@
 [package]
-authors = ["Paul Min"]
+authors.workspace = true
 description = "Receiving Gatt Characteristics writes"
-edition = "2021"
-homepage = "https://paulusminus.github.io/lipl-book/"
-license = "MIT"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
 name = "lipl-gatt-bluer"
-repository = "https://github.com/paulusminus/lipl-display/"
-version = "0.1.16"
+repository.workspace = true
+version = "0.1.17"
 
 [dependencies]
 bluer = { version = "0.16", features = ["bluetoothd"] }

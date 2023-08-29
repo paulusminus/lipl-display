@@ -1,12 +1,12 @@
 [package]
-authors = ["Paul Min"]
+authors.workspace = true
 description = "Displaying part on the screen using gtk"
-edition = "2021"
-homepage = "https://paulusminus.github.io/lipl-book/"
-license = "MIT"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
 name = "lipl-display-gtk"
-repository = "https://github.com/paulusminus/lipl-display/"
-version = "0.1.3"
+repository.workspace = true
+version = "0.1.4"
 
 [dependencies]
 anyhow = "1.0"
