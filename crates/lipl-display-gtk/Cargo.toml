@@ -1,12 +1,12 @@
 [package]
 authors = ["Paul Min"]
-description = "Receiving Gatt Characteristics writes"
+description = "Displaying part on the screen using gtk"
 edition = "2021"
 homepage = "https://paulusminus.github.io/lipl-book/"
 license = "MIT"
 name = "lipl-display-gtk"
 repository = "https://github.com/paulusminus/lipl-display/"
-version = "0.1.2"
+version = "0.1.3"
 
 [dependencies]
 anyhow = "1.0"
