@@ -1,8 +1,12 @@
 [package]
+authors = ["Paul Min"]
+description = "Poweroff or reboot machine using dbus interface logind"
+edition = "2021"
+homepage = "https://paulusminus.github.io/lipl-book/"
 license = "MIT"
 name = "login-poweroff-reboot"
+repository = "https://github.com/paulusminus/lipl-display/"
 version = "0.2.1"
-edition = "2021"
 
 [dependencies]
 dbus = "0.9.6"
