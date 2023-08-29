@@ -10,7 +10,6 @@ lto = true
 bluer = { version = "0.16", features = ["bluetoothd"] }
 futures = "0.3"
 lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
-log = "0.4"
 pin-project = "1.0"
 thiserror = "1.0"
 tokio = { version = "1", features = ["rt", "sync"] }

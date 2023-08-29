@@ -1,10 +1,6 @@
 use std::{
-    collections::{
-        BTreeMap,
-    },
-    sync::{
-        Arc,
-    },
+    collections::BTreeMap,
+    sync::Arc,
 };
 
 use bluer::{
@@ -12,22 +8,20 @@ use bluer::{
         Advertisement,
         AdvertisementHandle
     },
-    gatt::{
-        local::{
+    gatt::local::{
             Application,
             ApplicationHandle,
             Characteristic,
             Service,
         },
-    },
     Uuid,
 };
 pub use lipl_display_common::Command;
 pub use lipl_display_common::Message;
 
 use futures::{channel::mpsc, Stream, StreamExt};
-use tokio::{sync::Mutex};
-use log::{trace};
+use tokio::sync::Mutex;
+use tracing::trace;
 use pin_project::{pin_project, pinned_drop};
 use std::pin::Pin;
 
@@ -52,11 +46,11 @@ impl PinnedDrop for ValuesStream {
         let this = self.project();
         if let Some(handle) = this.adv_handle.take() {
             drop(handle);
-            log::trace!("Handle dropped for Advertisement");
+            trace!("Handle dropped for Advertisement");
         };
         if let Some(handle) = this.app_handle.take() {
             drop(handle);
-            log::trace!("Handle dropped for Application");
+            trace!("Handle dropped for Application");
         };
     }
 }
