@@ -1,0 +1,8 @@
+[package]
+license = "MIT"
+name = "login-poweroff-reboot"
+version = "0.2.1"
+edition = "2021"
+
+[dependencies]
+dbus = "0.9.6"
