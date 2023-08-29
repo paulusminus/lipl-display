@@ -1,8 +1,7 @@
-[workspace]
-resolver = "2"
-members = ["crates/*"]
+[package]
+name = "login-poweroff-reboot"
+version = "0.2.1"
+edition = "2021"
 
-[profile.release]
-lto = true
-strip = true
-opt-level = "z"
+[dependencies]
+dbus = "0.9.6"
