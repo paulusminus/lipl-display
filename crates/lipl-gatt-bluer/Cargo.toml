@@ -3,13 +3,10 @@ name = "lipl-gatt-bluer"
 version = "0.1.16"
 edition = "2021"
 
-[profile.release]
-lto = true
-
 [dependencies]
 bluer = { version = "0.16", features = ["bluetoothd"] }
 futures = "0.3"
-lipl-display-common = { git = "git://paulmin.nl/rust/lipl-display-common.git" }
+lipl-display-common = { path = "../lipl-display-common" }
 pin-project = "1.0"
 thiserror = "1.0"
 tokio = { version = "1", features = ["rt", "sync"] }
