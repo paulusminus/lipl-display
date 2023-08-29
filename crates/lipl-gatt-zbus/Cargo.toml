@@ -1,4 +1,5 @@
 [package]
+license = "MIT"
 name = "lipl-gatt-zbus"
 version = "0.5.1"
 edition = "2021"
