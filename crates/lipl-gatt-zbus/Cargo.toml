@@ -1,0 +1,14 @@
+[package]
+name = "lipl-gatt-zbus"
+version = "0.5.1"
+edition = "2021"
+
+[dependencies]
+async-channel = "1.6"
+async-io = "1.7"
+derive_builder = "0.12"
+lipl-display-common = { path = "../lipl-display-common" }
+thiserror = "1"
+tracing = "0.1"
+uuid = "1"
+zbus = "3"

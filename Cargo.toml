@@ -1,14 +1,8 @@
-[package]
-name = "lipl-gatt-zbus"
-version = "0.5.1"
-edition = "2021"
+[workspace]
+members = ["crates/*"]
+resolver = "2"
 
-[dependencies]
-async-channel = "1.6"
-async-io = "1.7"
-derive_builder = "0.12"
-lipl-display-common = { version = "0.2.0", git = "git://paulmin.nl/rust/lipl-display-common.git", branch = "main" }
-thiserror = "1"
-tracing = "0.1"
-uuid = "1"
-zbus = "3"
+[profile.release]
+lto = true
+strip = true
+opt-level = "z"
