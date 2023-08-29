@@ -1,13 +1,16 @@
 [package]
+authors = ["Paul Min"]
+description = "Receiving Gatt Characteristics writes"
+edition = "2021"
+homepage = "https://paulusminus.github.io/lipl-book/"
 license = "MIT"
 name = "lipl-display-gtk"
+repository = "https://github.com/paulusminus/lipl-display/"
 version = "0.1.2"
-authors = ["Paul Min <info@paulmin.nl>"]
-edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
 gtk = "0.18"
 glib = { version = "0.18", features = ["log"] }
-lipl-gatt-bluer = { path = "../lipl-gatt-bluer" }
+lipl-gatt-bluer = "0.1"
 log = "0.4"
