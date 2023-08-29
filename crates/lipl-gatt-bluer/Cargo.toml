@@ -1,13 +1,17 @@
 [package]
+authors = ["Paul Min"]
+description = "Receiving Gatt Characteristics writes"
+edition = "2021"
+homepage = "https://paulusminus.github.io/lipl-book/"
 license = "MIT"
 name = "lipl-gatt-bluer"
+repository = "https://github.com/paulusminus/lipl-display/"
 version = "0.1.16"
-edition = "2021"
 
 [dependencies]
 bluer = { version = "0.16", features = ["bluetoothd"] }
 futures = "0.3"
-lipl-display-common = { path = "../lipl-display-common" }
+lipl-display-common = "0.2"
 pin-project = "1.0"
 thiserror = "1.0"
 tokio = { version = "1", features = ["rt", "sync"] }
