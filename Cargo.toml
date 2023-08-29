@@ -1,0 +1,19 @@
+[package]
+name = "lipl-display-egui"
+version = "0.1.1"
+edition = "2021"
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+xargo = false
+image = "paulmin.nl/cross:aarch64-unknown-linux-gnu"
+
+[profile.release]
+lto = true
+opt-level = "z"
+strip = true
+
+[dependencies]
+eframe = { version = "0.22", default-features = false, features = ["default_fonts", "glow"] }
+lipl-gatt-bluer = { git = "git://paulmin.nl/rust/lipl-gatt-bluer.git" }
+log = "0.4"
+simple_logger = "4"
