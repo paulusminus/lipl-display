@@ -7,7 +7,7 @@ use proxy::{Adapter1Proxy, Device1Proxy, GattManager1Proxy, LEAdvertisingManager
 use async_channel::{unbounded, Receiver};
 use zbus::export::futures_util::{TryFutureExt, StreamExt};
 use gatt::{Application, Request};
-pub use lipl_display_common::{Message, Command};
+pub use lipl_display_common::{Message, Listen, Command};
 use zbus::fdo::ObjectManagerProxy;
 use zbus::{
     Connection,
@@ -45,41 +45,87 @@ type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, Random
 
 pub use error::{Error, Result, CommonError};
 
-pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
-    std::thread::spawn(move || {
-        async_io::block_on(async move {
-            let bluez =
-                PeripheralConnection::new()
-                .await
-                .map_err(|_| lipl_display_common::Error::BluetoothAdapter)?;
+pub struct ListenZbus;
 
-            let (mut rx, dispose) = 
-                bluez
-                .run(message_handler::gatt_application_config().unwrap())
-                .map_err(|_| lipl_display_common::Error::BluetoothAdapter)
-                .await?;
+impl ListenZbus {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
 
-            tracing::info!("Advertising and Gatt application started");
-        
-            tracing::info!("Press <Ctr-C> or send signal SIGINT to end service");
-        
-            let mut map = characteristics_map();
-
-            while let Some(request) = rx.next().await {
-                if let Request::Write(mut write_request) = request {
-                    if let Some(message) = handle_write_request(&mut write_request, &mut map) {
-                        cb(message.clone()).map_err(|_| lipl_display_common::Error::Callback)?;
-                        if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
-                            break;
-                        }        
+impl Listen for ListenZbus {
+    fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+        std::thread::spawn(move || {
+            async_io::block_on(async move {
+                let bluez =
+                    PeripheralConnection::new()
+                    .await
+                    .map_err(|_| lipl_display_common::Error::BluetoothAdapter)?;
+    
+                let (mut rx, dispose) = 
+                    bluez
+                    .run(message_handler::gatt_application_config().unwrap())
+                    .map_err(|_| lipl_display_common::Error::BluetoothAdapter)
+                    .await?;
+    
+                tracing::info!("Advertising and Gatt application started");
+            
+                tracing::info!("Press <Ctr-C> or send signal SIGINT to end service");
+            
+                let mut map = characteristics_map();
+    
+                while let Some(request) = rx.next().await {
+                    if let Request::Write(mut write_request) = request {
+                        if let Some(message) = handle_write_request(&mut write_request, &mut map) {
+                            cb(message.clone()).map_err(|_| lipl_display_common::Error::Callback)?;
+                            if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
+                                break;
+                            }        
+                        }
                     }
                 }
-            }
-            dispose().await.map_err(|_| lipl_display_common::Error::Cancelled)?;
-            Ok::<(), lipl_display_common::Error>(())
-        })
-    });
+                dispose().await.map_err(|_| lipl_display_common::Error::Cancelled)?;
+                Ok::<(), lipl_display_common::Error>(())
+            })
+        });            
+    }
 }
+
+// pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+//     std::thread::spawn(move || {
+//         async_io::block_on(async move {
+//             let bluez =
+//                 PeripheralConnection::new()
+//                 .await
+//                 .map_err(|_| lipl_display_common::Error::BluetoothAdapter)?;
+
+//             let (mut rx, dispose) = 
+//                 bluez
+//                 .run(message_handler::gatt_application_config().unwrap())
+//                 .map_err(|_| lipl_display_common::Error::BluetoothAdapter)
+//                 .await?;
+
+//             tracing::info!("Advertising and Gatt application started");
+        
+//             tracing::info!("Press <Ctr-C> or send signal SIGINT to end service");
+        
+//             let mut map = characteristics_map();
+
+//             while let Some(request) = rx.next().await {
+//                 if let Request::Write(mut write_request) = request {
+//                     if let Some(message) = handle_write_request(&mut write_request, &mut map) {
+//                         cb(message.clone()).map_err(|_| lipl_display_common::Error::Callback)?;
+//                         if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
+//                             break;
+//                         }        
+//                     }
+//                 }
+//             }
+//             dispose().await.map_err(|_| lipl_display_common::Error::Cancelled)?;
+//             Ok::<(), lipl_display_common::Error>(())
+//         })
+//     });
+// }
 
 
 pub struct PeripheralConnection<'a> {

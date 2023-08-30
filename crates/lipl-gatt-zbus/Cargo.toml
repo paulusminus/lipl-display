@@ -8,7 +8,7 @@ edition = "2021"
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.12"
-lipl-display-common = { path = "../lipl-display-common" }
+lipl-display-common = "0.2.7"
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"

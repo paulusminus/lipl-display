@@ -1,9 +1,11 @@
-use lipl_gatt_zbus::listen_background;
+use lipl_display_common::Listen;
+use lipl_gatt_zbus::ListenZbus;
 use std::sync::mpsc::channel;
 
 fn main() {
     let (values_tx, values_rx) = channel();
-    listen_background(move |message| {
+    let gatt = ListenZbus::new();
+    gatt.listen_background(move |message| {
         values_tx
             .send(message)
             .map_err(lipl_display_common::Error::Send)
