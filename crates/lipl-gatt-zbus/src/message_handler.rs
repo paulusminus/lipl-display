@@ -1,15 +1,13 @@
 use std::{collections::HashMap, vec};
 use std::convert::TryFrom;
 
-use uuid::{
-    Uuid,
-};
+use uuid::Uuid;
 use crate::{
     GattApplicationConfig,
     GattApplicationConfigBuilder,
     GattCharacteristicConfigBuilder,
     GattServiceConfigBuilder,
-    gatt::{WriteRequest},
+    gatt::WriteRequest,
 };
 use lipl_display_common::{
     Message,

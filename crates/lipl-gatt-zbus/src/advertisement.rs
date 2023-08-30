@@ -1,6 +1,6 @@
 use std::{collections::HashMap, vec};
 use uuid::Uuid;
-use zbus::{dbus_interface};
+use zbus::dbus_interface;
 
 use crate::gatt_application::GattApplication;
 const MANUFACTURER_NAME: &str = "PM";

@@ -13,7 +13,7 @@ pub enum Error {
     Send(#[from] SendError<crate::Message>),
 
     #[error("No bluetooth adapter found")]
-    NoBluetooth,
+    BluetoothAdapter,
 
     #[error("Cancelled")]
     Cancelled,
@@ -34,5 +34,5 @@ pub enum Error {
     JsonSerialization,
 
     #[error("Parsing Gatt Characteristic value failed")]
-    GattCharaceristicValueParsingFailed(String),
+    GattCharaceristicValueParsing(String),
 }

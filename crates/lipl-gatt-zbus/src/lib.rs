@@ -22,15 +22,9 @@ use zbus::fdo::ObjectManagerProxy;
 use zbus::{
     Connection,
     ConnectionBuilder,
-    names::{
-        OwnedInterfaceName,
-    },
+    names::OwnedInterfaceName,
     export::{
-        futures_core::{
-            future::{
-                Future,
-            },
-        },
+        futures_core::future::Future,
         futures_util::FutureExt,
     },
     zvariant::{
@@ -67,12 +61,12 @@ pub fn listen_background(cb: impl Fn(Message) -> lipl_display_common::Result<()>
             let bluez =
                 PeripheralConnection::new()
                 .await
-                .map_err(|_| lipl_display_common::Error::NoBluetooth)?;
+                .map_err(|_| lipl_display_common::Error::BluetoothAdapter)?;
 
             let (mut rx, dispose) = 
                 bluez
                 .run(message_handler::gatt_application_config().unwrap())
-                .map_err(|_| lipl_display_common::Error::NoBluetooth)
+                .map_err(|_| lipl_display_common::Error::BluetoothAdapter)
                 .await?;
 
             tracing::info!("Advertising and Gatt application started");

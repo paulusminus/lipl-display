@@ -47,7 +47,7 @@ impl FromStr for Command {
 
         if s.is_empty() {
             return Err(
-                error::Error::GattCharaceristicValueParsingFailed("Empty".into())
+                error::Error::GattCharaceristicValueParsing("Empty".into())
             );
         }
 
@@ -76,7 +76,7 @@ impl FromStr for Command {
         }
 
         Err(
-            error::Error::GattCharaceristicValueParsingFailed(
+            error::Error::GattCharaceristicValueParsing(
                 format!("Unknown command {s} received")
             )
         )
@@ -103,6 +103,6 @@ impl TryFrom<(&str, Uuid)> for Message {
             return Ok(Message::Command(command));
         }
 
-        Err(Error::GattCharaceristicValueParsingFailed(s))
+        Err(Error::GattCharaceristicValueParsing(s))
     }
 }

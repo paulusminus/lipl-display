@@ -90,8 +90,8 @@ fn fullscreen() -> NativeOptions {
     }
 }
 
-fn main() -> eframe::Result<()> {
-    simple_logger::SimpleLogger::new().init().unwrap();
+fn main() -> anyhow::Result<()> {
+    simple_logger::SimpleLogger::new().init()?;
     log::set_max_level(log::LevelFilter::Trace);
 
     run_native(
@@ -99,4 +99,5 @@ fn main() -> eframe::Result<()> {
         fullscreen(), 
         Box::new(|cc| Box::new(LiplDisplay::new(cc))),
     )
+    .map_err(|_| anyhow::anyhow!("Error running egui"))
 }
