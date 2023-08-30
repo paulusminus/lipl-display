@@ -1,13 +1,3 @@
-//! # Gatt Remote Control Libray
-//! 
-//! ## Purpose
-//! 
-//! 
-//! 
-//! 
-//! 
-//! 
-
 use std::{collections::HashMap, vec};
 use std::collections::hash_map::RandomState;
 use std::pin::Pin;

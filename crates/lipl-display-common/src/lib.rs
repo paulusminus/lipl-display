@@ -22,6 +22,11 @@ pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c6
 /// Uuid identifying the command characteristic on the gatt peripheral
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
 
+
+pub trait Listen {
+    fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static);
+}
+
 /// Received value on the display service as change for the screen
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Message {

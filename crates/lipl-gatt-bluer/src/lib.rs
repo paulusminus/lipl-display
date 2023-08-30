@@ -16,7 +16,7 @@ use bluer::{
         },
     Uuid,
 };
-use lipl_display_common::{Command, Message};
+use lipl_display_common::{Command, Listen, Message};
 
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::sync::Mutex;
