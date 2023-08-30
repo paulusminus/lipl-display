@@ -24,7 +24,7 @@ pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-805
 
 
 pub trait Listen {
-    fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static);
+    fn listen_background(&self, cb: impl Fn(Message) -> Result<()> + Send + 'static);
 }
 
 /// Received value on the display service as change for the screen

@@ -73,7 +73,7 @@ pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
 async fn first_adapter() -> Result<bluer::Adapter> {
     let session = bluer::Session::new().await?;
     let adapter_names = session.adapter_names().await?;
-    let adapter_name = adapter_names.first().ok_or(lipl_display_common::Error::NoBluetooth)?;
+    let adapter_name = adapter_names.first().ok_or(lipl_display_common::Error::BluetoothAdapter)?;
     let adapter: bluer::Adapter = session.adapter(adapter_name)?;
     adapter.set_powered(true).await?;
     Ok(adapter)
@@ -103,7 +103,7 @@ impl ListenBluer {
 }
 
 impl Listen for ListenBluer {
-    fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
+    fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
         std::thread::spawn(move || {
             let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
     
