@@ -1,4 +1,12 @@
-use eframe::egui::{Visuals, style::{Widgets, WidgetVisuals}, Color32, Stroke, Context};
+use eframe::egui::{
+    Visuals,
+    style::{
+        Widgets,
+        WidgetVisuals},
+        Color32,
+        Stroke,
+        Context
+};
 
 trait ColorExt {
     fn foreground(&self) -> Color32;
@@ -53,6 +61,7 @@ fn visuals(dark: bool) -> Visuals {
     }
 }
 
+/// if dark true then activate dark theme else light theme
 pub fn set_dark_mode(ctx: &Context, dark: bool) {
     ctx.set_visuals(visuals(dark));
 }

@@ -22,7 +22,9 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     let window_clone = app_window.clone();
 
     lipl_gatt_bluer::listen_background(move |message| {
-        values_tx.send(message).map_err(|_| lipl_gatt_bluer::Error::Callback)
+        values_tx
+            .send(message)
+            .map_err(|_| lipl_gatt_bluer::Error::Callback)
     });
 
     values_rx.attach(None, move |value| {

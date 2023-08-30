@@ -2,19 +2,27 @@ use std::str::FromStr;
 use std::convert::TryFrom;
 use uuid::{uuid, Uuid};
 
-pub mod error;
+mod error;
 
+/// Error type
 pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
+/// Uuid identifying the display service on the gatt peripheral
 pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
+/// Local name used in advertising
 pub const LOCAL_NAME: &str = "lipl";
+/// Manufacturer id used in advertising
 pub const MANUFACTURER_ID: u16 = 0xffff;
 
+/// Uuid identifying the text characteristic on the gatt peripheral
 pub const CHARACTERISTIC_TEXT_UUID: Uuid = uuid!("04973569-c039-4ce9-ad96-861589a74f9e");
+/// Uuid identifying the status characteristic on the gatt peripheral
 pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c69dbb7aeb");
+/// Uuid identifying the command characteristic on the gatt peripheral
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
 
+/// Received value on the display service as change for the screen
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Message {
     Part(String),
@@ -22,6 +30,7 @@ pub enum Message {
     Command(Command),
 }
 
+/// Received value from command characteristic
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Command {
     Poweroff,

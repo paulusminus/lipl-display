@@ -1,5 +1,4 @@
 use thiserror::Error;
-pub use lipl_display_common::Error as CommonError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -7,7 +6,7 @@ pub enum Error {
     Bluer(#[from] bluer::Error),
 
     #[error("Common error: {0}")]
-    Common(#[from] CommonError),
+    Common(#[from] lipl_display_common::Error),
 
     #[error("Callback")]
     Callback,

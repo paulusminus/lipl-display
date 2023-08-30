@@ -21,7 +21,7 @@ pub enum Error {
     #[error("Cannot send poweroff to login")]
     Poweroff,
 
-    #[error("Hostname environment variable no set")]
+    #[error("Hostname environment variable not set")]
     Hostname,
 
     #[error("Failed to call callback")]

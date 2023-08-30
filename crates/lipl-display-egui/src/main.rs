@@ -1,3 +1,4 @@
+
 mod fonts;
 mod lipl_display;
 mod style;
@@ -14,15 +15,20 @@ use eframe::{
     run_native,
     NativeOptions,
 };
-use lipl_display::{LiplDisplay};
-use lipl_gatt_bluer::{Command, Message};
+use lipl_display::LiplDisplay;
+use lipl_display_common::{Command, Message};
 
-pub const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
+const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 
 impl LiplDisplay {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let (tx, rx) = std::sync::mpsc::channel::<Message>();
-        lipl_gatt_bluer::listen_background(move |message| tx.send(message).map_err(|_| lipl_gatt_bluer::Error::Callback));
+        lipl_gatt_bluer::listen_background(
+            move |message| 
+                tx
+                    .send(message)
+                    .map_err(|_| lipl_gatt_bluer::Error::Callback)
+        );
 
         cc.egui_ctx.set_fonts(fonts::fonts());
     

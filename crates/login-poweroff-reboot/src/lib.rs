@@ -9,9 +9,12 @@ const REBOOT: &str = "reboot";
 const TIMEOUT_SECONDS: u64 = 5;
 
 fn time(delay_millis: u64) -> Result<u64, SystemTimeError> {
-    SystemTime::now().duration_since(UNIX_EPOCH).map(|now| now.as_millis() as u64 + delay_millis)
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|now| now.as_millis() as u64 + delay_millis)
 }
 
+/// Call poweroff method on logind dbus interface
 pub fn poweroff(delay_milliseconds: u64) -> Result<(), dbus::Error> {
     use login::OrgFreedesktopLogin1Manager;
     let connection = dbus::blocking::LocalConnection::new_system()?;
@@ -24,6 +27,7 @@ pub fn poweroff(delay_milliseconds: u64) -> Result<(), dbus::Error> {
     Ok(())
 }
 
+/// Call reboot method on logind dbus interface
 pub fn reboot(delay_milliseconds: u64) -> Result<(), dbus::Error> {
     use login::OrgFreedesktopLogin1Manager;
     let connection = dbus::blocking::LocalConnection::new_system()?;

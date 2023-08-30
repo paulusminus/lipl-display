@@ -16,8 +16,7 @@ use bluer::{
         },
     Uuid,
 };
-pub use lipl_display_common::Command;
-pub use lipl_display_common::Message;
+use lipl_display_common::{Command, Message};
 
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::sync::Mutex;
@@ -28,7 +27,7 @@ use std::pin::Pin;
 mod error;
 mod characteristic;
 
-pub use error::{CommonError, Error};
+pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[pin_project(PinnedDrop)]
@@ -62,6 +61,7 @@ impl futures::Stream for ValuesStream {
     }
 }
 
+/// Utility function so that dependent crates do not need tokio dependency
 pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
     tokio::runtime::Builder::new_current_thread()
     .enable_all()
@@ -94,6 +94,7 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     
 }
 
+/// Start an extra thread that starts the gatt peripheral advertising included
 pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
     std::thread::spawn(move || {
         let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
@@ -111,7 +112,8 @@ pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
     });
 }
 
-pub async fn listen_stream() -> Result<impl Stream<Item=Message>> {
+/// not used anymore
+async fn listen_stream() -> Result<impl Stream<Item=Message>> {
     let (values_tx, values_rx) = mpsc::channel::<Message>(100);
 
     let adapter = first_adapter().await?;
