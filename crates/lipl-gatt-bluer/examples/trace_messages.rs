@@ -8,7 +8,7 @@ async fn main() {
     tracing_subscriber::fmt().with_env_filter(filter).init();
 
     let (values_tx, values_rx) = channel();
-    let gatt = lipl_gatt_bluer::ListenBluer::new();
+    let gatt = lipl_gatt_bluer::ListenBluer {};
     gatt.listen_background(move |message| {
         values_tx
             .send(message)

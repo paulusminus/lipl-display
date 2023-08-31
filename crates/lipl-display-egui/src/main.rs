@@ -24,7 +24,7 @@ const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 impl LiplDisplay {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let (tx, rx) = std::sync::mpsc::channel::<Message>();
-        let gatt = ListenBluer::new();
+        let gatt = ListenBluer {};
         gatt.listen_background(
             move |message| 
                 tx

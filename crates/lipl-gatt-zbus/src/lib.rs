@@ -47,12 +47,6 @@ pub use error::{Error, Result, CommonError};
 
 pub struct ListenZbus;
 
-impl ListenZbus {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
-
 impl Listen for ListenZbus {
     fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
         std::thread::spawn(move || {

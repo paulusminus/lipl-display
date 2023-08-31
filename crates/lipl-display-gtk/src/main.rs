@@ -22,7 +22,7 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
 
-    let gatt = ListenBluer::new();
+    let gatt = ListenBluer {};
     gatt.listen_background(move |message| {
         values_tx
             .send(message)

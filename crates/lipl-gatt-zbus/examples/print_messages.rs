@@ -4,7 +4,7 @@ use std::sync::mpsc::channel;
 
 fn main() {
     let (values_tx, values_rx) = channel();
-    let gatt = ListenZbus::new();
+    let gatt = ListenZbus {};
     gatt.listen_background(move |message| {
         values_tx
             .send(message)

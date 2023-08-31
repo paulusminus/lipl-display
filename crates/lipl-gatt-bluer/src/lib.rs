@@ -96,12 +96,6 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
 
 pub struct ListenBluer;
 
-impl ListenBluer {
-    pub fn new() -> ListenBluer {
-        ListenBluer {}
-    }
-}
-
 impl Listen for ListenBluer {
     fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
         std::thread::spawn(move || {
