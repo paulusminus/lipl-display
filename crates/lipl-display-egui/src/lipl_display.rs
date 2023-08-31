@@ -1,4 +1,4 @@
-use std::{sync::mpsc::{Receiver}};
+use std::sync::mpsc::Receiver;
 
 use eframe::egui::{
     Label,
@@ -8,7 +8,7 @@ use eframe::egui::{
     RichText,
 };
 
-use lipl_gatt_bluer::Message;
+use lipl_display_common::Message;
 
 pub const FONT_SIZE: f32 = 40.;
 

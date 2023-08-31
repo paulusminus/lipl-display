@@ -1,7 +1,8 @@
 use anyhow::Result;
 use gtk::prelude::*;
 use gtk::glib::MainContext;
-use lipl_gatt_bluer::{Command, Message};
+use lipl_display_common::{Command, Listen, Message};
+use lipl_gatt_bluer::ListenBluer;
 use log::trace;
 
 mod css;
@@ -21,7 +22,8 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
 
-    lipl_gatt_bluer::listen_background(move |message| {
+    let gatt = ListenBluer::new();
+    gatt.listen_background(move |message| {
         values_tx
             .send(message)
             .map_err(|_| lipl_gatt_bluer::Error::Callback)

@@ -1,14 +1,14 @@
 [package]
 license = "MIT"
 name = "lipl-gatt-zbus"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 
 [dependencies]
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.12"
-lipl-display-common = "0.2.7"
+lipl-display-common = { version = "0.2.8", path = "lipl-display-common" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"

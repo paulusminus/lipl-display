@@ -6,11 +6,12 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-display-gtk"
 repository.workspace = true
-version = "0.1.5"
+version = "0.1.6"
 
 [dependencies]
 anyhow = "1.0"
 gtk = "0.18"
 glib = { version = "0.18", features = ["log"] }
-lipl-gatt-bluer = "0.1"
+lipl-display-common = { version = "0.2.8", path = "../lipl-display-common" }
+lipl-gatt-bluer = { version = "0.1.20", path = "../lipl-gatt-bluer" }
 log = "0.4"
