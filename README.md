@@ -29,3 +29,7 @@ Poweroff or reboot machine by calling function on logind dbus interface
 # login-poweroff-reboot-zbus
 
 Poweroff or reboot machine by calling function on logind dbus interface without dependency on dbus library
+
+# Publishing on crates.io
+
+Publishing of individual packages must be done in a particular order. See "publish_crates_io.sh".
