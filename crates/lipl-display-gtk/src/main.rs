@@ -26,7 +26,7 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     gatt.listen_background(move |message| {
         values_tx
             .send(message)
-            .map_err(|_| lipl_gatt_bluer::Error::Callback)
+            .map_err(|_| lipl_display_common::Error::Callback)
     });
 
     values_rx.attach(None, move |value| {
