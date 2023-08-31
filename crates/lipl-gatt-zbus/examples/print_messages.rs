@@ -9,7 +9,6 @@ fn main() {
         values_tx
             .send(message)
             .map_err(lipl_display_common::Error::Send)
-            // .map_err(lipl_gatt_zbus::Error::Common)
     });
 
     while let Ok(message) = values_rx.recv() {
