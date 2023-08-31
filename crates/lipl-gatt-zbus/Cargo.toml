@@ -1,14 +1,18 @@
 [package]
-license = "MIT"
+authors.workspace = true
+description = "Receiving Gatt Characteristics writes"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
 name = "lipl-gatt-zbus"
-version = "0.5.2"
-edition = "2021"
+repository.workspace = true
+version.workspace = true
 
 [dependencies]
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.12"
-lipl-display-common = { version = "0.2.8", path = "../lipl-display-common" }
+lipl-display-common = { version = "0.3.0", path = "../lipl-display-common" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"

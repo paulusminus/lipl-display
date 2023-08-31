@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-display-common"
 repository.workspace = true
-version = "0.2.8"
+version.workspace = true
 
 [dependencies]
 thiserror = "1"
