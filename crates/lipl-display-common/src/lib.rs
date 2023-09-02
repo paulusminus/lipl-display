@@ -8,6 +8,10 @@ mod error;
 pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
+pub trait HandleMessage {
+    fn handle_message(&self, message: Message) -> Self;
+}
+
 /// Uuid identifying the display service on the gatt peripheral
 pub const SERVICE_UUID: Uuid = uuid!("27a70fc8-dc38-40c7-80bc-359462e4b808");
 /// Local name used in advertising
@@ -35,6 +39,20 @@ pub enum Message {
     Command(Command),
 }
 
+impl std::fmt::Display for Message {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Message::Part(text) => format!("Text: {}", text),
+                Message::Status(status) => format!("Status: {}", status ),
+                Message::Command(command) => format!("Command: {}", command),
+            }
+        )
+    }
+}
+
 /// Received value from command characteristic
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Command {
@@ -44,6 +62,23 @@ pub enum Command {
     Decrease,
     Light,
     Dark,
+}
+
+impl std::fmt::Display for Command {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Command::Dark => "d",
+                Command::Light => "l",
+                Command::Increase => "+",
+                Command::Decrease => "-",
+                Command::Exit => "e",
+                Command::Poweroff => "o", 
+            }
+        )
+    }
 }
 
 impl FromStr for Command {
@@ -104,10 +139,66 @@ impl TryFrom<(&str, Uuid)> for Message {
         }
 
         if uuid == CHARACTERISTIC_COMMAND_UUID {
-            let command = received.0.parse::<Command>()?;
-            return Ok(Message::Command(command));
+            return s.parse::<Command>().map(Message::Command);
         }
 
         Err(Error::GattCharaceristicValueParsing(s))
+    }
+}
+
+#[derive(Clone)]
+pub struct Part {
+    pub text: String,
+    pub status: String,
+    pub dark: bool,
+    pub font_size: f32,
+}
+
+impl Part {
+    pub fn new(dark: bool, initial_text: String, initial_font_size: f32) -> Self {
+        Self {
+            text: initial_text,
+            status: "".to_owned(),
+            dark,
+            font_size: initial_font_size,
+        }
+    }
+}
+
+impl HandleMessage for Part {
+    fn handle_message(&self, message: Message) -> Self {
+        match message {
+            Message::Command(command) => {
+                match command {
+                    Command::Dark => Self {
+                        dark: true,
+                        ..self.clone()
+                    },
+                    Command::Light => Self {
+                        dark: false,
+                        ..self.clone()
+                    },
+                    Command::Decrease => Self {
+                        font_size: (self.font_size - 1.0).max(2.0),
+                        ..self.clone()
+                    },
+                    Command::Increase => Self {
+                        font_size: self.font_size + 1.0,
+                        ..self.clone()
+                    },
+                    _ => Part {
+                        ..self.clone()
+                    },
+                }
+            },
+            Message::Part(part) => Self {
+                text: part,
+                ..self.clone()
+            },
+            Message::Status(status) => Self {
+                status,
+                ..self.clone()
+            },
+        }
     }
 }

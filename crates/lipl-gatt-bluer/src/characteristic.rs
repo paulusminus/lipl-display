@@ -1,10 +1,10 @@
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use bluer::gatt::local::{Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError};
-use futures::channel::{mpsc};
+use futures::channel::mpsc;
 use futures::{FutureExt, SinkExt};
 use bluer::Uuid;
-use lipl_display_common::{Message};
+use lipl_display_common::Message;
 
 pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u8>>>, sender: mpsc::Sender<Message>) -> Characteristic {
     Characteristic {
