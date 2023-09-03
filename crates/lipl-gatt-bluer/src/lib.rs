@@ -142,7 +142,9 @@ impl Listen for ListenBluer {
 
     fn stop(&mut self) {
         if let Some(tx) = self.sender.take() {
-            tx.send(());
+            if tx.send(()).is_err() {
+                tracing::error!("Error sending signal to background thread");
+            }
         }
     }
 }
