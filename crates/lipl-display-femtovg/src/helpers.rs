@@ -18,7 +18,7 @@ pub fn create_window<T: 'static>(
 ) -> (Canvas<OpenGl>, Window, PossiblyCurrentContext, Surface<WindowSurface>) {
 
     let window_builder = WindowBuilder::new()
-        .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
+       .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
        .with_title(title);
 
     let template = ConfigTemplateBuilder::new().with_alpha_size(8);
@@ -45,9 +45,9 @@ pub fn create_window<T: 'static>(
         .unwrap();
 
     let window = window.unwrap();
+    window.set_cursor_visible(false);
 
     let raw_window_handle = Some(window.raw_window_handle());
-
     let gl_display = gl_config.display();
 
     let context_attributes = ContextAttributesBuilder::new().build(raw_window_handle);

@@ -24,12 +24,12 @@ const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 impl LiplDisplay {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let (tx, rx) = std::sync::mpsc::channel::<Message>();
-        let gatt = ListenBluer {};
+        let mut gatt = ListenBluer { sender: None };
         gatt.listen_background(
             move |message| 
-                tx
-                    .send(message)
-                    .map_err(|_| lipl_display_common::Error::Callback)
+                if let Err(error) = tx.send(message) {
+                    log::error!("Error sending message: {}", error);
+                }
         );
 
         cc.egui_ctx.set_fonts(fonts::fonts());

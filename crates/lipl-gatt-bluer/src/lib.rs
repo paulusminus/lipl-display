@@ -94,24 +94,56 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     
 }
 
-pub struct ListenBluer;
+pub struct ListenBluer {
+    pub sender: Option<tokio::sync::oneshot::Sender<()>>,
+}
 
 impl Listen for ListenBluer {
-    fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+    fn listen_background(&mut self, cb: impl Fn(Message) + Send + 'static) {
+        let (tx, mut rx) = tokio::sync::oneshot::channel::<()>();
+        self.sender = Some(tx);
         std::thread::spawn(move || {
-            let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
+            let runtime = 
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .expect("Unable to create tokio runtime");
     
             runtime.block_on(async move {
-                let mut s = listen_stream().await?.boxed();
-                while let Some(message) = s.next().await {
-                    cb(message.clone())?;
-                    if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
-                        break;
+                let mut s = 
+                    listen_stream()
+                        .await
+                        .expect("Failed to start Gatt peripheral")
+                        .boxed();
+                loop {
+                    tokio::select! {
+                        option_message = s.next() => {
+                            match option_message {
+                                Some(message) => {
+                                    cb(message.clone());
+                                    if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
+                                        break;
+                                    }    
+                                }
+                                None => break,
+                            }
+                        }
+                        received = &mut rx => {
+                            match received {
+                                Ok(_) => break,
+                                Err(_) => break,
+                            }
+                        }
                     }
                 }
-                Ok::<(), Error>(())
-            })
-        });    
+            });
+        });
+    }
+
+    fn stop(&mut self) {
+        if let Some(tx) = self.sender.take() {
+            tx.send(());
+        }
     }
 }
 

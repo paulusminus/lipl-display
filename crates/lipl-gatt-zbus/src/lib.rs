@@ -48,7 +48,7 @@ pub use error::{Error, Result, CommonError};
 pub struct ListenZbus;
 
 impl Listen for ListenZbus {
-    fn listen_background(&self, cb: impl Fn(Message) -> lipl_display_common::Result<()> + Send + 'static) {
+    fn listen_background(&mut self, cb: impl Fn(Message) + Send + 'static) {
         std::thread::spawn(move || {
             async_io::block_on(async move {
                 let bluez =
@@ -71,7 +71,7 @@ impl Listen for ListenZbus {
                 while let Some(request) = rx.next().await {
                     if let Request::Write(mut write_request) = request {
                         if let Some(message) = handle_write_request(&mut write_request, &mut map) {
-                            cb(message.clone()).map_err(|_| lipl_display_common::Error::Callback)?;
+                            cb(message.clone());
                             if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
                                 break;
                             }        
@@ -82,6 +82,10 @@ impl Listen for ListenZbus {
                 Ok::<(), lipl_display_common::Error>(())
             })
         });            
+    }
+
+    fn stop(&mut self) {
+        
     }
 }
 

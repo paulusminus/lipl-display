@@ -1,7 +1,8 @@
 use std::error::Error;
 
 use femtovg::{renderer::OpenGl, Canvas, Color, FontId, Paint};
-use lipl_display_common::{Message, Part, HandleMessage, Listen, Command};
+use glutin::surface::GlSurface;
+use lipl_display_common::{Command, Part, HandleMessage, Listen, Message};
 use lipl_gatt_bluer::ListenBluer;
 use winit::{
     event::{Event, WindowEvent},
@@ -16,21 +17,15 @@ const WHITE: femtovg::Color = femtovg::Color::white();
 
 mod helpers;
 
-struct Fonts {
-    sans: FontId,
-}
-
 fn main() -> Result<(), Box<dyn Error>> {
     simple_logger::SimpleLogger::new().init()?;
     log::set_max_level(log::LevelFilter::Info);
 
     let event_loop = EventLoopBuilder::<Message>::with_user_event().build();
     let (canvas, window, context, surface) = helpers::create_window("Text demo", &event_loop);
-    run(canvas, event_loop, context, surface, window);
-    Ok(())
+    run(canvas, event_loop, context, surface, window)
 }
 
-use glutin::prelude::*;
 
 fn get_colors(dark: bool) -> (Color, Color) {
     if dark {
@@ -47,21 +42,16 @@ fn run(
     context: glutin::context::PossiblyCurrentContext,
     surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
     window: Window,
-) {
+) -> Result<(), Box<dyn Error>> {
     let proxy = el.create_proxy();
-    let gatt = ListenBluer {};
+    let mut gatt = ListenBluer { sender: None };
     gatt.listen_background(move |message| {
-        log::info!("Message: {}", message);
-        proxy
-            .send_event(message)
-            .map_err(|_| lipl_display_common::Error::Callback)
+        if let Err(error) = proxy.send_event(message) {
+            log::error!("Error sending to main loop: {}", error);
+        }
     });
 
-    let fonts = Fonts {
-        sans: canvas
-            .add_font_mem(ROBOTO_REGULAR)
-            .expect("Cannot add font"),
-    };
+    let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
     let mut part = Part::new(true, "Even geduld a.u.b. ...".to_owned(), DEFAULT_FONT_SIZE);
 
@@ -77,6 +67,7 @@ fn run(
                     }
                 }
                 if exit { 
+                    gatt.stop();
                     control_flow.set_exit();
                 } 
                 else { 
@@ -84,7 +75,10 @@ fn run(
                     window.request_redraw();
                 }
             },
-            Event::LoopDestroyed => control_flow.set_exit(),
+            Event::LoopDestroyed => {
+                gatt.stop();
+                control_flow.set_exit();
+            },
             Event::WindowEvent { ref event, .. } => match event {
                 WindowEvent::Resized(physical_size) => {
                     surface.resize(
@@ -93,11 +87,14 @@ fn run(
                         physical_size.height.try_into().unwrap(),
                     );
                 }
-                WindowEvent::CloseRequested => control_flow.set_exit(),
+                WindowEvent::CloseRequested => {
+                    gatt.stop();
+                    control_flow.set_exit();
+                },
                 _ => (),
             },
             Event::RedrawRequested(_) => {
-                draw_paragraph(&mut canvas, &fonts, &part, &window);
+                draw_paragraph(&mut canvas, font_id, &part, &window);
                 canvas.flush();
                 surface.swap_buffers(&context).unwrap();
             },
@@ -107,7 +104,7 @@ fn run(
     });
 }
 
-fn draw_paragraph(canvas: &mut Canvas<OpenGl>, fonts: &Fonts, part: &Part, window: &Window) {
+fn draw_paragraph(canvas: &mut Canvas<OpenGl>, font_id: FontId, part: &Part, window: &Window) {
     let dpi_factor = window.scale_factor();
     let size = window.inner_size();
     canvas.set_size(size.width, size.height, dpi_factor as f32);
@@ -117,7 +114,7 @@ fn draw_paragraph(canvas: &mut Canvas<OpenGl>, fonts: &Fonts, part: &Part, windo
     let (fg_color, bg_color) = get_colors(part.dark);
     canvas.clear_rect(0, 0, size.width, size.height, bg_color);
     let mut paint = Paint::color(fg_color);
-    paint.set_font(&[fonts.sans]);
+    paint.set_font(&[font_id]);
     paint.set_font_size(part.font_size);
 
     let font_metrics = canvas.measure_font(&paint).expect("Error measuring font");

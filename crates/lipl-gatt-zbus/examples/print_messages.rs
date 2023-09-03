@@ -4,11 +4,11 @@ use std::sync::mpsc::channel;
 
 fn main() {
     let (values_tx, values_rx) = channel();
-    let gatt = ListenZbus {};
+    let mut gatt = ListenZbus {};
     gatt.listen_background(move |message| {
-        values_tx
-            .send(message)
-            .map_err(lipl_display_common::Error::Send)
+        if let Err(error) = values_tx.send(message) {
+            tracing::error!("Error sending message: {}", error);
+        }
     });
 
     while let Ok(message) = values_rx.recv() {

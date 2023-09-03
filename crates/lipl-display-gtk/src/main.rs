@@ -3,7 +3,7 @@ use gtk::prelude::*;
 use gtk::glib::MainContext;
 use lipl_display_common::{Command, Listen, Message};
 use lipl_gatt_bluer::ListenBluer;
-use log::trace;
+use log::{error, trace};
 
 mod css;
 mod cursor;
@@ -22,11 +22,11 @@ fn build_ui(application: &gtk::Application) -> Result<()>
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
 
-    let gatt = ListenBluer {};
+    let mut gatt = ListenBluer { sender: None};
     gatt.listen_background(move |message| {
-        values_tx
-            .send(message)
-            .map_err(lipl_display_common::Error::Send)
+        if let Err(error) = values_tx.send(message) {
+            error!("Error sending message: {}", error);
+        }
     });
 
     values_rx.attach(None, move |value| {

@@ -8,11 +8,11 @@ async fn main() {
     tracing_subscriber::fmt().with_env_filter(filter).init();
 
     let (values_tx, values_rx) = channel();
-    let gatt = lipl_gatt_bluer::ListenBluer {};
+    let mut gatt = lipl_gatt_bluer::ListenBluer { sender: None };
     gatt.listen_background(move |message| {
-        values_tx
-            .send(message)
-            .map_err(lipl_display_common::Error::Send)
+        if let Err(error) = values_tx.send(message) {
+            tracing::error!("Error sending: {}", error);
+        }
     });
 
     while let Ok(message) = values_rx.recv() {
