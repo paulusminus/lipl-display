@@ -1,4 +1,7 @@
+use std::{rc::Rc, cell::RefCell};
+
 use anyhow::Result;
+use glib::clone;
 use gtk::prelude::*;
 use gtk::glib::MainContext;
 use lipl_display_common::{Command, Listen, Message};
@@ -14,20 +17,34 @@ static GLIB_LOGGER: gtk::glib::GlibLogger = gtk::glib::GlibLogger::new(
     gtk::glib::GlibLoggerDomain::CrateTarget,
 );
 
+fn create_callback(tx: gtk::glib::Sender<Message>) -> impl Fn(Message) {
+    move |message| {
+        if let Err(error) = tx.send(message) {
+            error!("Error sending message: {}", error);
+        }
+    }
+}
+
 fn build_ui(application: &gtk::Application) -> Result<()> 
 {
-    css::load(css::Theme::Dark);
     let (values_tx, values_rx) = MainContext::channel::<Message>(gtk::glib::Priority::DEFAULT);
+    let gatt = 
+        Rc::new(
+            RefCell::new(
+                ListenBluer::new(
+                    create_callback(values_tx)
+                )
+            )
+        );
+
+    css::load(css::Theme::Dark);
 
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
 
-    let mut gatt = ListenBluer { sender: None};
-    gatt.listen_background(move |message| {
-        if let Err(error) = values_tx.send(message) {
-            error!("Error sending message: {}", error);
-        }
-    });
+    application.connect_shutdown(clone!(@strong gatt => move |_| {
+        gatt.borrow_mut().stop();
+    }));
 
     values_rx.attach(None, move |value| {
         match value {

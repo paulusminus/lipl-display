@@ -6,7 +6,7 @@ use lipl_display_common::{Command, Part, HandleMessage, Listen, Message};
 use lipl_gatt_bluer::ListenBluer;
 use winit::{
     event::{Event, WindowEvent},
-    event_loop::{EventLoop, EventLoopBuilder},
+    event_loop::{EventLoop, EventLoopBuilder, EventLoopProxy},
     window::Window,
 };
 
@@ -36,6 +36,14 @@ fn get_colors(dark: bool) -> (Color, Color) {
     }
 }
 
+fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
+    move |message| {
+        if let Err(error) = proxy.send_event(message) {
+            log::error!("Error sending to main loop: {}", error);
+        }
+    }
+}
+
 fn run(
     mut canvas: Canvas<OpenGl>,
     el: EventLoop<Message>,
@@ -44,12 +52,7 @@ fn run(
     window: Window,
 ) -> Result<(), Box<dyn Error>> {
     let proxy = el.create_proxy();
-    let mut gatt = ListenBluer { sender: None };
-    gatt.listen_background(move |message| {
-        if let Err(error) = proxy.send_event(message) {
-            log::error!("Error sending to main loop: {}", error);
-        }
-    });
+    let mut gatt = ListenBluer::new(create_callback(proxy));
 
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 

@@ -1,6 +1,6 @@
 use std::{
     collections::BTreeMap,
-    sync::Arc,
+    sync::Arc, thread::JoinHandle,
 };
 
 use bluer::{
@@ -95,14 +95,15 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
 }
 
 pub struct ListenBluer {
-    pub sender: Option<tokio::sync::oneshot::Sender<()>>,
+    // callback: Box<dyn Fn(Message) + Send + 'static>,
+    sender: Option<tokio::sync::oneshot::Sender<()>>,
+    thread: Option<JoinHandle<()>>,
 }
 
-impl Listen for ListenBluer {
-    fn listen_background(&mut self, cb: impl Fn(Message) + Send + 'static) {
+impl ListenBluer {
+    pub fn new(callback: impl Fn(Message) + Send + 'static) -> Self {
         let (tx, mut rx) = tokio::sync::oneshot::channel::<()>();
-        self.sender = Some(tx);
-        std::thread::spawn(move || {
+        let thread = std::thread::spawn(move || {
             let runtime = 
             tokio::runtime::Builder::new_current_thread()
                 .enable_all()
@@ -120,7 +121,7 @@ impl Listen for ListenBluer {
                         option_message = s.next() => {
                             match option_message {
                                 Some(message) => {
-                                    cb(message.clone());
+                                    callback(message.clone());
                                     if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
                                         break;
                                     }    
@@ -138,12 +139,24 @@ impl Listen for ListenBluer {
                 }
             });
         });
+        ListenBluer { sender: Some(tx), thread: Some(thread) }
     }
+}
 
+impl Listen for ListenBluer {
     fn stop(&mut self) {
         if let Some(tx) = self.sender.take() {
-            if tx.send(()).is_err() {
-                tracing::error!("Error sending signal to background thread");
+            match tx.send(()) {
+                Ok(_) => {
+                    if let Some(thread) = self.thread.take() {
+                        if thread.join().is_err() {
+                            tracing::error!("Error joining background thread");
+                        }
+                    }
+                }
+                Err(_) => {
+                    tracing::error!("Error sending signal to background thread");
+                } 
             }
         }
     }

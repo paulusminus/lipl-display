@@ -1,8 +1,9 @@
-
 mod fonts;
 mod lipl_display;
 mod style;
 mod visuals;
+
+use std::sync::mpsc::{Sender, Receiver};
 
 use eframe::{
     egui::{
@@ -16,21 +17,27 @@ use eframe::{
     NativeOptions,
 };
 use lipl_display::LiplDisplay;
-use lipl_display_common::{Command, Listen, Message};
+use lipl_display_common::{Command, Message, Listen};
 use lipl_gatt_bluer::ListenBluer;
 
 const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 
+fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {
+    move |message| {
+        if let Err(error) = tx.send(message) {
+            log::error!("Error sending message: {}", error);
+        }
+    }
+}
+
 impl LiplDisplay {
-    fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        let (tx, rx) = std::sync::mpsc::channel::<Message>();
-        let mut gatt = ListenBluer { sender: None };
-        gatt.listen_background(
-            move |message| 
-                if let Err(error) = tx.send(message) {
-                    log::error!("Error sending message: {}", error);
-                }
-        );
+    fn new(cc: &eframe::CreationContext<'_>, rx: Receiver<Message>) -> Self {
+        // gatt.listen_background(
+        //     move |message| 
+        //         if let Err(error) = tx.send(message) {
+        //             log::error!("Error sending message: {}", error);
+        //         }
+        // );
 
         cc.egui_ctx.set_fonts(fonts::fonts());
     
@@ -96,10 +103,15 @@ fn main() -> anyhow::Result<()> {
     simple_logger::SimpleLogger::new().init()?;
     log::set_max_level(log::LevelFilter::Trace);
 
+    let (tx, rx) = std::sync::mpsc::channel::<Message>();
+    let mut gatt = ListenBluer::new(create_callback(tx));
+
     run_native(
         "Lipl Display", 
         fullscreen(), 
-        Box::new(|cc| Box::new(LiplDisplay::new(cc))),
+        Box::new(|cc| Box::new(LiplDisplay::new(cc, rx))),
     )
-    .map_err(|_| anyhow::anyhow!("Error running egui"))
+    .map_err(|_| anyhow::anyhow!("Error running egui"))?;
+    gatt.stop();
+    Ok(())
 }

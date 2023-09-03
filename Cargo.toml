@@ -1,5 +1,12 @@
 [workspace]
-members = ["crates/*"]
+members = [
+    "crates/lipl-display-common",
+    "crates/lipl-display-egui",
+    "crates/lipl-display-femtovg",
+    "crates/lipl-display-gtk",
+    "crates/lipl-gatt-bluer",
+    "crates/login-poweroff-reboot"
+]
 resolver = "2"
 
 [workspace.package]

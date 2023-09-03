@@ -1,6 +1,14 @@
-use std::sync::mpsc::channel;
+use std::sync::mpsc::{channel, Sender};
 use tokio::main;
-use lipl_display_common::Listen;
+use lipl_display_common::{Listen, Message};
+
+fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {
+    move |message| {
+        if let Err(error) = tx.send(message) {
+            tracing::error!("Error sending: {}", error);
+        }
+    }
+}
 
 #[main(flavor = "current_thread")]
 async fn main() {
@@ -8,14 +16,11 @@ async fn main() {
     tracing_subscriber::fmt().with_env_filter(filter).init();
 
     let (values_tx, values_rx) = channel();
-    let mut gatt = lipl_gatt_bluer::ListenBluer { sender: None };
-    gatt.listen_background(move |message| {
-        if let Err(error) = values_tx.send(message) {
-            tracing::error!("Error sending: {}", error);
-        }
-    });
+    let mut gatt = lipl_gatt_bluer::ListenBluer::new(create_callback(values_tx));
 
     while let Ok(message) = values_rx.recv() {
         tracing::info!("{:?}", message);
     }
+
+    gatt.stop();
 }
