@@ -4,7 +4,7 @@ use anyhow::Result;
 use glib::clone;
 use gtk::prelude::*;
 use gtk::glib::MainContext;
-use lipl_display_common::{Command, Listen, Message};
+use lipl_display_common::{BackgroundThread, Command, Message};
 use lipl_gatt_bluer::ListenBluer;
 use log::{error, trace};
 

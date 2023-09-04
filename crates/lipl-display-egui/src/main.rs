@@ -17,7 +17,7 @@ use eframe::{
     NativeOptions,
 };
 use lipl_display::LiplDisplay;
-use lipl_display_common::{Command, Message, Listen};
+use lipl_display_common::{BackgroundThread, Command, Message};
 use lipl_gatt_bluer::ListenBluer;
 
 const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
@@ -100,8 +100,7 @@ fn fullscreen() -> NativeOptions {
 }
 
 fn main() -> anyhow::Result<()> {
-    simple_logger::SimpleLogger::new().init()?;
-    log::set_max_level(log::LevelFilter::Trace);
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
     let (tx, rx) = std::sync::mpsc::channel::<Message>();
     let mut gatt = ListenBluer::new(create_callback(tx));

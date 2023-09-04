@@ -9,4 +9,4 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-dbus = "0.9.6"
+dbus = "0.9"

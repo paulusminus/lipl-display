@@ -16,11 +16,11 @@ use bluer::{
         },
     Uuid,
 };
-use lipl_display_common::{Command, Listen, Message};
+use lipl_display_common::{BackgroundThread, Command, Message};
 
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::sync::Mutex;
-use tracing::trace;
+use log::{error, trace};
 use pin_project::{pin_project, pinned_drop};
 use std::pin::Pin;
 
@@ -143,19 +143,19 @@ impl ListenBluer {
     }
 }
 
-impl Listen for ListenBluer {
+impl BackgroundThread for ListenBluer {
     fn stop(&mut self) {
         if let Some(tx) = self.sender.take() {
             match tx.send(()) {
                 Ok(_) => {
                     if let Some(thread) = self.thread.take() {
                         if thread.join().is_err() {
-                            tracing::error!("Error joining background thread");
+                            error!("Error joining background thread");
                         }
                     }
                 }
                 Err(_) => {
-                    tracing::error!("Error sending signal to background thread");
+                    error!("Error sending signal to background thread");
                 } 
             }
         }

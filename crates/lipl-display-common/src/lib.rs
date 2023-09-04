@@ -27,7 +27,7 @@ pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c6
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
 
 
-pub trait Listen {
+pub trait BackgroundThread {
     fn stop(&mut self);
 }
 

@@ -2,8 +2,9 @@ use std::error::Error;
 
 use femtovg::{renderer::OpenGl, Canvas, Color, FontId, Paint};
 use glutin::surface::GlSurface;
-use lipl_display_common::{Command, Part, HandleMessage, Listen, Message};
+use lipl_display_common::{BackgroundThread, Command, Part, HandleMessage, Message};
 use lipl_gatt_bluer::ListenBluer;
+use log::error;
 use winit::{
     event::{Event, WindowEvent},
     event_loop::{EventLoop, EventLoopBuilder, EventLoopProxy},
@@ -18,8 +19,7 @@ const WHITE: femtovg::Color = femtovg::Color::white();
 mod helpers;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    simple_logger::SimpleLogger::new().init()?;
-    log::set_max_level(log::LevelFilter::Info);
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
     let event_loop = EventLoopBuilder::<Message>::with_user_event().build();
     let (canvas, window, context, surface) = helpers::create_window("Text demo", &event_loop);
@@ -39,7 +39,7 @@ fn get_colors(dark: bool) -> (Color, Color) {
 fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
     move |message| {
         if let Err(error) = proxy.send_event(message) {
-            log::error!("Error sending to main loop: {}", error);
+            error!("Error sending to main loop: {}", error);
         }
     }
 }
