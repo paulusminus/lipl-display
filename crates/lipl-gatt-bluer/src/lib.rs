@@ -1,6 +1,6 @@
 use std::{
     collections::BTreeMap,
-    sync::Arc, thread::JoinHandle,
+    sync::Arc, thread::JoinHandle, time::Duration,
 };
 
 use bluer::{
@@ -16,7 +16,7 @@ use bluer::{
         },
     Uuid,
 };
-use lipl_display_common::{BackgroundThread, Command, Message};
+use lipl_display_common::{BackgroundThread, Message};
 
 use futures::{channel::mpsc, Stream, StreamExt};
 use tokio::sync::Mutex;
@@ -70,14 +70,14 @@ pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
     .map_err(Error::Common)
 }
 
-async fn first_adapter() -> Result<bluer::Adapter> {
-    let session = bluer::Session::new().await?;
-    let adapter_names = session.adapter_names().await?;
-    let adapter_name = adapter_names.first().ok_or(lipl_display_common::Error::BluetoothAdapter)?;
-    let adapter: bluer::Adapter = session.adapter(adapter_name)?;
-    adapter.set_powered(true).await?;
-    Ok(adapter)
-}
+// async fn first_adapter() -> Result<bluer::Adapter> {
+//     let session = bluer::Session::new().await?;
+//     let adapter_names = session.adapter_names().await?;
+//     let adapter_name = adapter_names.first().ok_or(lipl_display_common::Error::BluetoothAdapter)?;
+//     let adapter: bluer::Adapter = session.adapter(adapter_name)?;
+//     adapter.set_powered(true).await?;
+//     Ok(adapter)
+// }
 
 async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     let mut manufacturer_data = BTreeMap::new();
@@ -122,22 +122,25 @@ impl ListenBluer {
                             match option_message {
                                 Some(message) => {
                                     callback(message.clone());
-                                    if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
-                                        break;
-                                    }    
                                 }
                                 None => break,
                             }
                         }
                         received = &mut rx => {
                             match received {
-                                Ok(_) => break,
-                                Err(_) => break,
+                                Ok(_) => {
+                                    break;
+                                },
+                                Err(error) => {
+                                    log::error!("Error receiving signal to quit background thread: {}", error);
+                                    break;
+                                },
                             }
                         }
                     }
                 }
             });
+            log::info!("Background thread almost finished");
         });
         ListenBluer { sender: Some(tx), thread: Some(thread) }
     }
@@ -149,8 +152,14 @@ impl BackgroundThread for ListenBluer {
             match tx.send(()) {
                 Ok(_) => {
                     if let Some(thread) = self.thread.take() {
-                        if thread.join().is_err() {
-                            error!("Error joining background thread");
+                        match thread.join() {
+                            Ok(_) => {
+                                std::thread::sleep(Duration::from_secs(1));
+                                trace!("Finished sleeping for 1 second");
+                            },
+                            Err(_) => {
+                                error!("Error joining background thread");
+                            }
                         }
                     }
                 }
@@ -184,7 +193,9 @@ impl BackgroundThread for ListenBluer {
 pub async fn listen_stream() -> Result<impl Stream<Item=Message>> {
     let (values_tx, values_rx) = mpsc::channel::<Message>(100);
 
-    let adapter = first_adapter().await?;
+    let session = bluer::Session::new().await?;
+    let adapter = session.default_adapter().await?;
+    // let adapter = first_adapter().await?; // not needed since new version bluer
     trace!("Bluetooth adapter {} found", adapter.name());
 
     let adv_handle = advertise(&adapter).await?;
