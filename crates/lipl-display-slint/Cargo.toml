@@ -1,0 +1,20 @@
+[package]
+name = "lipl-display-slint"
+authors.workspace = true
+description = "Displaying part on the screen using slint"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+version.workspace = true
+build = "build.rs"
+
+[dependencies]
+slint = { version = "1.2.0", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-winit-wayland", "backend-linuxkms"] }
+lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
+lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
+log = "0.4"
+env_logger = "0.10"
+
+[build-dependencies]
+slint-build = "1.2.0"
