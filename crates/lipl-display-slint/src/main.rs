@@ -12,11 +12,12 @@ slint::include_modules!();
 
 
 fn main() -> Result<(), PlatformError> {
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
     let ui = LiplDisplay::new()?;
     let ui_handle = ui.as_weak();
   
-    ui.set_whatever(30);
+    ui.set_fontsize(30);
     ui.set_part(constant::JUST_A_MOMENT.into());
     ui.set_dark(true);
 

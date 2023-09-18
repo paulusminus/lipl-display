@@ -1,4 +1,5 @@
 use lipl_display_common::{Message, Command};
+use log::error;
 use crate::LiplDisplay;
 use slint::{Weak, ComponentHandle};
 
@@ -6,47 +7,65 @@ pub(crate) fn create_handle_message(ui_handle: Weak<LiplDisplay>) -> impl Fn(Mes
     move |message| {
         match message {
             Message::Part(part) => {
-                if let Some(ui) = ui_handle.upgrade() {
-                    ui.set_part(part.into());
-                }
+                let handle_copy = ui_handle.clone();
+                if let Err(error) = slint::invoke_from_event_loop(move || handle_copy.unwrap().set_part(part.into())) {
+                    error!("Error handling received part {}", error);
+                };
             },
             Message::Status(status) => {
-                if let Some(ui) = ui_handle.upgrade() {
-                    ui.set_status(status.into());
-                }
+                let handle_copy = ui_handle.clone();
+                if let Err(error) = slint::invoke_from_event_loop(move || handle_copy.unwrap().set_status(status.into())) {
+                    error!("Error handling received status {}", error);
+                };
             },
             Message::Command(command) => {
                 match command {
                     Command::Dark => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            ui.set_dark(true);
-                        }
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || handle_copy.unwrap().set_dark(true)) {
+                            error!("Error handling set theme dark {}", error);
+                        };
                     },
                     Command::Light => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            ui.set_dark(false);
-                        }
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || handle_copy.unwrap().set_dark(false)) {
+                            error!("Error handling set theme light {}", error);
+                        };
                     },
                     Command::Increase => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            let length = ui.get_whatever();
-                            ui.set_whatever(length + 2);
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || {
+                            let ui = handle_copy.unwrap();
+                            let length = ui.get_fontsize();
+                            ui.set_fontsize(length + 2);
+                        }) {
+                            error!("Failed to handle increase command {}", error);
                         }
                     },
                     Command::Decrease => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            let length = ui.get_whatever();
-                            if length > 4 { ui.set_whatever(length - 2); }
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || {
+                            let ui = handle_copy.unwrap();
+                            let length = ui.get_fontsize();
+                            if length > 4 { ui.set_fontsize(length - 2) };
+                        }) {
+                            error!("Failed to handle decrease command {}", error);
                         }
                     },
                     Command::Exit => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            ui.window().dispatch_event(slint::platform::WindowEvent::CloseRequested);
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || 
+                            handle_copy.unwrap().window().dispatch_event(slint::platform::WindowEvent::CloseRequested)
+                        ) {
+                            error!("Failed to handle exit command {}", error);
                         }
                     },
                     Command::Poweroff => {
-                        if let Some(ui) = ui_handle.upgrade() {
-                            ui.window().dispatch_event(slint::platform::WindowEvent::CloseRequested);
+                        let handle_copy = ui_handle.clone();
+                        if let Err(error) = slint::invoke_from_event_loop(move || 
+                            handle_copy.unwrap().window().dispatch_event(slint::platform::WindowEvent::CloseRequested)
+                        ) {
+                            error!("Failed to handle poweroff command {}", error);
                         }
                     }
                 }
