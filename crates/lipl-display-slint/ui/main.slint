@@ -1,6 +1,31 @@
-export component HelloWorld inherits Window {
-    Text {
-        text: "hello world";
-        color: green;
+import { VerticalBox } from "std-widgets.slint";
+import "./Roboto-Regular.ttf";
+
+export component LiplDisplay inherits Window {
+    title: "Lipl Display";
+    default-font-family: "Roboto";
+    background: dark ? black : white;
+    preferred-width: 640px;
+    preferred-height: 480px;
+
+    in property<bool> dark: false;
+    in property<string> part: "";
+    in property<string> status: "";
+    in property<int> whatever: 40;
+
+    VerticalBox {
+        padding: 0.05 * root.width;
+        
+        part:= Text {
+            color: root.dark ? white : black;
+            font-size: root.whatever * 1px;
+            text: "\{root.part}";
+        }
+        status:= Text {
+            color: root.dark ? white : black;
+            font-size: root.whatever * 1px;
+            text: "\{root.status}";
+            height: 5%;
+        }
     }
 }
