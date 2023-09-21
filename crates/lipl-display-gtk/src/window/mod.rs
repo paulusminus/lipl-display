@@ -1,5 +1,5 @@
-use gtk::prelude::*;
 use anyhow::{anyhow, Result};
+use gtk::prelude::*;
 
 pub const TEXT_ID: &str = "text";
 pub const PAGNOS_ID: &str = "pagenos";
@@ -36,17 +36,23 @@ impl AppWindow {
     pub fn new(application: &gtk::Application) -> Result<Self> {
         let builder = gtk::Builder::from_string(WINDOW_UI);
         // let mut cancel_clone = cancel.clone();
-    
-        let window: gtk::ApplicationWindow = builder.object(WINDOW_ID).ok_or_else(|| anyhow!("Missing Window control"))?;
-        let text: gtk::Label = builder.object(TEXT_ID).ok_or_else(|| anyhow!("Missing text control"))?;
-        let status: gtk::Label = builder.object(PAGNOS_ID).ok_or_else(|| anyhow!("Missing pagnos control"))?;
-    
+
+        let window: gtk::ApplicationWindow = builder
+            .object(WINDOW_ID)
+            .ok_or_else(|| anyhow!("Missing Window control"))?;
+        let text: gtk::Label = builder
+            .object(TEXT_ID)
+            .ok_or_else(|| anyhow!("Missing text control"))?;
+        let status: gtk::Label = builder
+            .object(PAGNOS_ID)
+            .ok_or_else(|| anyhow!("Missing pagnos control"))?;
+
         window.set_application(Some(application));
         window.fullscreen();
         window.show_all();
 
         crate::cursor::hide(&window);
-    
+
         let app_window = AppWindow {
             window,
             text,
@@ -83,11 +89,18 @@ impl AppWindow {
     }
 
     fn update_text_label(&self) {
-        self.text.set_markup(&format!("<span font=\"{}\">{}</span>", self.data.font_size, self.data.text));
+        self.text.set_markup(&format!(
+            "<span font=\"{}\">{}</span>",
+            self.data.font_size, self.data.text
+        ));
     }
 
     fn update_status_label(&self) {
-        self.status.set_markup(&format!("<span font=\"{}\">{}</span>", self.data.font_size / 2, self.data.status));
+        self.status.set_markup(&format!(
+            "<span font=\"{}\">{}</span>",
+            self.data.font_size / 2,
+            self.data.status
+        ));
     }
 
     pub fn close(&self) {

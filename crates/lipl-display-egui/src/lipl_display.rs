@@ -1,12 +1,6 @@
 use std::sync::mpsc::Receiver;
 
-use eframe::egui::{
-    Label,
-    Layout,
-    TextStyle,
-    Direction,
-    RichText,
-};
+use eframe::egui::{Direction, Label, Layout, RichText, TextStyle};
 
 use lipl_display_common::Message;
 
@@ -36,7 +30,7 @@ impl Default for LiplDisplayConfig {
 impl LiplDisplay {
     pub fn render_text(&self, ui: &mut eframe::egui::Ui) {
         ui.with_layout(
-            Layout::centered_and_justified(Direction::LeftToRight), 
+            Layout::centered_and_justified(Direction::LeftToRight),
             |ui| {
                 if let Some(text) = &self.text {
                     let label = Label::new(RichText::new(text).text_style(TextStyle::Body));
@@ -56,7 +50,6 @@ impl LiplDisplay {
                     let label = Label::new(RichText::new(text).text_style(TextStyle::Small));
                     // let label = Label::new(text).text_style(TextStyle::Small);
                     ui.add(label);
-
                 }
             },
         );

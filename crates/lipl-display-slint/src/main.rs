@@ -9,14 +9,13 @@ slint::include_modules!();
 
 fn main() -> Result<(), PlatformError> {
     env_logger::Builder::from_env(
-        env_logger::Env::default()
-        .default_filter_or(constant::DEFAULT_LOG_LEVEL)
+        env_logger::Env::default().default_filter_or(constant::DEFAULT_LOG_LEVEL),
     )
     .init();
 
     let ui = LiplDisplay::new()?;
     let ui_handle = ui.as_weak();
-  
+
     ui.set_fontsize(constant::DEFAULT_FONTSIZE);
     ui.set_part(constant::DEFAULT_PART.into());
     ui.set_dark(constant::DEFAULT_DARK);

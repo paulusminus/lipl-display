@@ -1,5 +1,5 @@
-use gtk::ApplicationWindow;
 use gtk::traits::WidgetExt;
+use gtk::ApplicationWindow;
 
 pub fn hide(window: &ApplicationWindow) {
     if let Some(gdk_window) = window.window() {

@@ -6,20 +6,27 @@ use glutin::{
     context::{ContextApi, ContextAttributesBuilder, PossiblyCurrentContext},
     display::GetGlDisplay,
     prelude::*,
-    surface::{SurfaceAttributesBuilder, WindowSurface, Surface},
+    surface::{Surface, SurfaceAttributesBuilder, WindowSurface},
 };
 use glutin_winit::DisplayBuilder;
 use raw_window_handle::HasRawWindowHandle;
-use winit::{event_loop::EventLoop, window::{WindowBuilder, Window}};
+use winit::{
+    event_loop::EventLoop,
+    window::{Window, WindowBuilder},
+};
 
 pub fn create_window<T: 'static>(
     title: &'static str,
     event_loop: &EventLoop<T>,
-) -> (Canvas<OpenGl>, Window, PossiblyCurrentContext, Surface<WindowSurface>) {
-
+) -> (
+    Canvas<OpenGl>,
+    Window,
+    PossiblyCurrentContext,
+    Surface<WindowSurface>,
+) {
     let window_builder = WindowBuilder::new()
-       .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
-       .with_title(title);
+        .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
+        .with_title(title);
 
     let template = ConfigTemplateBuilder::new().with_alpha_size(8);
 
@@ -72,12 +79,22 @@ pub fn create_window<T: 'static>(
         NonZeroU32::new(height).unwrap(),
     );
 
-    let surface = unsafe { gl_config.display().create_window_surface(&gl_config, &attrs).unwrap() };
+    let surface = unsafe {
+        gl_config
+            .display()
+            .create_window_surface(&gl_config, &attrs)
+            .unwrap()
+    };
 
-    let gl_context = not_current_gl_context.take().unwrap().make_current(&surface).unwrap();
+    let gl_context = not_current_gl_context
+        .take()
+        .unwrap()
+        .make_current(&surface)
+        .unwrap();
 
-    let renderer = unsafe { OpenGl::new_from_function_cstr(|s| gl_display.get_proc_address(s) as *const _) }
-        .expect("Cannot create renderer");
+    let renderer =
+        unsafe { OpenGl::new_from_function_cstr(|s| gl_display.get_proc_address(s) as *const _) }
+            .expect("Cannot create renderer");
 
     let mut canvas = Canvas::new(renderer).expect("Cannot create canvas");
     canvas.set_size(width, height, window.scale_factor() as f32);

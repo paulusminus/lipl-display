@@ -26,12 +26,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     run(canvas, event_loop, context, surface, window)
 }
 
-
 fn get_colors(dark: bool) -> (Color, Color) {
     if dark {
         (WHITE, BLACK)
-    }
-    else {
+    } else {
         (BLACK, WHITE)
     }
 }
@@ -69,19 +67,18 @@ fn run(
                         exit = true
                     }
                 }
-                if exit { 
+                if exit {
                     gatt.stop();
                     control_flow.set_exit();
-                } 
-                else { 
+                } else {
                     screen = screen.handle_message(message);
                     window.request_redraw();
                 }
-            },
+            }
             Event::LoopDestroyed => {
                 gatt.stop();
                 control_flow.set_exit();
-            },
+            }
             Event::WindowEvent { ref event, .. } => match event {
                 WindowEvent::Resized(physical_size) => {
                     surface.resize(
@@ -93,21 +90,26 @@ fn run(
                 WindowEvent::CloseRequested => {
                     gatt.stop();
                     control_flow.set_exit();
-                },
+                }
                 _ => (),
             },
             Event::RedrawRequested(_) => {
                 draw_paragraph(&mut canvas, font_id, &screen, &window);
                 canvas.flush();
                 surface.swap_buffers(&context).unwrap();
-            },
+            }
             Event::MainEventsCleared => window.request_redraw(),
             _ => (),
         }
     });
 }
 
-fn draw_paragraph(canvas: &mut Canvas<OpenGl>, font_id: FontId, part: &LiplScreen, window: &Window) {
+fn draw_paragraph(
+    canvas: &mut Canvas<OpenGl>,
+    font_id: FontId,
+    part: &LiplScreen,
+    window: &Window,
+) {
     let dpi_factor = window.scale_factor();
     let size = window.inner_size();
     canvas.set_size(size.width, size.height, dpi_factor as f32);
@@ -134,9 +136,11 @@ fn draw_paragraph(canvas: &mut Canvas<OpenGl>, font_id: FontId, part: &LiplScree
         }
     }
 
-    y = canvas.height() - font_metrics.height(); 
+    y = canvas.height() - font_metrics.height();
     match canvas.fill_text(x, y, &part.status, &paint) {
-        Ok(_) => {},
-        Err(e) => { eprintln!("Error: {}", e); }
+        Ok(_) => {}
+        Err(e) => {
+            eprintln!("Error: {}", e);
+        }
     }
 }

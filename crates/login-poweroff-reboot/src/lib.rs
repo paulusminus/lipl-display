@@ -18,7 +18,11 @@ fn time(delay_millis: u64) -> Result<u64, SystemTimeError> {
 pub fn poweroff(delay_milliseconds: u64) -> Result<(), dbus::Error> {
     use login::OrgFreedesktopLogin1Manager;
     let connection = dbus::blocking::LocalConnection::new_system()?;
-    let proxy = connection.with_proxy(DESTINATION, PATH, std::time::Duration::from_secs(TIMEOUT_SECONDS));
+    let proxy = connection.with_proxy(
+        DESTINATION,
+        PATH,
+        std::time::Duration::from_secs(TIMEOUT_SECONDS),
+    );
 
     if let Ok(millis_since_epoch) = time(delay_milliseconds) {
         proxy.schedule_shutdown(POWEROFF, millis_since_epoch)?;
@@ -31,7 +35,11 @@ pub fn poweroff(delay_milliseconds: u64) -> Result<(), dbus::Error> {
 pub fn reboot(delay_milliseconds: u64) -> Result<(), dbus::Error> {
     use login::OrgFreedesktopLogin1Manager;
     let connection = dbus::blocking::LocalConnection::new_system()?;
-    let proxy = connection.with_proxy(DESTINATION, PATH, std::time::Duration::from_secs(TIMEOUT_SECONDS));
+    let proxy = connection.with_proxy(
+        DESTINATION,
+        PATH,
+        std::time::Duration::from_secs(TIMEOUT_SECONDS),
+    );
     if let Ok(millis_since_epoch) = time(delay_milliseconds) {
         proxy.schedule_shutdown(REBOOT, millis_since_epoch)?;
     };

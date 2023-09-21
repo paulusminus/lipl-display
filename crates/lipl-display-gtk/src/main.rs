@@ -1,9 +1,9 @@
-use std::{rc::Rc, cell::RefCell};
+use std::{cell::RefCell, rc::Rc};
 
 use anyhow::Result;
 use glib::clone;
-use gtk::prelude::*;
 use gtk::glib::MainContext;
+use gtk::prelude::*;
 use lipl_display_common::{BackgroundThread, Command, Message};
 use lipl_gatt_bluer::ListenBluer;
 use log::{error, trace};
@@ -25,17 +25,9 @@ fn create_callback(tx: gtk::glib::Sender<Message>) -> impl Fn(Message) {
     }
 }
 
-fn build_ui(application: &gtk::Application) -> Result<()> 
-{
+fn build_ui(application: &gtk::Application) -> Result<()> {
     let (values_tx, values_rx) = MainContext::channel::<Message>(gtk::glib::Priority::DEFAULT);
-    let gatt = 
-        Rc::new(
-            RefCell::new(
-                ListenBluer::new(
-                    create_callback(values_tx)
-                )
-            )
-        );
+    let gatt = Rc::new(RefCell::new(ListenBluer::new(create_callback(values_tx))));
 
     css::load(css::Theme::Dark);
 
@@ -51,39 +43,37 @@ fn build_ui(application: &gtk::Application) -> Result<()>
             Message::Part(s) => {
                 app_window.set_text(&s);
                 trace!("Text updated");
-            },
+            }
             Message::Status(s) => {
                 app_window.set_status(&s);
                 trace!("Status updated");
-            },
-            Message::Command(command) => {
-                match command {
-                    Command::Increase => {
-                        app_window.increase_font_size();
-                        trace!("Increase font size");
-                    },
-                    Command::Decrease => {
-                        app_window.decrease_font_size();
-                        trace!("Decrease font size");
-                    },
-                    Command::Light => {
-                        css::load(css::Theme::Light);
-                        trace!("Light theme");
-                    },
-                    Command::Dark => {
-                        css::load(css::Theme::Dark);
-                        trace!("Dark theme");
-                    },
-                    Command::Exit => {
-                        window_clone.close();
-                        trace!("Exit");
-                    },
-                    Command::Poweroff => {
-                        window_clone.close();
-                        trace!("Poweroff");
-                    }
-                }
             }
+            Message::Command(command) => match command {
+                Command::Increase => {
+                    app_window.increase_font_size();
+                    trace!("Increase font size");
+                }
+                Command::Decrease => {
+                    app_window.decrease_font_size();
+                    trace!("Decrease font size");
+                }
+                Command::Light => {
+                    css::load(css::Theme::Light);
+                    trace!("Light theme");
+                }
+                Command::Dark => {
+                    css::load(css::Theme::Dark);
+                    trace!("Dark theme");
+                }
+                Command::Exit => {
+                    window_clone.close();
+                    trace!("Exit");
+                }
+                Command::Poweroff => {
+                    window_clone.close();
+                    trace!("Poweroff");
+                }
+            },
         }
 
         gtk::glib::ControlFlow::Continue
@@ -96,8 +86,7 @@ fn main() -> Result<()> {
     log::set_logger(&GLIB_LOGGER).unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 
-    let application: gtk::Application = 
-        gtk::Application::builder()
+    let application: gtk::Application = gtk::Application::builder()
         .application_id("nl.paulmin.lipl.display")
         .flags(Default::default())
         .build();

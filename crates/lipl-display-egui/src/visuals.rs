@@ -1,11 +1,6 @@
 use eframe::egui::{
-    Visuals,
-    style::{
-        Widgets,
-        WidgetVisuals},
-        Color32,
-        Stroke,
-        Context
+    style::{WidgetVisuals, Widgets},
+    Color32, Context, Stroke, Visuals,
 };
 
 trait ColorExt {
@@ -17,26 +12,30 @@ impl ColorExt for bool {
     fn foreground(&self) -> Color32 {
         if *self {
             Color32::WHITE
-        }  
-        else {
+        } else {
             Color32::BLACK
         }
     }
     fn background(&self) -> Color32 {
         if *self {
             Color32::BLACK
-         }
-         else {
+        } else {
             Color32::WHITE
-         }
+        }
     }
 }
 
 fn widget_visuals(dark: bool) -> WidgetVisuals {
     WidgetVisuals {
         bg_fill: dark.background(),
-        bg_stroke: Stroke { width: 0., color: dark.background() },
-        fg_stroke: Stroke { width: 0., color: dark.foreground() },
+        bg_stroke: Stroke {
+            width: 0.,
+            color: dark.background(),
+        },
+        fg_stroke: Stroke {
+            width: 0.,
+            color: dark.foreground(),
+        },
         expansion: 1.0,
         rounding: Default::default(),
         weak_bg_fill: Default::default(),

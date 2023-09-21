@@ -1,12 +1,18 @@
-use std::sync::Arc;
-use tokio::sync::Mutex;
-use bluer::gatt::local::{Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError};
+use bluer::gatt::local::{
+    Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError,
+};
+use bluer::Uuid;
 use futures::channel::mpsc;
 use futures::{FutureExt, SinkExt};
-use bluer::Uuid;
 use lipl_display_common::Message;
+use std::sync::Arc;
+use tokio::sync::Mutex;
 
-pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u8>>>, sender: mpsc::Sender<Message>) -> Characteristic {
+pub fn write_no_response_characteristic(
+    uuid: Uuid,
+    value_write: Arc<Mutex<Vec<u8>>>,
+    sender: mpsc::Sender<Message>,
+) -> Characteristic {
     Characteristic {
         uuid,
         write: Some(CharacteristicWrite {
@@ -21,9 +27,8 @@ pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u
                     *value = new_value;
 
                     if let Ok(received) = std::str::from_utf8(&send_value) {
-                        let message = 
-                            Message::try_from((received, uuid))
-                            .map_err(|_| ReqError::Failed)?;
+                        let message =
+                            Message::try_from((received, uuid)).map_err(|_| ReqError::Failed)?;
                         s.send(message).await.map_err(|_| ReqError::Failed)?;
                     }
                     Ok(())
@@ -32,7 +37,7 @@ pub fn write_no_response_characteristic(uuid: Uuid, value_write: Arc<Mutex<Vec<u
             })),
             ..Default::default()
         }),
-        
+
         ..Default::default()
     }
 }

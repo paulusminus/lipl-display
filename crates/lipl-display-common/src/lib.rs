@@ -1,5 +1,5 @@
-use std::str::FromStr;
 use std::convert::TryFrom;
+use std::str::FromStr;
 use uuid::{uuid, Uuid};
 
 mod error;
@@ -26,7 +26,6 @@ pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c6
 /// Uuid identifying the command characteristic on the gatt peripheral
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
 
-
 pub trait BackgroundThread {
     fn stop(&mut self);
 }
@@ -46,7 +45,7 @@ impl std::fmt::Display for Message {
             "{}",
             match self {
                 Message::Part(text) => format!("Text: {}", text),
-                Message::Status(status) => format!("Status: {}", status ),
+                Message::Status(status) => format!("Status: {}", status),
                 Message::Command(command) => format!("Command: {}", command),
             }
         )
@@ -75,20 +74,17 @@ impl std::fmt::Display for Command {
                 Command::Increase => "+",
                 Command::Decrease => "-",
                 Command::Exit => "e",
-                Command::Poweroff => "o", 
+                Command::Poweroff => "o",
             }
         )
     }
 }
 
 impl FromStr for Command {
-    type Err = error::Error; 
+    type Err = error::Error;
     fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
-
         if s.is_empty() {
-            return Err(
-                error::Error::GattCharaceristicValueParsing("Empty".into())
-            );
+            return Err(error::Error::GattCharaceristicValueParsing("Empty".into()));
         }
 
         if s == "+" {
@@ -115,14 +111,11 @@ impl FromStr for Command {
             return Ok(Command::Exit);
         }
 
-        Err(
-            error::Error::GattCharaceristicValueParsing(
-                format!("Unknown command {s} received")
-            )
-        )
+        Err(error::Error::GattCharaceristicValueParsing(format!(
+            "Unknown command {s} received"
+        )))
     }
 }
-
 
 impl TryFrom<(&str, Uuid)> for Message {
     type Error = Error;
@@ -168,26 +161,24 @@ impl LiplScreen {
 impl HandleMessage for LiplScreen {
     fn handle_message(&self, message: Message) -> Self {
         match message {
-            Message::Command(command) => {
-                match command {
-                    Command::Dark => Self {
-                        dark: true,
-                        ..self.clone()
-                    },
-                    Command::Light => Self {
-                        dark: false,
-                        ..self.clone()
-                    },
-                    Command::Decrease => Self {
-                        font_size: (self.font_size - 1.0).max(2.0),
-                        ..self.clone()
-                    },
-                    Command::Increase => Self {
-                        font_size: self.font_size + 1.0,
-                        ..self.clone()
-                    },
-                    _ => self.clone(),
-                }
+            Message::Command(command) => match command {
+                Command::Dark => Self {
+                    dark: true,
+                    ..self.clone()
+                },
+                Command::Light => Self {
+                    dark: false,
+                    ..self.clone()
+                },
+                Command::Decrease => Self {
+                    font_size: (self.font_size - 1.0).max(2.0),
+                    ..self.clone()
+                },
+                Command::Increase => Self {
+                    font_size: self.font_size + 1.0,
+                    ..self.clone()
+                },
+                _ => self.clone(),
             },
             Message::Part(part) => Self {
                 text: part,
