@@ -2,7 +2,7 @@ use std::error::Error;
 
 use femtovg::{renderer::OpenGl, Canvas, Color, FontId, Paint};
 use glutin::surface::GlSurface;
-use lipl_display_common::{BackgroundThread, Command, Part, HandleMessage, Message};
+use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, Message};
 use lipl_gatt_bluer::ListenBluer;
 use log::error;
 use winit::{
@@ -56,7 +56,7 @@ fn run(
 
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
-    let mut part = Part::new(true, "Even geduld a.u.b. ...".to_owned(), DEFAULT_FONT_SIZE);
+    let mut screen = LiplScreen::new(true, "Even geduld a.u.b. ...".to_owned(), DEFAULT_FONT_SIZE);
 
     el.run(move |event, _, control_flow| {
         control_flow.set_wait();
@@ -74,7 +74,7 @@ fn run(
                     control_flow.set_exit();
                 } 
                 else { 
-                    part = part.handle_message(message);
+                    screen = screen.handle_message(message);
                     window.request_redraw();
                 }
             },
@@ -97,7 +97,7 @@ fn run(
                 _ => (),
             },
             Event::RedrawRequested(_) => {
-                draw_paragraph(&mut canvas, font_id, &part, &window);
+                draw_paragraph(&mut canvas, font_id, &screen, &window);
                 canvas.flush();
                 surface.swap_buffers(&context).unwrap();
             },
@@ -107,7 +107,7 @@ fn run(
     });
 }
 
-fn draw_paragraph(canvas: &mut Canvas<OpenGl>, font_id: FontId, part: &Part, window: &Window) {
+fn draw_paragraph(canvas: &mut Canvas<OpenGl>, font_id: FontId, part: &LiplScreen, window: &Window) {
     let dpi_factor = window.scale_factor();
     let size = window.inner_size();
     canvas.set_size(size.width, size.height, dpi_factor as f32);

@@ -147,14 +147,14 @@ impl TryFrom<(&str, Uuid)> for Message {
 }
 
 #[derive(Clone)]
-pub struct Part {
+pub struct LiplScreen {
     pub text: String,
     pub status: String,
     pub dark: bool,
     pub font_size: f32,
 }
 
-impl Part {
+impl LiplScreen {
     pub fn new(dark: bool, initial_text: String, initial_font_size: f32) -> Self {
         Self {
             text: initial_text,
@@ -165,7 +165,7 @@ impl Part {
     }
 }
 
-impl HandleMessage for Part {
+impl HandleMessage for LiplScreen {
     fn handle_message(&self, message: Message) -> Self {
         match message {
             Message::Command(command) => {

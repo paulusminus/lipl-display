@@ -31,7 +31,7 @@ pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[pin_project(PinnedDrop)]
-struct ValuesStream {
+struct MessageStream {
     values_tx: futures::channel::mpsc::Sender<Message>,
     #[pin]
     values_rx: futures::channel::mpsc::Receiver<Message>,
@@ -40,7 +40,7 @@ struct ValuesStream {
 }
 
 #[pinned_drop]
-impl PinnedDrop for ValuesStream {
+impl PinnedDrop for MessageStream {
     fn drop(self: Pin<&mut Self>) {
         let this = self.project();
         if let Some(handle) = this.adv_handle.take() {
@@ -54,7 +54,7 @@ impl PinnedDrop for ValuesStream {
     }
 }
 
-impl futures::Stream for ValuesStream {
+impl futures::Stream for MessageStream {
     type Item = Message;
     fn poll_next(self: std::pin::Pin<&mut Self>, cx: &mut std::task::Context<'_>) -> std::task::Poll<Option<Self::Item>> {
         self.project().values_rx.poll_next(cx)
@@ -195,7 +195,6 @@ pub async fn listen_stream() -> Result<impl Stream<Item=Message>> {
 
     let session = bluer::Session::new().await?;
     let adapter = session.default_adapter().await?;
-    // let adapter = first_adapter().await?; // not needed since new version bluer
     trace!("Bluetooth adapter {} found", adapter.name());
 
     let adv_handle = advertise(&adapter).await?;
@@ -226,7 +225,7 @@ pub async fn listen_stream() -> Result<impl Stream<Item=Message>> {
     let app_handle = adapter.serve_gatt_application(app).await?;
 
     Ok(
-        ValuesStream {
+        MessageStream {
             values_tx,
             values_rx,
             adv_handle: Some(adv_handle),
