@@ -104,8 +104,7 @@ impl ListenBluer {
     pub fn new(callback: impl Fn(Message) + Send + 'static) -> Self {
         let (tx, mut rx) = tokio::sync::oneshot::channel::<()>();
         let thread = std::thread::spawn(move || {
-            let runtime = 
-            tokio::runtime::Builder::new_current_thread()
+            let runtime = tokio::runtime::Builder::new_current_thread()
                 .enable_all()
                 .build()
                 .expect("Unable to create tokio runtime");
