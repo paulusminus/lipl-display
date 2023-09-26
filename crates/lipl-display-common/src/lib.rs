@@ -1,3 +1,5 @@
+#![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
+
 use std::convert::TryFrom;
 use std::str::FromStr;
 use uuid::{uuid, Uuid};
@@ -9,7 +11,7 @@ pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
 pub trait HandleMessage {
-    fn handle_message(&self, message: Message) -> Self;
+    fn handle_message(&mut self, message: Message);
 }
 
 /// Uuid identifying the display service on the gatt peripheral
@@ -139,6 +141,8 @@ impl TryFrom<(&str, Uuid)> for Message {
     }
 }
 
+/// Model holding all that is needed to draw a screen
+///
 #[derive(Clone)]
 pub struct LiplScreen {
     pub text: String,
@@ -148,9 +152,19 @@ pub struct LiplScreen {
 }
 
 impl LiplScreen {
-    pub fn new(dark: bool, initial_text: String, initial_font_size: f32) -> Self {
+    /// LiplScreen constructor
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use lipl_display_common::LiplScreen;
+    /// let screen = LiplScreen::new(true, "Just a moment ...", 30.0);
+    /// # assert!(screen.dark);
+    /// # assert_eq!(screen.font_size, 30.0);
+    /// ```
+    pub fn new(dark: bool, initial_text: &str, initial_font_size: f32) -> Self {
         Self {
-            text: initial_text,
+            text: initial_text.to_owned(),
             status: "".to_owned(),
             dark,
             font_size: initial_font_size,
@@ -158,36 +172,70 @@ impl LiplScreen {
     }
 }
 
+// impl std::ops::AddAssign<Message> for LiplScreen {
+//     fn add_assign(&mut self, message: Message) {
+//         match message {
+//             Message::Command(command) => match command {
+//                 Command::Dark => {
+//                     self.dark = true;
+//                 },
+//                 Command::Light => {
+//                     self.dark = false;
+//                 },
+//                 Command::Decrease => {
+//                     self.font_size = (self.font_size - 1.0).max(2.0);
+//                 },
+//                 Command::Increase => {
+//                     self.font_size = (self.font_size + 1.0).min(100.0);
+//                 },
+//                 _ => {}
+//             },
+//             Message::Part(part) => {
+//                 self.text = part;
+//             },
+//             Message::Status(status) => {
+//                 self.status = status;
+//             },
+//         }
+//     }
+// }
+
 impl HandleMessage for LiplScreen {
-    fn handle_message(&self, message: Message) -> Self {
+    //! Create a new screen with an update applied
+    //!
+    //! # Example
+    //!
+    //! ```
+    //! use lipl_display_common::{Command, LiplScreen, HandleMessage, Message};
+    //! let mut screen = LiplScreen::new(true, "", 40.0);
+    //! assert!(screen.dark);
+    //! screen.handle_message(Message::Command(Command::Light));
+    //! assert!(!screen.dark);
+    //! ```
+    //!
+    fn handle_message(&mut self, message: Message) {
         match message {
             Message::Command(command) => match command {
-                Command::Dark => Self {
-                    dark: true,
-                    ..self.clone()
-                },
-                Command::Light => Self {
-                    dark: false,
-                    ..self.clone()
-                },
-                Command::Decrease => Self {
-                    font_size: (self.font_size - 1.0).max(2.0),
-                    ..self.clone()
-                },
-                Command::Increase => Self {
-                    font_size: self.font_size + 1.0,
-                    ..self.clone()
-                },
-                _ => self.clone(),
+                Command::Dark => {
+                    self.dark = true;
+                }
+                Command::Light => {
+                    self.dark = false;
+                }
+                Command::Decrease => {
+                    self.font_size = (self.font_size - 1.0).max(2.0);
+                }
+                Command::Increase => {
+                    self.font_size = (self.font_size + 1.0).min(100.0);
+                }
+                _ => {}
             },
-            Message::Part(part) => Self {
-                text: part,
-                ..self.clone()
-            },
-            Message::Status(status) => Self {
-                status,
-                ..self.clone()
-            },
+            Message::Part(part) => {
+                self.text = part;
+            }
+            Message::Status(status) => {
+                self.status = status;
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 # login-poweroff-reboot
 
 This library create exports two functions, one for rebooting the machine, one for powering off the machine.
-
-It use dbus messages for logind under the hood.
+It use dbus messages for logind under the hood. Make sure system-logind.service is running.

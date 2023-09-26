@@ -1,3 +1,1 @@
-# lipl-display-common
-
-This library contains shared types used in other lipl-display crates.
+This library provides types used in other lipl-display crates.

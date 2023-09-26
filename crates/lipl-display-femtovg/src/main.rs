@@ -54,7 +54,7 @@ fn run(
 
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
-    let mut screen = LiplScreen::new(true, "Even geduld a.u.b. ...".to_owned(), DEFAULT_FONT_SIZE);
+    let mut screen = LiplScreen::new(true, "Even geduld a.u.b. ...", DEFAULT_FONT_SIZE);
 
     el.run(move |event, _, control_flow| {
         control_flow.set_wait();
@@ -71,7 +71,7 @@ fn run(
                     gatt.stop();
                     control_flow.set_exit();
                 } else {
-                    screen = screen.handle_message(message);
+                    screen.handle_message(message);
                     window.request_redraw();
                 }
             }
