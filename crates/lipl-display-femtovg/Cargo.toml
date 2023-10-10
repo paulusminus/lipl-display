@@ -6,7 +6,7 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-version.workspace = true
+version = "0.4.1"
 
 [dependencies]
 femtovg = { version = "0.7", default-features = false }
