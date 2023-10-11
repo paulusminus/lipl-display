@@ -1,13 +1,13 @@
 use std::error::Error;
 use std::time::Duration;
 
-use lipl_display_common::{Part, Message, HandleMessage};
-use sdl2::VideoSubsystem;
+use lipl_display_common::{HandleMessage, Message, Part};
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use sdl2::render::TextureQuery;
+use sdl2::VideoSubsystem;
 
 const FONT_FILE: &str = "/usr/share/fonts/google-roboto/Roboto-Regular.ttf";
 
@@ -41,12 +41,9 @@ fn create_draw(video_subsys: VideoSubsystem) -> Result<impl FnMut(Message), Box<
     let font = ttf_context.load_font(FONT_FILE, 25)?;
 
     // render a surface, and convert it to a texture bound to the canvas
-    let surface = font
-        .render("Hello Rust!")
-        .blended(BLACK)?;
+    let surface = font.render("Hello Rust!").blended(BLACK)?;
 
-    let texture = texture_creator
-        .create_texture_from_surface(&surface)?;
+    let texture = texture_creator.create_texture_from_surface(&surface)?;
 
     canvas.set_draw_color(WHITE);
     canvas.clear();
@@ -61,17 +58,14 @@ fn create_draw(video_subsys: VideoSubsystem) -> Result<impl FnMut(Message), Box<
         SCREEN_WIDTH - padding,
         SCREEN_HEIGHT - padding,
     );
-    
+
     canvas.copy(&texture, None, Some(target))?;
     canvas.present();
-    
-    Ok(
-        move |message| {
-            part = part.handle_message(message);
-        }
-    )
-}
 
+    Ok(move |message| {
+        part = part.handle_message(message);
+    })
+}
 
 // Scale fonts to a reasonable size when they're too big (though they might look less smooth)
 fn get_centered_rect(rect_width: u32, rect_height: u32, cons_width: u32, cons_height: u32) -> Rect {
@@ -109,7 +103,6 @@ fn run() -> Result<(), Box<dyn Error>> {
         }
     });
 
-
     let mut draw = create_draw(sdl_context.video()?)?;
 
     for event in sdl_context.event_pump()?.wait_iter() {
@@ -117,8 +110,7 @@ fn run() -> Result<(), Box<dyn Error>> {
             if let Some(message) = event.as_user_event_type::<Message>() {
                 draw(message);
             }
-        }
-        else {
+        } else {
             match event {
                 Event::KeyDown {
                     keycode: Some(Keycode::Escape),
@@ -128,7 +120,7 @@ fn run() -> Result<(), Box<dyn Error>> {
                 _ => {}
             }
         }
-    };
+    }
 
     drop(gatt);
     std::thread::sleep(Duration::from_secs(1));
