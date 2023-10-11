@@ -4,6 +4,7 @@ members = [
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
     "crates/lipl-display-gtk",
+    "crates/lipl-display-sdl2",
     "crates/lipl-display-slint",
     "crates/lipl-gatt-bluer",
     "crates/login-poweroff-reboot"
