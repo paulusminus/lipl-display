@@ -11,7 +11,7 @@ version = "0.4.0"
 [dependencies]
 femtovg = { version = "0.7", default-features = false }
 glutin = { version = "0.30", default-features = false }
-glutin-winit = { version = "0.3", default-features = false, features = ["egl", "wayland"] }
+glutin-winit = { version = "0.4", default-features = false, features = ["egl", "wayland"] }
 lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
 log = "0.4"
