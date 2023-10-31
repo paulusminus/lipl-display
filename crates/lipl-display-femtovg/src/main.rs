@@ -21,7 +21,7 @@ mod helpers;
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
-    let event_loop = EventLoopBuilder::<Message>::with_user_event().build();
+    let event_loop = EventLoopBuilder::<Message>::with_user_event().build()?;
     let (canvas, window, context, surface) = helpers::create_window("Text demo", &event_loop);
     run(canvas, event_loop, context, surface, window)
 }
@@ -44,21 +44,21 @@ fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
 
 fn run(
     mut canvas: Canvas<OpenGl>,
-    el: EventLoop<Message>,
+    event_loop: EventLoop<Message>,
     context: glutin::context::PossiblyCurrentContext,
     surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
     window: Window,
 ) -> Result<(), Box<dyn Error>> {
-    let proxy = el.create_proxy();
+    let proxy = event_loop.create_proxy();
     let mut gatt = ListenBluer::new(create_callback(proxy));
 
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
     let mut screen = LiplScreen::new(true, "Even geduld a.u.b. ...", DEFAULT_FONT_SIZE);
 
-    el.run(move |event, _, control_flow| {
-        control_flow.set_wait();
+    event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
+    event_loop.run(move |event, window_target| {
         match event {
             Event::UserEvent(message) => {
                 let mut exit = false;
@@ -69,15 +69,15 @@ fn run(
                 }
                 if exit {
                     gatt.stop();
-                    control_flow.set_exit();
+                    window_target.exit();
                 } else {
                     screen.handle_message(message);
                     window.request_redraw();
                 }
             }
-            Event::LoopDestroyed => {
+            Event::LoopExiting => {
                 gatt.stop();
-                control_flow.set_exit();
+                window_target.exit();
             }
             Event::WindowEvent { ref event, .. } => match event {
                 WindowEvent::Resized(physical_size) => {
@@ -89,19 +89,20 @@ fn run(
                 }
                 WindowEvent::CloseRequested => {
                     gatt.stop();
-                    control_flow.set_exit();
+                    window_target.exit();
+                }
+                WindowEvent::RedrawRequested => {
+                    draw_paragraph(&mut canvas, font_id, &screen, &window);
+                    canvas.flush();
+                    surface.swap_buffers(&context).unwrap();            
+                    
                 }
                 _ => (),
             },
-            Event::RedrawRequested(_) => {
-                draw_paragraph(&mut canvas, font_id, &screen, &window);
-                canvas.flush();
-                surface.swap_buffers(&context).unwrap();
-            }
-            Event::MainEventsCleared => window.request_redraw(),
             _ => (),
         }
-    });
+    })?;
+    Ok(())
 }
 
 fn draw_paragraph(

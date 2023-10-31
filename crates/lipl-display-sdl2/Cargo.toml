@@ -1,9 +1,9 @@
 [package]
-name = "lipl-display-sdl2"
 authors.workspace = true
 edition.workspace = true
 homepage.workspace = true
 license.workspace = true
+name = "lipl-display-sdl2"
 repository.workspace = true
 version.workspace = true
 

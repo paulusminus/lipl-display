@@ -54,13 +54,13 @@ pub fn create_window<T: 'static>(
     let window = window.unwrap();
     window.set_cursor_visible(false);
 
-    let raw_window_handle = Some(window.raw_window_handle());
+    let raw_window_handle = window.raw_window_handle();
     let gl_display = gl_config.display();
 
-    let context_attributes = ContextAttributesBuilder::new().build(raw_window_handle);
+    let context_attributes = ContextAttributesBuilder::new().build(Some(raw_window_handle));
     let fallback_context_attributes = ContextAttributesBuilder::new()
         .with_context_api(ContextApi::Gles(None))
-        .build(raw_window_handle);
+        .build(Some(raw_window_handle));
     let mut not_current_gl_context = Some(unsafe {
         gl_display
             .create_context(&gl_config, &context_attributes)
