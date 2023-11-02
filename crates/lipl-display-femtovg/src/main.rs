@@ -114,8 +114,8 @@ fn draw_paragraph(
     let dpi_factor = window.scale_factor();
     let size = window.inner_size();
     canvas.set_size(size.width, size.height, dpi_factor as f32);
-    let x = 0.05 * canvas.width();
-    let mut y = 0.05 * canvas.height() + part.font_size;
+    let x = 0.05 * canvas.width() as f32;
+    let mut y = 0.05 * canvas.height() as f32 + part.font_size;
 
     let (fg_color, bg_color) = get_colors(part.dark);
     canvas.clear_rect(0, 0, size.width, size.height, bg_color);
@@ -128,7 +128,7 @@ fn draw_paragraph(
     let width = canvas.width();
 
     let lines = canvas
-        .break_text_vec(width, &part.text, &paint)
+        .break_text_vec(width as f32, &part.text, &paint)
         .expect("Error while breaking text");
 
     for line_range in lines {
@@ -137,7 +137,7 @@ fn draw_paragraph(
         }
     }
 
-    y = canvas.height() - font_metrics.height();
+    y = canvas.height() as f32 - font_metrics.height();
     match canvas.fill_text(x, y, &part.status, &paint) {
         Ok(_) => {}
         Err(e) => {
