@@ -58,49 +58,46 @@ fn run(
 
     event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
-    event_loop.run(move |event, window_target| {
-        match event {
-            Event::UserEvent(message) => {
-                let mut exit = false;
-                if let Message::Command(command) = &message {
-                    if command == &Command::Exit || command == &Command::Poweroff {
-                        exit = true
-                    }
-                }
-                if exit {
-                    gatt.stop();
-                    window_target.exit();
-                } else {
-                    screen.handle_message(message);
-                    window.request_redraw();
+    event_loop.run(move |event, window_target| match event {
+        Event::UserEvent(message) => {
+            let mut exit = false;
+            if let Message::Command(command) = &message {
+                if command == &Command::Exit || command == &Command::Poweroff {
+                    exit = true
                 }
             }
-            Event::LoopExiting => {
+            if exit {
+                gatt.stop();
+                window_target.exit();
+            } else {
+                screen.handle_message(message);
+                window.request_redraw();
+            }
+        }
+        Event::LoopExiting => {
+            gatt.stop();
+            window_target.exit();
+        }
+        Event::WindowEvent { ref event, .. } => match event {
+            WindowEvent::Resized(physical_size) => {
+                surface.resize(
+                    &context,
+                    physical_size.width.try_into().unwrap(),
+                    physical_size.height.try_into().unwrap(),
+                );
+            }
+            WindowEvent::CloseRequested => {
                 gatt.stop();
                 window_target.exit();
             }
-            Event::WindowEvent { ref event, .. } => match event {
-                WindowEvent::Resized(physical_size) => {
-                    surface.resize(
-                        &context,
-                        physical_size.width.try_into().unwrap(),
-                        physical_size.height.try_into().unwrap(),
-                    );
-                }
-                WindowEvent::CloseRequested => {
-                    gatt.stop();
-                    window_target.exit();
-                }
-                WindowEvent::RedrawRequested => {
-                    draw_paragraph(&mut canvas, font_id, &screen, &window);
-                    canvas.flush();
-                    surface.swap_buffers(&context).unwrap();            
-                    
-                }
-                _ => (),
-            },
+            WindowEvent::RedrawRequested => {
+                draw_paragraph(&mut canvas, font_id, &screen, &window);
+                canvas.flush();
+                surface.swap_buffers(&context).unwrap();
+            }
             _ => (),
-        }
+        },
+        _ => (),
     })?;
     Ok(())
 }
