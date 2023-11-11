@@ -11,10 +11,13 @@ export component LiplDisplay inherits Window {
     in property<bool> dark: false;
     in property<string> part: "";
     in property<string> status: "";
-    in property<int> fontsize: 40;
+    in-out property<int> fontsize: 40;
 
     VerticalBox {
-        padding: 0.05 * root.width;
+        padding-left: 0.03 * root.width;
+        padding-right: 0.03 * root.width;
+        padding-top: 0.03 * root.height;
+        padding-bottom: 0.03 * root.height;
         
         part:= Text {
             color: root.dark ? white : black;
@@ -23,7 +26,7 @@ export component LiplDisplay inherits Window {
         }
         status:= Text {
             color: root.dark ? white : black;
-            font-size: root.fontsize * 1px;
+            font-size: root.fontsize * 0.8 * 1px;
             text: "\{root.status}";
             height: 5%;
         }
