@@ -15,6 +15,7 @@ slint = { version = "1.2.2", default-features = false, features = ["std", "compa
 # slint = "1.2.0"
 lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
+login-poweroff-reboot = { version = "0.4.0", path = "../login-poweroff-reboot" }
 log = "0.4"
 env_logger = "0.10"
 

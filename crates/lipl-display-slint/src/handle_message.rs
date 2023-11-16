@@ -57,17 +57,21 @@ pub(crate) fn create_handle_message(ui_handle: Weak<LiplDisplay>) -> impl Fn(Mes
                         ui.set_fontsize(length - 2)
                     };
                 }) {
-                    error!("Failed to handle decrease command {}", error);
+                    error!("Failed to handle decrease command {error}");
                 }
             }
             Command::Exit => {
                 if let Err(error) = quit_event_loop() {
-                    error!("Failed to handle exit command {}", error);
+                    error!("Failed to handle exit command {error}");
                 }
             }
             Command::Poweroff => {
+                if let Err(error) = login_poweroff_reboot::poweroff(5000) {
+                    error!("Failed to send poweroff to systemd-logind: {error}");
+                }
+
                 if let Err(error) = quit_event_loop() {
-                    error!("Failed to handle exit command {}", error);
+                    error!("Failed to handle exit command {error}");
                 }
             }
         },
