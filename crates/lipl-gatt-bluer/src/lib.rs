@@ -86,6 +86,7 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
         manufacturer_data,
         discoverable: Some(true),
         local_name: Some(lipl_display_common::LOCAL_NAME.to_owned()),
+        tx_power: Some(8),
         ..Default::default()
     };
     let handle = adapter.advertise(le_advertisement).await?;
@@ -195,6 +196,13 @@ pub async fn listen_stream() -> Result<impl Stream<Item = Message>> {
     let session = bluer::Session::new().await?;
     let adapter = session.default_adapter().await?;
     trace!("Bluetooth adapter {} found", adapter.name());
+    let capabilities = adapter.supported_advertising_capabilities().await?;
+    if let Some(caps) = capabilities {
+        trace!("max advertisement length: {}", caps.max_advertisement_length);
+        trace!("max scan reponse length : {}", caps.max_scan_response_length);
+        trace!("max tx power: {}", caps.max_tx_power);
+        trace!("min tx power: {}", caps.min_tx_power);
+    }
 
     let adv_handle = advertise(&adapter).await?;
     trace!("Advertising started");
