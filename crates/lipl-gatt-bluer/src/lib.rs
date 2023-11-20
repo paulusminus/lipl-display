@@ -198,8 +198,14 @@ pub async fn listen_stream() -> Result<impl Stream<Item = Message>> {
     trace!("Bluetooth adapter {} found", adapter.name());
     let capabilities = adapter.supported_advertising_capabilities().await?;
     if let Some(caps) = capabilities {
-        trace!("max advertisement length: {}", caps.max_advertisement_length);
-        trace!("max scan reponse length : {}", caps.max_scan_response_length);
+        trace!(
+            "max advertisement length: {}",
+            caps.max_advertisement_length
+        );
+        trace!(
+            "max scan reponse length : {}",
+            caps.max_scan_response_length
+        );
         trace!("max tx power: {}", caps.max_tx_power);
         trace!("min tx power: {}", caps.min_tx_power);
     }
