@@ -1,0 +1,31 @@
+[Unit]
+Description=Lipl Display on tty1
+After=systemd-user-sessions.service plymouth-quit-wait.service getty-pre.target bluetooth.target
+After=rc-local.service
+
+Before=getty.target
+IgnoreOnIsolate=yes
+
+Conflicts=rescue.service getty@tty1.service 
+Before=rescue.service
+
+ConditionPathExists=/dev/tty0
+
+[Service]
+ExecStart=-/sbin/agetty --autologin lipl --noclear tty1 $TERM
+Type=idle
+Restart=always
+RestartSec=0
+UtmpIdentifier=tty1
+StandardInput=tty
+StandardOutput=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+IgnoreSIGPIPE=no
+SendSIGHUP=yes
+UnsetEnvironment=LANG LANGUAGE LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
+
+[Install]
+WantedBy=multi-user.target

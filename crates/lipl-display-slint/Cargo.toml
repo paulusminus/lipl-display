@@ -21,3 +21,16 @@ env_logger = "0.10"
 
 [build-dependencies]
 slint-build = "1.2.2"
+
+[package.metadata.deb]
+priority = "optional"
+section = "misc"
+depends = "libinput10, seatd, libgbm1, libxkbcommon0, libegl1, libfontconfig1, passwd"
+maintainer-scripts = "pkg/debian/"
+assets = [
+    ["../../target/aarch64-unknown-linux-gnu/release/lipl-display-slint", "/usr/bin/", "755"],
+]
+systemd-units = [ 
+    { unit-name = "lipl", unit-scripts = "pkg/common", enable = false },
+]
+

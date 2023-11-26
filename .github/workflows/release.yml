@@ -1,0 +1,30 @@
+name: Release lipl-display-slint for pi
+
+on:
+  push:
+    tags: "v*.*.*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: Swatinem/rust-cache@v2
+    - name: Install cross
+      run: cargo install cross
+    - name: Install cargo-deb
+      run: cargo install cargo-deb
+    - name: Build for aarch64
+      run: cross build --release -p lipl-display-slint --target aarch64-unknown-linux-gnu
+    - name: Build debian package
+      run: cargo-deb -v --no-build -p lipl-display-slint --target aarch64-unknown-linux-gnu
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "target/aarch64-unknown-linux-gnu/debian/*.deb"
+
