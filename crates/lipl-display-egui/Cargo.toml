@@ -10,7 +10,7 @@ version = "0.4.1"
 
 [dependencies]
 anyhow = "1"
-eframe = { version = "0.23", default-features = false, features = ["glow"] }
+eframe = { version = "0.24", default-features = false, features = ["glow"] }
 lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
 log = "0.4"
