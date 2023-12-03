@@ -19,8 +19,6 @@ jobs:
     - uses: Swatinem/rust-cache@v2
     - name: Install cross
       run: cargo install cross
-    - name: Install cargo-deb
-      run: cargo install cargo-deb
     - name: Format
       run: cargo fmt --check
     - name: Clippy

@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-gatt-zbus"
 repository.workspace = true
-version.workspace = true
+version = "0.4.0"
 
 [dependencies]
 async-channel = "1.6"

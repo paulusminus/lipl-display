@@ -8,7 +8,7 @@ mod visuals;
 use std::sync::mpsc::{Receiver, Sender};
 
 use eframe::{
-    egui::{CentralPanel, Context, TopBottomPanel},
+    egui::{CentralPanel, Context, TopBottomPanel, ViewportCommand},
     run_native, App, Frame, NativeOptions,
 };
 use lipl_display::LiplDisplay;
@@ -51,7 +51,7 @@ impl LiplDisplay {
 }
 
 impl App for LiplDisplay {
-    fn update(&mut self, ctx: &Context, frame: &mut Frame) {
+    fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
         ctx.request_repaint();
 
         if let Ok(value) = self.receiver.try_recv() {
@@ -82,10 +82,10 @@ impl App for LiplDisplay {
                         };
                     }
                     Command::Exit => {
-                        frame.close();
+                        ctx.send_viewport_cmd(ViewportCommand::Close);
                     }
                     Command::Poweroff => {
-                        frame.close();
+                        ctx.send_viewport_cmd(ViewportCommand::Close);
                     }
                 },
             };
@@ -101,8 +101,7 @@ impl App for LiplDisplay {
 
 fn fullscreen() -> NativeOptions {
     NativeOptions {
-        maximized: true,
-        decorated: false,
+        viewport: eframe::egui::ViewportBuilder::default().with_fullscreen(true),
         ..Default::default()
     }
 }

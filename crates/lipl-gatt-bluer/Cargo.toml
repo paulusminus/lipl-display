@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-gatt-bluer"
 repository.workspace = true
-version.workspace = true
+version = "0.4.0"
 
 [dependencies]
 bluer = { version = "0.16", features = ["bluetoothd"] }
