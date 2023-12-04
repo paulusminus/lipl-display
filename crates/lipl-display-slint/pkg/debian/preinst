@@ -34,6 +34,9 @@ install|upgrade)
       fi
   fi
 
+  mkdir -p /var/log/lipl
+  chown lipl:root /var/log/lipl
+
   ;;
 esac  
 

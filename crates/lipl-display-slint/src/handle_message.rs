@@ -1,7 +1,7 @@
 use crate::LiplDisplay;
 use lipl_display_common::{Command, Message};
-use log::error;
 use slint::{invoke_from_event_loop, quit_event_loop, Weak};
+use tracing::error;
 
 pub(crate) fn create_handle_message(ui_handle: Weak<LiplDisplay>) -> impl Fn(Message) {
     move |message| match message {

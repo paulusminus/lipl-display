@@ -6,21 +6,23 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-version = "0.4.0"
+version = "0.4.1"
 build = "build.rs"
 
 [dependencies]
-slint = { version = "1.2.2", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
-# slint = { version = "1.2.0", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
-# slint = "1.2.0"
+slint = { version = "1.3", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
+# slint = { version = "1.3", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
+# slint = "1.3"
 lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
 login-poweroff-reboot = { version = "0.4.0", path = "../login-poweroff-reboot" }
-log = "0.4"
-env_logger = "0.10"
+tracing = "0.1.40"
+tracing-log = "0.2.0"
+tracing-appender = "0.2.3"
+tracing-subscriber = { version = "0.3.18", features = ["registry"] }
 
 [build-dependencies]
-slint-build = "1.2.2"
+slint-build = "1.3"
 
 [package.metadata.deb]
 priority = "optional"
