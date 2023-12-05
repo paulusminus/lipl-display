@@ -1,41 +1,29 @@
 #!/bin/sh
 set -e
 
-LIPL_HOME=/usr/bin
-LIPL_USER=lipl
-LIPL_NAME="Lipl Display User"
-ADDGROUP="video"
+USER=lipl
 
 case "$1" in
 install|upgrade)
   # 1. create user if not existing
-  if ! getent passwd | grep -q "^$LIPL_USER:"; then
-    echo -n "Adding system user $LIPL_USER.."
+  if ! getent passwd | grep -q "^${USER}:"; then
+    echo -n "Adding user ${USER}.."
     adduser --quiet \
-            --system \
+            --comment "Lipl Display User" \
             --no-create-home \
+            --home "/usr/bin" \
+            --shell "/usr/bin/lipl-display-slint" \
             --disabled-password \
-            $LIPL_USER 2>/dev/null || true
+            ${USER} 
     echo "..done"
   fi
 
-  # 2. adjust passwd entry
-  usermod -c "$LIPL_NAME" \
-          -d $LIPL_HOME \
-          -s /usr/bin/lipl-display-slint \
-             $LIPL_USER
+  # 2. Add user lipl to video group
+  usermod --append --groups video lipl
 
-  # 3. Add the user to the ADDGROUP group
-  if test -n $ADDGROUP
-  then
-      if ! groups $LIPL_USER | cut -d: -f2 | \
-         grep -qw $LIPLGROUP; then
-           adduser $LIPL_USER $ADDGROUP
-      fi
-  fi
-
-  mkdir -p /var/log/lipl
-  chown lipl:root /var/log/lipl
+  # 3. Create a directory for storing log files
+  mkdir -p /var/log/${USER}
+  chown ${USER}:${USER} /var/log/${USER}
 
   ;;
 esac  
