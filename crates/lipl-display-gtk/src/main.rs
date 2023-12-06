@@ -73,6 +73,11 @@ fn build_ui(application: &gtk::Application) -> Result<()> {
                     window_clone.close();
                     trace!("Poweroff");
                 }
+                Command::Wait => {
+                    app_window.set_status(lipl_display_common::WAIT_MESSAGE);
+                    app_window.set_text("");
+                    trace!("Status Wait");
+                }
             },
         }
 

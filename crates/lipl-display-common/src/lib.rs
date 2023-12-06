@@ -28,6 +28,18 @@ pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c6
 /// Uuid identifying the command characteristic on the gatt peripheral
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
 
+pub const WAIT_MESSAGE: &str = "Even geduld a.u.b. ...";
+
+pub const MESSAGES: &[(&str, Command); 7] = &[
+    ("d", Command::Dark),
+    ("l", Command::Light),
+    ("+", Command::Increase),
+    ("-", Command::Decrease),
+    ("?", Command::Wait),
+    ("e", Command::Exit),
+    ("o", Command::Poweroff),
+];
+
 pub trait BackgroundThread {
     fn stop(&mut self);
 }
@@ -63,6 +75,7 @@ pub enum Command {
     Decrease,
     Light,
     Dark,
+    Wait,
 }
 
 impl std::fmt::Display for Command {
@@ -70,14 +83,7 @@ impl std::fmt::Display for Command {
         write!(
             f,
             "{}",
-            match self {
-                Command::Dark => "d",
-                Command::Light => "l",
-                Command::Increase => "+",
-                Command::Decrease => "-",
-                Command::Exit => "e",
-                Command::Poweroff => "o",
-            }
+            MESSAGES.iter().find(|s| &s.1 == self).map(|s| s.0).unwrap()
         )
     }
 }
@@ -85,37 +91,13 @@ impl std::fmt::Display for Command {
 impl FromStr for Command {
     type Err = error::Error;
     fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
-        if s.is_empty() {
-            return Err(error::Error::GattCharaceristicValueParsing("Empty".into()));
-        }
-
-        if s == "+" {
-            return Ok(Command::Increase);
-        }
-
-        if s == "-" {
-            return Ok(Command::Decrease);
-        }
-
-        if s == "o" {
-            return Ok(Command::Poweroff);
-        }
-
-        if s == "l" {
-            return Ok(Command::Light);
-        }
-
-        if s == "d" {
-            return Ok(Command::Dark);
-        }
-
-        if s == "e" {
-            return Ok(Command::Exit);
-        }
-
-        Err(error::Error::GattCharaceristicValueParsing(format!(
-            "Unknown command {s} received"
-        )))
+        MESSAGES
+            .iter()
+            .find(|t| t.0 == s)
+            .map(|t| t.1.clone())
+            .ok_or(error::Error::GattCharaceristicValueParsing(
+                "Invalid command".to_owned(),
+            ))
     }
 }
 
@@ -172,34 +154,6 @@ impl LiplScreen {
     }
 }
 
-// impl std::ops::AddAssign<Message> for LiplScreen {
-//     fn add_assign(&mut self, message: Message) {
-//         match message {
-//             Message::Command(command) => match command {
-//                 Command::Dark => {
-//                     self.dark = true;
-//                 },
-//                 Command::Light => {
-//                     self.dark = false;
-//                 },
-//                 Command::Decrease => {
-//                     self.font_size = (self.font_size - 1.0).max(2.0);
-//                 },
-//                 Command::Increase => {
-//                     self.font_size = (self.font_size + 1.0).min(100.0);
-//                 },
-//                 _ => {}
-//             },
-//             Message::Part(part) => {
-//                 self.text = part;
-//             },
-//             Message::Status(status) => {
-//                 self.status = status;
-//             },
-//         }
-//     }
-// }
-
 impl HandleMessage for LiplScreen {
     //! Create a new screen with an update applied
     //!
@@ -228,7 +182,12 @@ impl HandleMessage for LiplScreen {
                 Command::Increase => {
                     self.font_size = (self.font_size + 1.0).min(100.0);
                 }
-                _ => {}
+                Command::Wait => {
+                    self.text = String::new();
+                    self.status = WAIT_MESSAGE.to_owned();
+                }
+                Command::Exit => {}
+                Command::Poweroff => {}
             },
             Message::Part(part) => {
                 self.text = part;
@@ -236,6 +195,22 @@ impl HandleMessage for LiplScreen {
             Message::Status(status) => {
                 self.status = status;
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::{Command, MESSAGES};
+
+    #[test]
+    fn parse() {
+        for message in MESSAGES {
+            assert_eq!(message.0.parse::<Command>().unwrap(), message.1);
+        }
+
+        for message in MESSAGES {
+            assert_eq!(message.1.to_string(), message.0.to_string());
         }
     }
 }

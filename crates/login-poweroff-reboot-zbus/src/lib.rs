@@ -21,7 +21,7 @@ login-poweroff-reboot-zbus = { git = "git://paulmin.nl/rust/login-poweroff-reboo
 mod login_manager;
 
 use std::time::{SystemTime, UNIX_EPOCH};
-use zbus::blocking::{Connection};
+use zbus::blocking::Connection;
 
 use login_manager::ManagerProxyBlocking;
 
@@ -82,3 +82,8 @@ pub fn poweroff(delay_milliseconds: u64) -> zbus::Result<()> {
 pub fn reboot(delay_milliseconds: u64) -> zbus::Result<()> {
     shutdown(delay_milliseconds, REBOOT)
 }
+
+pub fn cancel_shutdown() -> zbus::Result<bool> {
+    manager(&Connection::system()?)?.cancel_shutdown()
+}
+

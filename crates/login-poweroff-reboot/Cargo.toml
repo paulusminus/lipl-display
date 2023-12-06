@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "login-poweroff-reboot"
 repository.workspace = true
-version = "0.4.0"
+version.workspace = true
 
 [dependencies]
 dbus = "0.9"

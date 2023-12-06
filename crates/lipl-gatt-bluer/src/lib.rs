@@ -64,15 +64,6 @@ pub fn create_runtime() -> Result<tokio::runtime::Runtime> {
         .map_err(Error::Common)
 }
 
-// async fn first_adapter() -> Result<bluer::Adapter> {
-//     let session = bluer::Session::new().await?;
-//     let adapter_names = session.adapter_names().await?;
-//     let adapter_name = adapter_names.first().ok_or(lipl_display_common::Error::BluetoothAdapter)?;
-//     let adapter: bluer::Adapter = session.adapter(adapter_name)?;
-//     adapter.set_powered(true).await?;
-//     Ok(adapter)
-// }
-
 async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
     let mut manufacturer_data = BTreeMap::new();
     manufacturer_data.insert(
@@ -94,9 +85,12 @@ async fn advertise(adapter: &bluer::Adapter) -> Result<AdvertisementHandle> {
 }
 
 pub struct ListenBluer {
-    // callback: Box<dyn Fn(Message) + Send + 'static>,
     sender: Option<tokio::sync::oneshot::Sender<()>>,
     thread: Option<JoinHandle<()>>,
+}
+
+fn wait() -> impl Stream<Item = Message> {
+    futures::stream::once(async { Message::Command(lipl_display_common::Command::Wait) })
 }
 
 impl ListenBluer {
@@ -109,9 +103,11 @@ impl ListenBluer {
                 .expect("Unable to create tokio runtime");
 
             runtime.block_on(async move {
-                let mut s = listen_stream()
-                    .await
-                    .expect("Failed to start Gatt peripheral")
+                let mut s = wait().chain(
+                        listen_stream()
+                        .await
+                        .expect("Failed to start Gatt peripheral")    
+                    )
                     .boxed();
                 loop {
                     tokio::select! {
@@ -170,24 +166,6 @@ impl BackgroundThread for ListenBluer {
         }
     }
 }
-
-/// Start an extra thread that starts the gatt peripheral advertising included
-// pub fn listen_background(cb: impl Fn(Message) -> Result<()> + Send + 'static) {
-//     std::thread::spawn(move || {
-//         let runtime = tokio::runtime::Builder::new_current_thread().enable_all().build().map_err(lipl_display_common::Error::IO)?;
-
-//         runtime.block_on(async move {
-//             let mut s = listen_stream().await?.boxed();
-//             while let Some(message) = s.next().await {
-//                 cb(message.clone())?;
-//                 if message == Message::Command(Command::Exit) || message == Message::Command(Command::Poweroff) {
-//                     break;
-//                 }
-//             }
-//             Ok::<(), Error>(())
-//         })
-//     });
-// }
 
 /// Used in flutter version
 pub async fn listen_stream() -> Result<impl Stream<Item = Message>> {

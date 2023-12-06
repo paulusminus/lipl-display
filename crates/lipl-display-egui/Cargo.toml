@@ -6,12 +6,12 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-display-egui"
 repository.workspace = true
-version = "0.4.2"
+version.workspace = true
 
 [dependencies]
 anyhow = "1"
 eframe = { version = "0.24", default-features = false, features = ["glow"] }
-lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
-lipl-gatt-bluer = { version = "0.4.0", path = "../lipl-gatt-bluer" }
+lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
+lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 log = "0.4"
 env_logger = "0.10"

@@ -6,12 +6,12 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-gatt-bluer"
 repository.workspace = true
-version = "0.4.0"
+version.workspace = true
 
 [dependencies]
 bluer = { version = "0.16", features = ["bluetoothd"] }
 futures = "0.3"
-lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
+lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 pin-project = "1.0"
 thiserror = "1.0"
 tokio = { version = "1", features = ["rt", "sync"] }

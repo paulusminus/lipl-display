@@ -2469,7 +2469,7 @@ checksum = "c4cd1a83af159aa67994778be9070f0ae1bd732942279cabb14f86f986a21456"
 
 [[package]]
 name = "lipl-display-common"
-version = "0.4.0"
+version = "0.4.3"
 dependencies = [
  "thiserror",
  "uuid",
@@ -2477,7 +2477,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-egui"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "anyhow",
  "eframe",
@@ -2489,7 +2489,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-femtovg"
-version = "0.4.0"
+version = "0.4.3"
 dependencies = [
  "env_logger",
  "femtovg",
@@ -2504,7 +2504,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-gtk"
-version = "0.4.0"
+version = "0.4.3"
 dependencies = [
  "anyhow",
  "glib",
@@ -2516,7 +2516,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-slint"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "anyhow",
  "lipl-display-common",
@@ -2535,7 +2535,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer"
-version = "0.4.0"
+version = "0.4.3"
 dependencies = [
  "bluer",
  "env_logger",
@@ -2566,7 +2566,7 @@ checksum = "b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f"
 
 [[package]]
 name = "login-poweroff-reboot"
-version = "0.4.0"
+version = "0.4.3"
 dependencies = [
  "dbus",
 ]
@@ -3206,9 +3206,9 @@ dependencies = [
 
 [[package]]
 name = "portable-atomic"
-version = "1.5.1"
+version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3bccab0e7fd7cc19f820a1c8c91720af652d0c88dc9664dd72aef2614f04af3b"
+checksum = "7170ef9988bc169ba16dd36a7fa041e5c4cbeb6a35b76d4c03daded371eae7c0"
 dependencies = [
  "critical-section",
 ]
@@ -5072,9 +5072,9 @@ dependencies = [
 
 [[package]]
 name = "winnow"
-version = "0.5.24"
+version = "0.5.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0383266b19108dfc6314a56047aa545a1b4d1be60e799b4dbdd407b56402704b"
+checksum = "b7e87b8dfbe3baffbe687eef2e164e32286eff31a5ee16463ce03d991643ec94"
 dependencies = [
  "memchr",
 ]
@@ -5180,18 +5180,18 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "zerocopy"
-version = "0.7.28"
+version = "0.7.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d6f15f7ade05d2a4935e34a457b936c23dc70a05cc1d97133dc99e7a3fe0f0e"
+checksum = "5d075cf85bbb114e933343e087b92f2146bac0d55b534cbb8188becf0039948e"
 dependencies = [
  "zerocopy-derive",
 ]
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.7.28"
+version = "0.7.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dbbad221e3f78500350ecbd7dfa4e63ef945c05f4c61cb7f4d3f84cd0bba649b"
+checksum = "86cd5ca076997b97ef09d3ad65efe811fa68c9e874cb636ccb211223a813b0c2"
 dependencies = [
  "proc-macro2",
  "quote",

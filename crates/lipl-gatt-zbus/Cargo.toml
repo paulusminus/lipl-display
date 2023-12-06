@@ -6,13 +6,13 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-gatt-zbus"
 repository.workspace = true
-version = "0.4.0"
+version.workspace = true
 
 [dependencies]
 async-channel = "1.6"
 async-io = "1.7"
 derive_builder = "0.12"
-lipl-display-common = { version = "0.4.0", path = "../lipl-display-common" }
+lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 thiserror = "1"
 tracing = "0.1"
 uuid = "1"

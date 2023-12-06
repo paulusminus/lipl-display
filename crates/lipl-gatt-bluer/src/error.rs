@@ -1,3 +1,5 @@
+use futures::channel::mpsc::TrySendError;
+use lipl_display_common::Message;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -10,4 +12,7 @@ pub enum Error {
 
     #[error("Callback")]
     Callback,
+
+    #[error("Send: {0}")]
+    Send(#[from] TrySendError<Message>),
 }

@@ -87,6 +87,10 @@ impl App for LiplDisplay {
                     Command::Poweroff => {
                         ctx.send_viewport_cmd(ViewportCommand::Close);
                     }
+                    Command::Wait => {
+                        self.text = Some(String::new());
+                        self.status = Some(lipl_display_common::WAIT_MESSAGE.to_owned());
+                    }
                 },
             };
         }

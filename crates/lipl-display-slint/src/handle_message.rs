@@ -74,6 +74,16 @@ pub(crate) fn create_handle_message(ui_handle: Weak<LiplDisplay>) -> impl Fn(Mes
                     error!("Failed to handle exit command {error}");
                 }
             }
+            Command::Wait => {
+                let handle_copy = ui_handle.clone();
+                if let Err(error) = invoke_from_event_loop(move || {
+                    let screen = handle_copy.unwrap();
+                    screen.set_status(lipl_display_common::WAIT_MESSAGE.into());
+                    screen.set_part("".into());
+                }) {
+                    error!("Error handling received status {}", error);
+                };
+            }
         },
     }
 }
