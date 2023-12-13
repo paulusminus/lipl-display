@@ -26,6 +26,8 @@ fn create_callback(tx: gtk::glib::Sender<Message>) -> impl Fn(Message) {
 }
 
 fn build_ui(application: &gtk::Application) -> Result<()> {
+    // Todo: fix deprecation
+    #[allow(deprecated)]
     let (values_tx, values_rx) = MainContext::channel::<Message>(gtk::glib::Priority::DEFAULT);
     let gatt = Rc::new(RefCell::new(ListenBluer::new(create_callback(values_tx))));
 
