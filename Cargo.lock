@@ -1187,9 +1187,9 @@ dependencies = [
 
 [[package]]
 name = "femtovg"
-version = "0.8.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d900654f23fe7c254442e1902e22dff2c3facf61bc0fb6531cc103b66467864e"
+checksum = "19df4b4c86231086212f22513ccfdbce94a1e1270d1cb09c030bd39fd73f3ee4"
 dependencies = [
  "bitflags 2.4.1",
  "fnv",
