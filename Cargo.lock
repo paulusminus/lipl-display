@@ -1178,9 +1178,9 @@ dependencies = [
 
 [[package]]
 name = "femtovg"
-version = "0.8.1"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19df4b4c86231086212f22513ccfdbce94a1e1270d1cb09c030bd39fd73f3ee4"
+checksum = "18ab822e58e8bc2b89840dc5dde49afe39302e129c60d39c8520200c085404a7"
 dependencies = [
  "bitflags 2.4.2",
  "fnv",
@@ -1188,6 +1188,7 @@ dependencies = [
  "glow 0.13.1",
  "image",
  "imgref",
+ "log",
  "lru",
  "rgb",
  "rustybuzz 0.11.0",
