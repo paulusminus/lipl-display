@@ -9,7 +9,7 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-bluer = { version = "0.16", features = ["bluetoothd"] }
+bluer = { version = "0.17", features = ["bluetoothd"] }
 futures = "0.3"
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 pin-project = "1.0"
