@@ -23,7 +23,7 @@ tracing-subscriber = { version = "0.3.18", features = ["registry"] }
 toml = "0.8.8"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_with = "3.4.0"
-anyhow = "1.0.75"
+anyhow = "1.0.80"
 
 [build-dependencies]
 slint-build = "1.3"
