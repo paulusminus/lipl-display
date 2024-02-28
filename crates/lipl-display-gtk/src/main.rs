@@ -12,9 +12,9 @@ mod css;
 mod cursor;
 mod window;
 
-static GLIB_LOGGER: gtk::glib::GlibLogger = gtk::glib::GlibLogger::new(
-    gtk::glib::GlibLoggerFormat::Plain,
-    gtk::glib::GlibLoggerDomain::CrateTarget,
+static GLIB_LOGGER: glib::GlibLogger = glib::GlibLogger::new(
+    glib::GlibLoggerFormat::Plain,
+    glib::GlibLoggerDomain::CrateTarget,
 );
 
 fn create_callback(tx: gtk::glib::Sender<Message>) -> impl Fn(Message) {
