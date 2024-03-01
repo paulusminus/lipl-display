@@ -6,6 +6,7 @@ members = [
     "crates/lipl-display-gtk",
     "crates/lipl-display-slint",
     "crates/lipl-gatt-bluer",
+    "crates/lipl-gatt-bluer-cli",
     "crates/login-poweroff-reboot"
 ]
 resolver = "2"
@@ -22,3 +23,4 @@ version = "0.4.4"
 lto = true
 strip = true
 opt-level = "z"
+codegen-units = 1

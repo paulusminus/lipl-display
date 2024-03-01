@@ -9,5 +9,6 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
+serde = { version = "1.0.197", features = ["derive"] }
 thiserror = "1"
 uuid = "1"

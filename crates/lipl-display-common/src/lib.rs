@@ -1,5 +1,6 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
 
+use serde::Serialize;
 use std::convert::TryFrom;
 use std::str::FromStr;
 use uuid::{uuid, Uuid};
@@ -45,11 +46,22 @@ pub trait BackgroundThread {
 }
 
 /// Received value on the display service as change for the screen
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+// #[serde(tag = "type")]
 pub enum Message {
     Part(String),
     Status(String),
     Command(Command),
+}
+
+impl Message {
+    pub fn is_stop(&self) -> bool {
+        [
+            Message::Command(Command::Exit),
+            Message::Command(Command::Poweroff),
+        ]
+        .contains(self)
+    }
 }
 
 impl std::fmt::Display for Message {
@@ -67,7 +79,7 @@ impl std::fmt::Display for Message {
 }
 
 /// Received value from command characteristic
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub enum Command {
     Poweroff,
     Exit,
@@ -125,11 +137,12 @@ impl TryFrom<(&str, Uuid)> for Message {
 
 /// Model holding all that is needed to draw a screen
 ///
-#[derive(Clone)]
+#[derive(Clone, Serialize)]
 pub struct LiplScreen {
     pub text: String,
     pub status: String,
     pub dark: bool,
+    #[serde(rename = "fontSize")]
     pub font_size: f32,
 }
 
