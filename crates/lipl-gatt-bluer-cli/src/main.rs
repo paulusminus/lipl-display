@@ -1,6 +1,6 @@
-use std::{fs::OpenOptions, io::Write, ops::Not};
+use std::{io::Write, ops::Not};
 
-use futures_util::{future::ready, Future, FutureExt, StreamExt};
+use futures_util::{future::ready, Future, FutureExt, StreamExt, TryStreamExt};
 use lipl_display_common::{HandleMessage, LiplScreen, Message};
 use lipl_gatt_bluer::listen_stream;
 
@@ -22,10 +22,20 @@ where
         Self { out: w }
     }
 
-    pub fn send_json(&mut self, screen: &LiplScreen) {
-        self.out.write_all(serde_json::to_string(screen).unwrap().as_bytes()).unwrap();
-        self.out.write("\n".as_bytes()).unwrap();
+    pub fn send_json(&mut self, s: String) -> Result<(), Error> {
+        self.out.write_all(s.as_bytes()).map_err(Error::from)?;
+        self.out.write_all("\n".as_bytes()).map_err(Error::from)?;
+        self.out.flush().map_err(Error::from)
     }
+}
+
+#[derive(thiserror::Error, Debug)]
+enum Error {
+    #[error("IO: {0}")]
+    IO(#[from] std::io::Error),
+
+    #[error("Json: {0}")]
+    Json(#[from] serde_json::Error),
 }
 
 fn not_is_stop(message: &Message) -> impl Future<Output = bool> {
@@ -39,19 +49,26 @@ fn is_stop(message: &Message) -> impl Future<Output = bool> {
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     let screen = LiplScreen::new(false, "Wachten op connectie", 30.0);
-    // let mut out = Out::new(std::io::stdout());
-    let mut fifo = OpenOptions::new().write(true).open("lipl-out").map(Out::new).unwrap();
+    let mut out = Out::new(std::io::stdout());
+    // let mut fifo = OpenOptions::new().write(true).open("lipl-out").map(Out::new).unwrap();
 
     match listen_stream().await {
         Ok(stream) => {
-            stream
+            if let Err(error) = stream
                 .take_while(not_is_stop)
                 .scan(screen, |screen, message| {
                     screen.handle_message(message);
                     ready(Some(screen.clone()))
                 })
-                .for_each(|screen| ready(fifo.send_json(&screen)))
-                .await;
+                .map(|screen| serde_json::to_string(&screen).map_err(Error::from))
+                .try_for_each(|s| {
+                    let r = out.send_json(s);
+                    ready(r)
+                })
+                .await
+            {
+                eprintln!("Error: {}", error);
+            }
         }
         Err(error) => {
             eprintln!("{}", error);

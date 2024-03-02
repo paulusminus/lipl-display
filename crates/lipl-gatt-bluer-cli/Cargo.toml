@@ -13,4 +13,5 @@ lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 log = "0.4.21"
 serde_json = "1.0.114"
+thiserror = "1.0.57"
 tokio = { version = "1", features = ["rt", "macros"] }

@@ -2441,6 +2441,7 @@ dependencies = [
  "lipl-gatt-bluer",
  "log",
  "serde_json",
+ "thiserror",
  "tokio",
 ]
 
