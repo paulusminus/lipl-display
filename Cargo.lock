@@ -2450,6 +2450,7 @@ dependencies = [
  "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
+ "login-poweroff-reboot",
  "serde_json",
  "thiserror",
  "tokio",

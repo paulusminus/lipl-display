@@ -11,6 +11,7 @@ version.workspace = true
 futures-util = "0.3.30"
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
+login-poweroff-reboot = { version = "0.4", path = "../login-poweroff-reboot" }
 log = "0.4.21"
 serde_json = "1.0.114"
 thiserror = "1.0.57"

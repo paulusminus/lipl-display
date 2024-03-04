@@ -53,8 +53,9 @@ async fn main() {
     // let mut fifo = OpenOptions::new().write(true).open("lipl-out").map(Out::new).unwrap();
 
     match listen_stream().await {
-        Ok(stream) => {
-            if let Err(error) = stream
+        Ok(mut stream) => {
+            match stream
+                .by_ref()
                 .take_while(not_is_stop)
                 .scan(screen, |screen, message| {
                     screen.handle_message(message);
@@ -67,7 +68,16 @@ async fn main() {
                 })
                 .await
             {
-                eprintln!("Error: {}", error);
+                Ok(_) => {
+                    if let Some(message) = stream.next().await {
+                        if message == Message::Command(lipl_display_common::Command::Poweroff) {
+                            if let Err(error) = login_poweroff_reboot::reboot(1000) {
+                                eprintln!("Error: {}", error);
+                            }
+                        }
+                    }
+                }
+                Err(error) => eprintln!("Error: {}", error),
             }
         }
         Err(error) => {

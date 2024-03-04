@@ -7,13 +7,15 @@ pub struct ProcessChild {
 
 impl ProcessChild {
     pub fn new(name: &str, args: Vec<&str>) -> Result<Self, std::io::Error> {
-        let mut child = Command::new(name).args(args).stdout(Stdio::piped()).spawn()?;
-        let out = child.stdout.take().ok_or(std::io::Error::new(std::io::ErrorKind::Other, "no stdout"))?;
-        Ok(
-            Self {
-                child,
-                out,
-        })
+        let mut child = Command::new(name)
+            .args(args)
+            .stdout(Stdio::piped())
+            .spawn()?;
+        let out = child
+            .stdout
+            .take()
+            .ok_or(std::io::Error::new(std::io::ErrorKind::Other, "no stdout"))?;
+        Ok(Self { child, out })
     }
 
     pub fn out(&mut self) -> &mut ChildStdout {
@@ -31,8 +33,8 @@ impl Drop for ProcessChild {
 
 #[cfg(test)]
 mod test {
-    use std::io::{BufRead, BufReader};
     use super::ProcessChild;
+    use std::io::{BufRead, BufReader};
 
     #[test]
     fn list_ls() {
