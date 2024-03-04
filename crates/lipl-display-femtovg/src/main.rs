@@ -16,6 +16,7 @@ const DEFAULT_FONT_SIZE: f32 = 32.0;
 const BLACK: femtovg::Color = femtovg::Color::black();
 const WHITE: femtovg::Color = femtovg::Color::white();
 
+mod gatt_client;
 mod helpers;
 
 fn main() -> Result<(), Box<dyn Error>> {
