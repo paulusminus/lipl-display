@@ -33,7 +33,7 @@ pub fn shutdown(shutdown: Shutdown) -> impl Fn(u64) -> Result<(), Error> {
             std::time::Duration::from_secs(TIMEOUT_SECONDS),
         );
         if let Ok(millis_since_epoch) = time(delay_milliseconds) {
-            proxy.schedule_shutdown( &shutdown.to_string(), millis_since_epoch)?;
+            proxy.schedule_shutdown(&shutdown.to_string(), millis_since_epoch)?;
         };
 
         Ok(())

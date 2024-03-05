@@ -1,11 +1,11 @@
 use std::io::Read;
 
 use clap::Parser;
+use error::{ErrInto, Error};
 use futures_util::StreamExt;
 use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
 use lipl_gatt_bluer::listen_stream;
 use login_poweroff_reboot::{shutdown, Shutdown};
-use error::{Error, ErrInto};
 use param::Params;
 
 mod error;

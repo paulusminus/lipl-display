@@ -1,6 +1,6 @@
-use std::io::{Stdout, Write};
+use crate::error::{ErrInto, Error};
 use serde::Serialize;
-use crate::error::{Error, ErrInto};
+use std::io::{Stdout, Write};
 
 pub struct Out<W = Stdout>
 where
