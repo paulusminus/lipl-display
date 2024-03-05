@@ -137,7 +137,7 @@ impl TryFrom<(&str, Uuid)> for Message {
 
 /// Model holding all that is needed to draw a screen
 ///
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Default)]
 pub struct LiplScreen {
     pub text: String,
     pub status: String,
@@ -153,16 +153,15 @@ impl LiplScreen {
     ///
     /// ```
     /// use lipl_display_common::LiplScreen;
-    /// let screen = LiplScreen::new(true, "Just a moment ...", 30.0);
+    /// let screen = LiplScreen::new(true, 30.0);
     /// # assert!(screen.dark);
     /// # assert_eq!(screen.font_size, 30.0);
     /// ```
-    pub fn new(dark: bool, initial_text: &str, initial_font_size: f32) -> Self {
+    pub fn new(dark: bool, initial_font_size: f32) -> Self {
         Self {
-            text: initial_text.to_owned(),
-            status: "".to_owned(),
             dark,
             font_size: initial_font_size,
+            ..Default::default()
         }
     }
 }

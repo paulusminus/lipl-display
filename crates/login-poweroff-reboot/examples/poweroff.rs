@@ -1,3 +1,5 @@
+use login_poweroff_reboot::{shutdown, Shutdown};
+
 fn main() -> Result<(), dbus::Error> {
-    login_poweroff_reboot::poweroff(500)
+    shutdown(Shutdown::Poweroff)(500)
 }

@@ -16,6 +16,7 @@ const DEFAULT_FONT_SIZE: f32 = 32.0;
 const BLACK: femtovg::Color = femtovg::Color::black();
 const WHITE: femtovg::Color = femtovg::Color::white();
 
+#[allow(dead_code)]
 mod gatt_client;
 mod helpers;
 
@@ -55,7 +56,7 @@ fn run(
 
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
-    let mut screen = LiplScreen::new(true, "Even geduld a.u.b. ...", DEFAULT_FONT_SIZE);
+    let mut screen = LiplScreen::new(true, DEFAULT_FONT_SIZE);
 
     event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
 

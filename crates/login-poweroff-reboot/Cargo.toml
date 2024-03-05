@@ -10,3 +10,4 @@ version.workspace = true
 
 [dependencies]
 dbus = "0.9"
+strum = { version = "0.26.1", features = ["derive"] }
