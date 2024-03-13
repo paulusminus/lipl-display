@@ -173,7 +173,7 @@ impl HandleMessage for LiplScreen {
     //!
     //! ```
     //! use lipl_display_common::{Command, LiplScreen, HandleMessage, Message};
-    //! let mut screen = LiplScreen::new(true, "", 40.0);
+    //! let mut screen = LiplScreen::new(true, 40.0);
     //! assert!(screen.dark);
     //! screen.handle_message(Message::Command(Command::Light));
     //! assert!(!screen.dark);

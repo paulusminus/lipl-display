@@ -30,21 +30,3 @@ impl Drop for ProcessChild {
         }
     }
 }
-
-#[cfg(test)]
-mod test {
-    use super::ProcessChild;
-    use std::io::{BufRead, BufReader};
-
-    #[test]
-    fn list_ls() {
-        let mut ps = ProcessChild::new("find", vec!["/", "-name", "Cargo.toml"]).unwrap();
-        let out: BufReader<_> = BufReader::new(ps.out());
-
-        out.lines().for_each(|s| {
-            if let Ok(line) = s {
-                println!("{}", line);
-            }
-        });
-    }
-}
