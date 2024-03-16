@@ -47,7 +47,7 @@ pub trait BackgroundThread {
 
 /// Received value on the display service as change for the screen
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
-// #[serde(tag = "type")]
+#[serde(rename_all = "lowercase")]
 pub enum Message {
     Part(String),
     Status(String),

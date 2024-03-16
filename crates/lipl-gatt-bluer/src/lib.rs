@@ -22,7 +22,7 @@ pub use error::Error;
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[pin_project(PinnedDrop)]
-struct MessageStream {
+pub struct MessageStream {
     values_tx: futures::channel::mpsc::Sender<Message>,
     #[pin]
     values_rx: futures::channel::mpsc::Receiver<Message>,
@@ -168,7 +168,7 @@ impl BackgroundThread for ListenBluer {
 }
 
 /// Used in flutter version
-pub async fn listen_stream() -> Result<impl Stream<Item = Message>> {
+pub async fn listen_stream() -> Result<MessageStream> {
     let (values_tx, values_rx) = mpsc::channel::<Message>(100);
 
     let session = bluer::Session::new().await?;
