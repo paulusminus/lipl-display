@@ -2,8 +2,10 @@ use std::{cell::RefCell, rc::Rc};
 
 use anyhow::Result;
 use async_channel::{bounded, Sender};
-use gtk4::prelude::ApplicationExt;
-use gtk4::{glib::clone, prelude::ApplicationExtManual};
+use gtk4::{
+    glib::clone,
+    prelude::{ApplicationExt, ApplicationExtManual},
+};
 use lipl_display_common::{BackgroundThread, Command, Message};
 use lipl_gatt_bluer::ListenBluer;
 use log::{error, trace};
