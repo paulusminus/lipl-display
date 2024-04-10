@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Result};
-use gtk::prelude::*;
+use gtk4::prelude::*;
 
 pub const TEXT_ID: &str = "text";
 pub const PAGNOS_ID: &str = "pagenos";
@@ -26,30 +26,30 @@ impl Default for Data {
 
 #[derive(Clone)]
 pub struct AppWindow {
-    pub window: gtk::ApplicationWindow,
-    pub text: gtk::Label,
-    pub status: gtk::Label,
+    pub window: gtk4::ApplicationWindow,
+    pub text: gtk4::Label,
+    pub status: gtk4::Label,
     data: Data,
 }
 
 impl AppWindow {
-    pub fn new(application: &gtk::Application) -> Result<Self> {
-        let builder = gtk::Builder::from_string(WINDOW_UI);
+    pub fn new(application: &gtk4::Application) -> Result<Self> {
+        let builder = gtk4::Builder::from_string(WINDOW_UI);
         // let mut cancel_clone = cancel.clone();
 
-        let window: gtk::ApplicationWindow = builder
+        let window: gtk4::ApplicationWindow = builder
             .object(WINDOW_ID)
             .ok_or_else(|| anyhow!("Missing Window control"))?;
-        let text: gtk::Label = builder
+        let text: gtk4::Label = builder
             .object(TEXT_ID)
             .ok_or_else(|| anyhow!("Missing text control"))?;
-        let status: gtk::Label = builder
+        let status: gtk4::Label = builder
             .object(PAGNOS_ID)
             .ok_or_else(|| anyhow!("Missing pagnos control"))?;
 
         window.set_application(Some(application));
         window.fullscreen();
-        window.show_all();
+        window.show();
 
         crate::cursor::hide(&window);
 

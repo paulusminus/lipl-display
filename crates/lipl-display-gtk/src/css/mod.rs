@@ -1,7 +1,5 @@
-use gtk::prelude::*;
-
-const LIGHT_THEME: &[u8] = include_bytes!("light.css");
-const DARK_THEME: &[u8] = include_bytes!("dark.css");
+const LIGHT_THEME: &str = include_str!("light.css");
+const DARK_THEME: &str = include_str!("dark.css");
 
 pub enum Theme {
     Dark,
@@ -13,19 +11,14 @@ pub fn load(theme: Theme) {
         Theme::Dark => DARK_THEME,
         Theme::Light => LIGHT_THEME,
     };
-    let css_provider: gtk::CssProvider = gtk::CssProvider::new();
-    match css_provider.load_from_data(css) {
-        Err(e) => {
-            eprintln!("{}", e);
-        }
-        Ok(_) => {
-            if let Some(screen) = gtk::gdk::Screen::default() {
-                gtk::StyleContext::add_provider_for_screen(
-                    &screen,
-                    &css_provider,
-                    gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-                );
-            };
-        }
+    let provider: gtk4::CssProvider = gtk4::CssProvider::new();
+    provider.load_from_data(css);
+
+    if let Some(display) = gtk4::gdk::Display::default() {
+        gtk4::style_context_add_provider_for_display(
+            &display,
+            &provider,
+            gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
     }
 }
