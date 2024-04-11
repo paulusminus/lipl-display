@@ -2,6 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use anyhow::Result;
 use async_channel::{bounded, Sender};
+use glib::ExitCode;
 use gtk4::{
     glib::clone,
     prelude::{ApplicationExt, ApplicationExtManual},
@@ -71,10 +72,12 @@ fn build_ui(application: &gtk4::Application) -> Result<()> {
                     Command::Exit => {
                         window_clone.close();
                         trace!("Exit");
+                        break;
                     }
                     Command::Poweroff => {
                         window_clone.close();
                         trace!("Poweroff");
+                        break;
                     }
                     Command::Wait => {
                         app_window.set_status(lipl_display_common::WAIT_MESSAGE);
@@ -89,8 +92,8 @@ fn build_ui(application: &gtk4::Application) -> Result<()> {
     Ok(())
 }
 
-fn main() -> Result<()> {
-    log::set_logger(&GLIB_LOGGER).unwrap();
+fn main() -> Result<ExitCode> {
+    log::set_logger(&GLIB_LOGGER)?;
     log::set_max_level(log::LevelFilter::Trace);
 
     let application: gtk4::Application = gtk4::Application::builder()
@@ -104,6 +107,5 @@ fn main() -> Result<()> {
         }
     });
 
-    application.run();
-    Ok(())
+    Ok(application.run())
 }
