@@ -5,7 +5,7 @@ pub const TEXT_ID: &str = "text";
 pub const PAGNOS_ID: &str = "pagenos";
 pub const WINDOW_ID: &str = "window";
 pub const TEXT_INIT: &str = "Even geduld a.u.b. ...";
-pub const WINDOW_UI: &str = include_str!("window.ui");
+pub const WINDOW_UI: &str = include_str!("window.gtk4.ui");
 
 #[derive(Clone)]
 pub struct Data {

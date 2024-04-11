@@ -93,7 +93,7 @@ fn build_ui(application: &gtk4::Application) -> Result<()> {
 }
 
 fn main() -> Result<ExitCode> {
-    log::set_logger(&GLIB_LOGGER)?;
+    log::set_logger(&GLIB_LOGGER).unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 
     let application: gtk4::Application = gtk4::Application::builder()
