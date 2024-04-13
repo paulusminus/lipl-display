@@ -1,2 +1,2 @@
 [target.aarch64-unknown-linux-gnu]
-image = "docker.io/paulusminus/cross-aarch64-unknown-linux-gnu:latest"
+image = "paulmin.nl/cross/ubuntu:aarch64-unknown-linux-gnu"
