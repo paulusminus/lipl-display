@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-display-egui"
 repository.workspace = true
-version = "o.4.5"
+version = "0.4.5"
 
 [dependencies]
 anyhow = "1"

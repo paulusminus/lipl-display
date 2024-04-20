@@ -2048,7 +2048,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-slint"
-version = "0.4.5"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "lipl-display-common",
