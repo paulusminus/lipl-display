@@ -14,7 +14,7 @@ resolver = "2"
 [workspace.package]
 authors = ["Paul Min"]
 edition = "2021"
-homepage = "https://www.paulmin.nl/lipl/"
+homepage = "https://www.paulmin.nl/lipl.html"
 license = "MIT"
 repository = "https://github.com/paulusminus/lipl-display/"
 version = "0.4.5"
