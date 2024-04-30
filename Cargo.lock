@@ -2050,7 +2050,7 @@ dependencies = [
  "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
- "raw-window-handle 0.5.2",
+ "raw-window-handle 0.6.1",
  "winit",
 ]
 
