@@ -57,6 +57,8 @@ fn run(
     let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
 
     let mut screen = LiplScreen::new(true, DEFAULT_FONT_SIZE);
+    screen.handle_message(Message::Part("Even geduld a.u.b. ...".into()));
+    window.request_redraw();
 
     event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
 

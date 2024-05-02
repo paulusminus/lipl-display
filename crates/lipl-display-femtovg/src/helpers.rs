@@ -25,8 +25,10 @@ pub fn create_window<T: 'static>(
     Surface<WindowSurface>,
 ) {
     let window_builder = WindowBuilder::new()
-        .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
-        .with_title(title);
+        .with_title(title)
+        .with_decorations(false)
+        .with_maximized(true)
+        .with_resizable(false);
 
     let template = ConfigTemplateBuilder::new().with_alpha_size(8);
 
