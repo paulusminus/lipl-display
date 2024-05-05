@@ -64,14 +64,12 @@ fn run(
 
     event_loop.run(move |event, window_target| match event {
         Event::UserEvent(message) => {
-            let mut exit = false;
-            if let Message::Command(command) = &message {
-                if command == &Command::Exit || command == &Command::Poweroff {
-                    exit = true
-                }
-            }
-            if exit {
-                gatt.stop();
+            if [
+                Message::Command(Command::Exit),
+                Message::Command(Command::Poweroff),
+            ]
+            .contains(&message)
+            {
                 window_target.exit();
             } else {
                 screen.handle_message(message);
@@ -79,7 +77,6 @@ fn run(
             }
         }
         Event::LoopExiting => {
-            gatt.stop();
             window_target.exit();
         }
         Event::WindowEvent { ref event, .. } => match event {
@@ -91,7 +88,6 @@ fn run(
                 );
             }
             WindowEvent::CloseRequested => {
-                gatt.stop();
                 window_target.exit();
             }
             WindowEvent::RedrawRequested => {
@@ -103,6 +99,7 @@ fn run(
         },
         _ => (),
     })?;
+    gatt.stop();
     Ok(())
 }
 
