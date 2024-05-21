@@ -196,7 +196,7 @@ impl HandleMessage for LiplScreen {
                 }
                 Command::Wait => {
                     self.text = String::new();
-                    self.status = WAIT_MESSAGE.to_owned();
+                    WAIT_MESSAGE.clone_into(&mut self.status);
                 }
                 Command::Exit => {}
                 Command::Poweroff => {}
