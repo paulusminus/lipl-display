@@ -10,9 +10,8 @@ version = "0.1.0"
 build = "build.rs"
 
 [dependencies]
-slint = { version = "1.5", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
-# slint = { version = "1.5", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
-# slint = "1.5"
+slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
+# slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 login-poweroff-reboot = { version = "0.4", path = "../login-poweroff-reboot" }
