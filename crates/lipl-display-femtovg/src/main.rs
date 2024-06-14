@@ -6,7 +6,7 @@ use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, 
 use lipl_gatt_bluer::ListenBluer;
 use log::error;
 use winit::{
-    application::ApplicationHandler, event::{Event, WindowEvent}, event_loop::{EventLoop, EventLoopProxy}, window::Window
+    application::ApplicationHandler, event::WindowEvent, event_loop::{EventLoop, EventLoopProxy}, window::Window
 };
 
 const ROBOTO_REGULAR: &[u8] = include_bytes!("../assets/Roboto-Regular.ttf");
@@ -60,43 +60,53 @@ fn run(
 
     event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
-    event_loop.run(move |event, window_target| match event {
-        Event::UserEvent(message) => {
-            if [
-                Message::Command(Command::Exit),
-                Message::Command(Command::Poweroff),
-            ]
-            .contains(&message)
-            {
-                window_target.exit();
-            } else {
-                screen.handle_message(message);
-                window.request_redraw();
-            }
-        }
-        Event::LoopExiting => {
-            window_target.exit();
-        }
-        Event::WindowEvent { ref event, .. } => match event {
-            WindowEvent::Resized(physical_size) => {
-                surface.resize(
-                    &context,
-                    physical_size.width.try_into().unwrap(),
-                    physical_size.height.try_into().unwrap(),
-                );
-            }
-            WindowEvent::CloseRequested => {
-                window_target.exit();
-            }
-            WindowEvent::RedrawRequested => {
-                draw_paragraph(&mut canvas, font_id, &screen, &window);
-                canvas.flush();
-                surface.swap_buffers(&context).unwrap();
-            }
-            _ => (),
-        },
-        _ => (),
-    })?;
+    let mut application = Application {
+        screen,
+        surface,
+        window,
+        context,
+        canvas,
+        font_id,
+    };
+
+    event_loop.run_app(&mut application)?;
+//     event_loop.run(move |event, window_target| match event {
+//         Event::UserEvent(message) => {
+//             if [
+//                 Message::Command(Command::Exit),
+//                 Message::Command(Command::Poweroff),
+//             ]
+//             .contains(&message)
+//             {
+//                 window_target.exit();
+//             } else {
+//                 screen.handle_message(message);
+//                 window.request_redraw();
+//             }
+//         }
+//         Event::LoopExiting => {
+//             window_target.exit();
+//         }
+//         Event::WindowEvent { ref event, .. } => match event {
+//             WindowEvent::Resized(physical_size) => {
+//                 surface.resize(
+//                     &context,
+//                     physical_size.width.try_into().unwrap(),
+//                     physical_size.height.try_into().unwrap(),
+//                 );
+//             }
+//             WindowEvent::CloseRequested => {
+//                 window_target.exit();
+//             }
+//             WindowEvent::RedrawRequested => {
+//                 draw_paragraph(&mut canvas, font_id, &screen, &window);
+//                 canvas.flush();
+//                 surface.swap_buffers(&context).unwrap();
+//             }
+//             _ => (),
+//         },
+//         _ => (),
+//     })?;
     gatt.stop();
     Ok(())
 }
@@ -142,3 +152,86 @@ fn draw_paragraph(
     }
 }
 
+struct Application {
+    screen: LiplScreen,
+    surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
+    window: winit::window::Window,
+    context: glutin::context::PossiblyCurrentContext,
+    canvas: Canvas<OpenGl>,
+    font_id: FontId,
+}
+
+impl ApplicationHandler<Message> for Application {
+    fn resumed(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {
+        todo!()
+    }
+
+    fn window_event(
+        &mut self,
+        event_loop: &winit::event_loop::ActiveEventLoop,
+        _window_id: winit::window::WindowId,
+        event: WindowEvent,
+    ) {
+        match event {
+        WindowEvent::Resized(physical_size) => {
+            self.surface.resize(
+                &self.context,
+                physical_size.width.try_into().unwrap(),
+                physical_size.height.try_into().unwrap(),
+            );
+        }
+        WindowEvent::CloseRequested => {
+            event_loop.exit();
+        }
+        WindowEvent::RedrawRequested => {
+            draw_paragraph(&mut self.canvas, self.font_id, &self.screen, &self.window);
+            self.canvas.flush();
+            self.surface.swap_buffers(&self.context).unwrap();
+        }
+        _ => (),
+    }
+}
+    
+    fn new_events(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, cause: winit::event::StartCause) {
+        let _ = (event_loop, cause);
+    }
+    
+    fn user_event(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, event: Message) {
+        if [
+            Message::Command(Command::Exit),
+            Message::Command(Command::Poweroff),
+        ]
+        .contains(&event)
+        {
+            event_loop.exit();
+        } else {
+            self.screen.handle_message(event);
+            self.window.request_redraw();
+        }
+}
+    
+    fn device_event(
+        &mut self,
+        event_loop: &winit::event_loop::ActiveEventLoop,
+        device_id: winit::event::DeviceId,
+        event: winit::event::DeviceEvent,
+    ) {
+        let _ = (event_loop, device_id, event);
+    }
+    
+    fn about_to_wait(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        let _ = event_loop;
+    }
+    
+    fn suspended(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        let _ = event_loop;
+    }
+    
+    fn exiting(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        event_loop.exit();
+    }
+    
+    fn memory_warning(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        let _ = event_loop;
+    }
+}
