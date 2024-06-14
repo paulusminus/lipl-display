@@ -9,10 +9,9 @@ use glutin::{
     surface::{Surface, SurfaceAttributesBuilder, WindowSurface},
 };
 use glutin_winit::DisplayBuilder;
-use raw_window_handle::HasRawWindowHandle;
+use raw_window_handle::HasWindowHandle;
 use winit::{
-    event_loop::EventLoop,
-    window::{Window, WindowBuilder},
+    event_loop::EventLoop, window::{Window, WindowAttributes}
 };
 
 pub fn create_window<T: 'static>(
@@ -24,7 +23,7 @@ pub fn create_window<T: 'static>(
     PossiblyCurrentContext,
     Surface<WindowSurface>,
 ) {
-    let window_builder = WindowBuilder::new()
+    let window_attributes = WindowAttributes::default()
         .with_title(title)
         .with_decorations(false)
         .with_maximized(true)
@@ -32,7 +31,7 @@ pub fn create_window<T: 'static>(
 
     let template = ConfigTemplateBuilder::new().with_alpha_size(8);
 
-    let display_builder = DisplayBuilder::new().with_window_builder(Some(window_builder));
+    let display_builder = DisplayBuilder::new().with_window_attributes(Some(window_attributes));
 
     let (window, gl_config) = display_builder
         .build(event_loop, template, |configs| {
@@ -56,7 +55,7 @@ pub fn create_window<T: 'static>(
     let window = window.unwrap();
     window.set_cursor_visible(false);
 
-    let raw_window_handle = window.raw_window_handle();
+    let raw_window_handle = window.window_handle().unwrap().as_raw();
     let gl_display = gl_config.display();
 
     let context_attributes = ContextAttributesBuilder::new().build(Some(raw_window_handle));
@@ -74,7 +73,7 @@ pub fn create_window<T: 'static>(
     });
 
     let (width, height): (u32, u32) = window.inner_size().into();
-    let raw_window_handle = window.raw_window_handle();
+    let raw_window_handle = window.window_handle().unwrap().as_raw();
     let attrs = SurfaceAttributesBuilder::<WindowSurface>::new().build(
         raw_window_handle,
         NonZeroU32::new(width).unwrap(),

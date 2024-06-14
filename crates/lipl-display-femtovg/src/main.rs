@@ -6,9 +6,7 @@ use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, 
 use lipl_gatt_bluer::ListenBluer;
 use log::error;
 use winit::{
-    event::{Event, WindowEvent},
-    event_loop::{EventLoop, EventLoopBuilder, EventLoopProxy},
-    window::Window,
+    application::ApplicationHandler, event::{Event, WindowEvent}, event_loop::{EventLoop, EventLoopProxy}, window::Window
 };
 
 const ROBOTO_REGULAR: &[u8] = include_bytes!("../assets/Roboto-Regular.ttf");
@@ -23,7 +21,7 @@ mod helpers;
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
-    let event_loop = EventLoopBuilder::<Message>::with_user_event().build()?;
+    let event_loop = EventLoop::<Message>::with_user_event().build()?;
     let (canvas, window, context, surface) = helpers::create_window("Text demo", &event_loop);
     run(canvas, event_loop, context, surface, window)
 }
@@ -143,3 +141,4 @@ fn draw_paragraph(
         }
     }
 }
+
