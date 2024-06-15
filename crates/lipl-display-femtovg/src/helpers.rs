@@ -9,14 +9,15 @@ use glutin::{
     surface::{Surface, SurfaceAttributesBuilder, WindowSurface},
 };
 use glutin_winit::DisplayBuilder;
-use raw_window_handle::HasWindowHandle;
 use winit::{
-    event_loop::EventLoop, window::{Window, WindowAttributes}
+    event_loop::ActiveEventLoop,
+    raw_window_handle::HasWindowHandle,
+    window::{Window, WindowAttributes},
 };
 
-pub fn create_window<T: 'static>(
+pub fn create_window(
     title: &'static str,
-    event_loop: &EventLoop<T>,
+    event_loop: &ActiveEventLoop,
 ) -> (
     Canvas<OpenGl>,
     Window,

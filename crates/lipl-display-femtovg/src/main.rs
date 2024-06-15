@@ -6,7 +6,10 @@ use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, 
 use lipl_gatt_bluer::ListenBluer;
 use log::error;
 use winit::{
-    application::ApplicationHandler, event::WindowEvent, event_loop::{EventLoop, EventLoopProxy}, window::Window
+    application::ApplicationHandler,
+    event::WindowEvent,
+    event_loop::{EventLoop, EventLoopProxy},
+    window::Window,
 };
 
 const ROBOTO_REGULAR: &[u8] = include_bytes!("../assets/Roboto-Regular.ttf");
@@ -17,14 +20,6 @@ const WHITE: femtovg::Color = femtovg::Color::white();
 #[allow(dead_code)]
 mod gatt_client;
 mod helpers;
-
-fn main() -> Result<(), Box<dyn Error>> {
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
-
-    let event_loop = EventLoop::<Message>::with_user_event().build()?;
-    let (canvas, window, context, surface) = helpers::create_window("Text demo", &event_loop);
-    run(canvas, event_loop, context, surface, window)
-}
 
 fn get_colors(dark: bool) -> (Color, Color) {
     if dark {
@@ -42,71 +37,14 @@ fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
     }
 }
 
-fn run(
-    mut canvas: Canvas<OpenGl>,
-    event_loop: EventLoop<Message>,
-    context: glutin::context::PossiblyCurrentContext,
-    surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
-    window: Window,
-) -> Result<(), Box<dyn Error>> {
-    let proxy = event_loop.create_proxy();
-    let mut gatt = ListenBluer::new(create_callback(proxy));
-
-    let font_id = canvas.add_font_mem(ROBOTO_REGULAR)?;
-
-    let mut screen = LiplScreen::new(true, DEFAULT_FONT_SIZE);
-    screen.handle_message(Message::Part("Even geduld a.u.b. ...".into()));
-    window.request_redraw();
-
+fn main() -> Result<(), Box<dyn Error>> {
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
+    let event_loop = EventLoop::<Message>::with_user_event().build()?;
     event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
+    let mut gatt = ListenBluer::new(create_callback(event_loop.create_proxy()));
 
-    let mut application = Application {
-        screen,
-        surface,
-        window,
-        context,
-        canvas,
-        font_id,
-    };
+    event_loop.run_app(&mut Application::default())?;
 
-    event_loop.run_app(&mut application)?;
-//     event_loop.run(move |event, window_target| match event {
-//         Event::UserEvent(message) => {
-//             if [
-//                 Message::Command(Command::Exit),
-//                 Message::Command(Command::Poweroff),
-//             ]
-//             .contains(&message)
-//             {
-//                 window_target.exit();
-//             } else {
-//                 screen.handle_message(message);
-//                 window.request_redraw();
-//             }
-//         }
-//         Event::LoopExiting => {
-//             window_target.exit();
-//         }
-//         Event::WindowEvent { ref event, .. } => match event {
-//             WindowEvent::Resized(physical_size) => {
-//                 surface.resize(
-//                     &context,
-//                     physical_size.width.try_into().unwrap(),
-//                     physical_size.height.try_into().unwrap(),
-//                 );
-//             }
-//             WindowEvent::CloseRequested => {
-//                 window_target.exit();
-//             }
-//             WindowEvent::RedrawRequested => {
-//                 draw_paragraph(&mut canvas, font_id, &screen, &window);
-//                 canvas.flush();
-//                 surface.swap_buffers(&context).unwrap();
-//             }
-//             _ => (),
-//         },
-//         _ => (),
-//     })?;
     gatt.stop();
     Ok(())
 }
@@ -153,17 +91,59 @@ fn draw_paragraph(
 }
 
 struct Application {
+    canvas: Option<Canvas<OpenGl>>,
+    context: Option<glutin::context::PossiblyCurrentContext>,
+    font_id: Option<FontId>,
     screen: LiplScreen,
-    surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
-    window: winit::window::Window,
-    context: glutin::context::PossiblyCurrentContext,
-    canvas: Canvas<OpenGl>,
-    font_id: FontId,
+    surface: Option<glutin::surface::Surface<glutin::surface::WindowSurface>>,
+    window: Option<winit::window::Window>,
+}
+
+impl Default for Application {
+    fn default() -> Self {
+        let mut screen = LiplScreen::new(true, DEFAULT_FONT_SIZE);
+        screen.handle_message(Message::Part("Even geduld a.u.b. ..".to_owned()));
+        Self {
+            screen,
+            canvas: None,
+            context: None,
+            font_id: None,
+            surface: None,
+            window: None,
+        }
+    }
+}
+
+impl Application {
+    fn initialized(&self) -> bool {
+        self.canvas.is_some()
+            && self.context.is_some()
+            && self.font_id.is_some()
+            && self.surface.is_some()
+            && self.window.is_some()
+    }
 }
 
 impl ApplicationHandler<Message> for Application {
-    fn resumed(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {
-        todo!()
+    fn resumed(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        log::info!("resumed");
+        let (mut canvas, window, context, surface) =
+            helpers::create_window("Lipl Display", event_loop);
+        let font_id = canvas.add_font_mem(ROBOTO_REGULAR).ok();
+
+        self.surface = Some(surface);
+        self.window = Some(window);
+        self.context = Some(context);
+        self.canvas = Some(canvas);
+        self.font_id = font_id;
+        self.screen = LiplScreen::default();
+
+        draw_paragraph(
+            self.canvas.as_mut().unwrap(),
+            *self.font_id.as_ref().unwrap(),
+            &self.screen,
+            self.window.as_ref().unwrap(),
+        );
     }
 
     fn window_event(
@@ -173,30 +153,53 @@ impl ApplicationHandler<Message> for Application {
         event: WindowEvent,
     ) {
         match event {
-        WindowEvent::Resized(physical_size) => {
-            self.surface.resize(
-                &self.context,
-                physical_size.width.try_into().unwrap(),
-                physical_size.height.try_into().unwrap(),
-            );
+            WindowEvent::ScaleFactorChanged {
+                scale_factor,
+                inner_size_writer: _,
+            } => {
+                log::info!("window_event scalefactorchanged {}", scale_factor);
+            }
+            WindowEvent::Resized(physical_size) => {
+                log::info!("window_event: resized");
+                if self.initialized() {
+                    self.surface.as_mut().unwrap().resize(
+                        self.context.as_ref().unwrap(),
+                        physical_size.width.try_into().unwrap(),
+                        physical_size.height.try_into().unwrap(),
+                    );
+                }
+            }
+            WindowEvent::CloseRequested => {
+                log::info!("window_event close");
+                event_loop.exit();
+            }
+            WindowEvent::RedrawRequested => {
+                log::info!("window_event redraw");
+                if self.initialized() {
+                    draw_paragraph(
+                        self.canvas.as_mut().unwrap(),
+                        *self.font_id.as_ref().unwrap(),
+                        &self.screen,
+                        self.window.as_ref().unwrap(),
+                    )
+                }
+            }
+            _ => {
+                log::info!("window_event {:#?}", event);
+            }
         }
-        WindowEvent::CloseRequested => {
-            event_loop.exit();
-        }
-        WindowEvent::RedrawRequested => {
-            draw_paragraph(&mut self.canvas, self.font_id, &self.screen, &self.window);
-            self.canvas.flush();
-            self.surface.swap_buffers(&self.context).unwrap();
-        }
-        _ => (),
     }
-}
-    
-    fn new_events(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, cause: winit::event::StartCause) {
-        let _ = (event_loop, cause);
+
+    fn new_events(
+        &mut self,
+        _event_loop: &winit::event_loop::ActiveEventLoop,
+        cause: winit::event::StartCause,
+    ) {
+        log::info!("new_events {:#?}", cause);
     }
-    
+
     fn user_event(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, event: Message) {
+        log::info!("user_event: {}", event);
         if [
             Message::Command(Command::Exit),
             Message::Command(Command::Poweroff),
@@ -204,34 +207,34 @@ impl ApplicationHandler<Message> for Application {
         .contains(&event)
         {
             event_loop.exit();
-        } else {
+        } else if self.initialized() {
             self.screen.handle_message(event);
-            self.window.request_redraw();
+            self.window.as_ref().unwrap().request_redraw();
         }
-}
-    
+    }
+
     fn device_event(
         &mut self,
-        event_loop: &winit::event_loop::ActiveEventLoop,
+        _event_loop: &winit::event_loop::ActiveEventLoop,
         device_id: winit::event::DeviceId,
-        event: winit::event::DeviceEvent,
+        _event: winit::event::DeviceEvent,
     ) {
-        let _ = (event_loop, device_id, event);
+        log::info!("device_event {:?}", device_id);
     }
-    
-    fn about_to_wait(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        let _ = event_loop;
+
+    fn about_to_wait(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {}
+
+    fn suspended(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {
+        self.canvas = None;
+        self.context = None;
+        self.font_id = None;
+        self.surface = None;
+        self.window = None;
     }
-    
-    fn suspended(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        let _ = event_loop;
-    }
-    
+
     fn exiting(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
         event_loop.exit();
     }
-    
-    fn memory_warning(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        let _ = event_loop;
-    }
+
+    fn memory_warning(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {}
 }
