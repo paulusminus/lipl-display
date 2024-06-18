@@ -144,6 +144,13 @@ impl ApplicationHandler<Message> for Application {
             &self.screen,
             self.window.as_ref().unwrap(),
         );
+        self.surface
+            .as_mut()
+            .unwrap()
+            .swap_buffers(self.context.as_ref().unwrap())
+            .unwrap_or_else(|error| {
+                panic!("Cannot swap buffers: {error}");
+            });
     }
 
     fn window_event(
@@ -181,7 +188,14 @@ impl ApplicationHandler<Message> for Application {
                         *self.font_id.as_ref().unwrap(),
                         &self.screen,
                         self.window.as_ref().unwrap(),
-                    )
+                    );
+                    self.surface
+                        .as_mut()
+                        .unwrap()
+                        .swap_buffers(self.context.as_ref().unwrap())
+                        .unwrap_or_else(|error| {
+                            panic!("Cannot swap buffers: {error}");
+                        });
                 }
             }
             _ => {
