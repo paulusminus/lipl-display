@@ -150,7 +150,8 @@ impl ApplicationHandler<Message> for Application {
             &self.screen,
             &graphics.window,
         );
-        graphics.surface
+        graphics
+            .surface
             .swap_buffers(&graphics.context)
             .unwrap_or_else(|error| {
                 panic!("Cannot swap buffers: {error}");
@@ -195,7 +196,8 @@ impl ApplicationHandler<Message> for Application {
                         &self.screen,
                         &graphics.window,
                     );
-                    graphics.surface
+                    graphics
+                        .surface
                         .swap_buffers(&graphics.context)
                         .unwrap_or_else(|error| {
                             panic!("Cannot swap buffers: {error}");
