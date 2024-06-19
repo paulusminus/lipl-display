@@ -1,6 +1,7 @@
 [package]
 name = "lipl-display-femtovg"
 authors.workspace = true
+build = "build.rs"
 description = "Displaying part on the screen using femtovg"
 edition.workspace = true
 homepage.workspace = true

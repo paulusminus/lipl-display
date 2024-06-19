@@ -25,6 +25,7 @@ mod gl {
     #![allow(clippy::all)]
     include!(concat!(env!("OUT_DIR"), "/gl_bindings.rs"));
 
+    #[allow(unused_imports)]
     pub use Gles2 as Gl;
 }
 
