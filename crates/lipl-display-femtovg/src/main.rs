@@ -21,6 +21,13 @@ const WHITE: femtovg::Color = femtovg::Color::white();
 mod gatt_client;
 mod helpers;
 
+mod gl {
+    #![allow(clippy::all)]
+    include!(concat!(env!("OUT_DIR"), "/gl_bindings.rs"));
+
+    pub use Gles2 as Gl;
+}
+
 fn get_colors(dark: bool) -> (Color, Color) {
     if dark {
         (WHITE, BLACK)
@@ -90,13 +97,17 @@ fn draw_paragraph(
     }
 }
 
+struct ApplicationGraphics {
+    canvas: Canvas<OpenGl>,
+    context: glutin::context::PossiblyCurrentContext,
+    font_id: FontId,
+    surface: glutin::surface::Surface<glutin::surface::WindowSurface>,
+    window: winit::window::Window,
+}
+
 struct Application {
-    canvas: Option<Canvas<OpenGl>>,
-    context: Option<glutin::context::PossiblyCurrentContext>,
-    font_id: Option<FontId>,
     screen: LiplScreen,
-    surface: Option<glutin::surface::Surface<glutin::surface::WindowSurface>>,
-    window: Option<winit::window::Window>,
+    graphics: Option<ApplicationGraphics>,
 }
 
 impl Default for Application {
@@ -105,22 +116,14 @@ impl Default for Application {
         screen.handle_message(Message::Part("Even geduld a.u.b. ..".to_owned()));
         Self {
             screen,
-            canvas: None,
-            context: None,
-            font_id: None,
-            surface: None,
-            window: None,
+            graphics: None,
         }
     }
 }
 
 impl Application {
     fn initialized(&self) -> bool {
-        self.canvas.is_some()
-            && self.context.is_some()
-            && self.font_id.is_some()
-            && self.surface.is_some()
-            && self.window.is_some()
+        self.graphics.is_some()
     }
 }
 
@@ -129,25 +132,26 @@ impl ApplicationHandler<Message> for Application {
         log::info!("resumed");
         let (mut canvas, window, context, surface) =
             helpers::create_window("Lipl Display", event_loop);
-        let font_id = canvas.add_font_mem(ROBOTO_REGULAR).ok();
+        let font_id = canvas.add_font_mem(ROBOTO_REGULAR).ok().unwrap();
 
-        self.surface = Some(surface);
-        self.window = Some(window);
-        self.context = Some(context);
-        self.canvas = Some(canvas);
-        self.font_id = font_id;
         self.screen = LiplScreen::default();
+        self.graphics = Some(ApplicationGraphics {
+            canvas,
+            context,
+            font_id,
+            surface,
+            window,
+        });
 
+        let graphics = self.graphics.as_mut().unwrap();
         draw_paragraph(
-            self.canvas.as_mut().unwrap(),
-            *self.font_id.as_ref().unwrap(),
+            &mut graphics.canvas,
+            graphics.font_id,
             &self.screen,
-            self.window.as_ref().unwrap(),
+            &graphics.window,
         );
-        self.surface
-            .as_mut()
-            .unwrap()
-            .swap_buffers(self.context.as_ref().unwrap())
+        graphics.surface
+            .swap_buffers(&graphics.context)
             .unwrap_or_else(|error| {
                 panic!("Cannot swap buffers: {error}");
             });
@@ -169,8 +173,9 @@ impl ApplicationHandler<Message> for Application {
             WindowEvent::Resized(physical_size) => {
                 log::info!("window_event: resized");
                 if self.initialized() {
-                    self.surface.as_mut().unwrap().resize(
-                        self.context.as_ref().unwrap(),
+                    let graphics = self.graphics.as_mut().unwrap();
+                    graphics.surface.resize(
+                        &graphics.context,
                         physical_size.width.try_into().unwrap(),
                         physical_size.height.try_into().unwrap(),
                     );
@@ -183,16 +188,15 @@ impl ApplicationHandler<Message> for Application {
             WindowEvent::RedrawRequested => {
                 log::info!("window_event redraw");
                 if self.initialized() {
+                    let graphics = self.graphics.as_mut().unwrap();
                     draw_paragraph(
-                        self.canvas.as_mut().unwrap(),
-                        *self.font_id.as_ref().unwrap(),
+                        &mut graphics.canvas,
+                        graphics.font_id,
                         &self.screen,
-                        self.window.as_ref().unwrap(),
+                        &graphics.window,
                     );
-                    self.surface
-                        .as_mut()
-                        .unwrap()
-                        .swap_buffers(self.context.as_ref().unwrap())
+                    graphics.surface
+                        .swap_buffers(&graphics.context)
                         .unwrap_or_else(|error| {
                             panic!("Cannot swap buffers: {error}");
                         });
@@ -223,7 +227,7 @@ impl ApplicationHandler<Message> for Application {
             event_loop.exit();
         } else if self.initialized() {
             self.screen.handle_message(event);
-            self.window.as_ref().unwrap().request_redraw();
+            self.graphics.as_ref().unwrap().window.request_redraw();
         }
     }
 
@@ -239,11 +243,7 @@ impl ApplicationHandler<Message> for Application {
     fn about_to_wait(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {}
 
     fn suspended(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {
-        self.canvas = None;
-        self.context = None;
-        self.font_id = None;
-        self.surface = None;
-        self.window = None;
+        self.graphics = None;
     }
 
     fn exiting(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {

@@ -36,8 +36,6 @@ pub fn create_window(
 
     let (window, gl_config) = display_builder
         .build(event_loop, template, |configs| {
-            // Find the config with the maximum number of samples, so our triangle will
-            // be smooth.
             configs
                 .reduce(|accum, config| {
                     let transparency_check = config.supports_transparency().unwrap_or(false)
