@@ -6,7 +6,11 @@ use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, 
 use lipl_gatt_bluer::ListenBluer;
 use log::error;
 use winit::{
-    application::ApplicationHandler, dpi::PhysicalSize, event::WindowEvent, event_loop::{EventLoop, EventLoopProxy}};
+    application::ApplicationHandler,
+    dpi::PhysicalSize,
+    event::WindowEvent,
+    event_loop::{EventLoop, EventLoopProxy},
+};
 
 const ROBOTO_REGULAR: &[u8] = include_bytes!("../assets/Roboto-Regular.ttf");
 const DEFAULT_FONT_SIZE: f32 = 32.0;
@@ -109,9 +113,10 @@ impl Application {
                 .expect("Error while breaking text");
 
             for line_range in lines {
-                if let Ok(_res) = graphics
-                    .canvas
-                    .fill_text(x, y, &self.screen.text[line_range], &paint)
+                if let Ok(_res) =
+                    graphics
+                        .canvas
+                        .fill_text(x, y, &self.screen.text[line_range], &paint)
                 {
                     y += font_metrics.height();
                 }
@@ -148,7 +153,6 @@ impl Application {
         if let Some(graphics) = self.graphics.as_ref() {
             graphics.window.request_redraw();
         }
-
     }
 }
 
@@ -188,7 +192,6 @@ impl ApplicationHandler<Message> for Application {
             WindowEvent::Resized(physical_size) => {
                 log::info!("window_event: resized");
                 self.resize(physical_size);
-
             }
             WindowEvent::CloseRequested => {
                 log::debug!("window_event close");

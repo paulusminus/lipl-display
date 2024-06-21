@@ -10,7 +10,9 @@ use glutin::{
 };
 use glutin_winit::DisplayBuilder;
 use winit::{
-    event_loop::ActiveEventLoop, raw_window_handle::HasWindowHandle, window::{Window, WindowAttributes}
+    event_loop::ActiveEventLoop,
+    raw_window_handle::HasWindowHandle,
+    window::{Window, WindowAttributes},
 };
 
 pub fn create_window(
