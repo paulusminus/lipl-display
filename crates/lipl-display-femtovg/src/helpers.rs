@@ -10,9 +10,7 @@ use glutin::{
 };
 use glutin_winit::DisplayBuilder;
 use winit::{
-    event_loop::ActiveEventLoop,
-    raw_window_handle::HasWindowHandle,
-    window::{Window, WindowAttributes},
+    event_loop::ActiveEventLoop, raw_window_handle::HasWindowHandle, window::{Window, WindowAttributes}
 };
 
 pub fn create_window(
@@ -26,11 +24,10 @@ pub fn create_window(
 ) {
     let window_attributes = WindowAttributes::default()
         .with_title(title)
-        .with_decorations(false)
-        .with_maximized(true)
-        .with_resizable(false);
+        .with_transparent(false)
+        .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)));
 
-    let template = ConfigTemplateBuilder::new().with_alpha_size(8);
+    let template = ConfigTemplateBuilder::new();
 
     let display_builder = DisplayBuilder::new().with_window_attributes(Some(window_attributes));
 
@@ -38,10 +35,7 @@ pub fn create_window(
         .build(event_loop, template, |configs| {
             configs
                 .reduce(|accum, config| {
-                    let transparency_check = config.supports_transparency().unwrap_or(false)
-                        & !accum.supports_transparency().unwrap_or(false);
-
-                    if transparency_check || config.num_samples() < accum.num_samples() {
+                    if config.num_samples() < accum.num_samples() {
                         config
                     } else {
                         accum
