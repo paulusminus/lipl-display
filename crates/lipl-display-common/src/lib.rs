@@ -1,6 +1,6 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::str::FromStr;
 use uuid::{uuid, Uuid};
@@ -46,7 +46,7 @@ pub trait BackgroundThread {
 }
 
 /// Received value on the display service as change for the screen
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Deserialize, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Message {
     Part(String),
@@ -79,7 +79,7 @@ impl std::fmt::Display for Message {
 }
 
 /// Received value from command characteristic
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum Command {
     Poweroff,
     Exit,
