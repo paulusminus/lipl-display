@@ -48,7 +48,6 @@ fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
     let event_loop = EventLoop::<Message>::with_user_event().build()?;
-    // event_loop.set_control_flow(winit::event_loop::ControlFlow::Wait);
     let mut gatt = ListenBluer::new(create_callback(event_loop.create_proxy()));
 
     event_loop.run_app(&mut Application::default())?;
