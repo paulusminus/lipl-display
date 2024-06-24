@@ -10,4 +10,4 @@ version = "0.4.5"
 
 [dependencies]
 dbus = "0.9"
-strum = { version = "0.26.1", features = ["derive"] }
+strum = { version = "0.26.3", features = ["derive"] }
