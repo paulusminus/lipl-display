@@ -119,7 +119,7 @@ fn main() -> anyhow::Result<()> {
     run_native(
         "Lipl Display",
         fullscreen(),
-        Box::new(|cc| Box::new(LiplDisplay::new(cc, rx))),
+        Box::new(|cc| Ok(Box::new(LiplDisplay::new(cc, rx)))),
     )
     .map_err(|_| anyhow::anyhow!("Error running egui"))?;
     gatt.stop();
