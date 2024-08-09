@@ -1566,7 +1566,7 @@ dependencies = [
  "cfg_aliases 0.2.1",
  "glutin 0.32.0",
  "raw-window-handle 0.6.2",
- "winit 0.30.4",
+ "winit 0.30.5",
 ]
 
 [[package]]
@@ -1736,7 +1736,7 @@ dependencies = [
  "scopeguard",
  "wasm-bindgen",
  "web-sys",
- "winit 0.30.4",
+ "winit 0.30.5",
 ]
 
 [[package]]
@@ -2247,7 +2247,7 @@ dependencies = [
  "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
- "winit 0.30.4",
+ "winit 0.30.5",
 ]
 
 [[package]]
@@ -4687,9 +4687,9 @@ dependencies = [
 
 [[package]]
 name = "winit"
-version = "0.30.4"
+version = "0.30.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4225ddd8ab67b8b59a2fee4b34889ebf13c0460c1c3fa297c58e21eb87801b33"
+checksum = "0be9e76a1f1077e04a411f0b989cbd3c93339e1771cb41e71ac4aee95bfd2c67"
 dependencies = [
  "ahash",
  "android-activity 0.6.0",
