@@ -20,7 +20,7 @@ tracing-log = "0.2.0"
 tracing-appender = "0.2.3"
 tracing-subscriber = { version = "0.3.18", features = ["registry"] }
 toml = "0.8.8"
-serde = { version = "1.0.193", features = ["derive"] }
+serde = { version = "1.0.207", features = ["derive"] }
 serde_with = { version = "3", default-features = false, features = ["macros"] }
 anyhow = "1.0.75"
 
