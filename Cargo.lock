@@ -938,7 +938,7 @@ dependencies = [
 [[package]]
 name = "ecolor"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "bytemuck",
  "emath",
@@ -947,7 +947,7 @@ dependencies = [
 [[package]]
 name = "eframe"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "ahash",
  "bytemuck",
@@ -955,7 +955,7 @@ dependencies = [
  "egui",
  "egui-winit",
  "egui_glow",
- "glow",
+ "glow 0.14.0",
  "glutin",
  "glutin-winit",
  "image 0.25.2",
@@ -980,7 +980,7 @@ dependencies = [
 [[package]]
 name = "egui"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "ahash",
  "emath",
@@ -992,7 +992,7 @@ dependencies = [
 [[package]]
 name = "egui-winit"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "ahash",
  "arboard",
@@ -1008,12 +1008,12 @@ dependencies = [
 [[package]]
 name = "egui_glow"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "ahash",
  "bytemuck",
  "egui",
- "glow",
+ "glow 0.14.0",
  "log",
  "memoffset",
  "wasm-bindgen",
@@ -1029,7 +1029,7 @@ checksum = "60b1af1c220855b6ceac025d3f6ecdd2b7c4894bfe9cd9bda4fbb4bc7c0d4cf0"
 [[package]]
 name = "emath"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "bytemuck",
 ]
@@ -1060,7 +1060,7 @@ dependencies = [
 [[package]]
 name = "epaint"
 version = "0.28.1"
-source = "git+https://github.com/emilk/egui#2be93aca5d0db973ab163267fb4162363786ffba"
+source = "git+https://github.com/emilk/egui#1ccd056d191c1b62b66b341da1fe7237ec782880"
 dependencies = [
  "ab_glyph",
  "ahash",
@@ -1136,7 +1136,7 @@ checksum = "47921d14afc4daad9bedc926099bc6edcaa23e37a957448f86cdefcbafe2f632"
 dependencies = [
  "bitflags 2.6.0",
  "fnv",
- "glow",
+ "glow 0.13.1",
  "image 0.25.2",
  "imgref",
  "log",
@@ -1425,6 +1425,18 @@ name = "glow"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bd348e04c43b32574f2de31c8bb397d96c9fcfa1371bd4ca6d8bdc464ab121b1"
+dependencies = [
+ "js-sys",
+ "slotmap",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "glow"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f865cbd94bd355b89611211e49508da98a1fce0ad755c1e8448fb96711b24528"
 dependencies = [
  "js-sys",
  "slotmap",
@@ -1729,7 +1741,7 @@ dependencies = [
  "derive_more",
  "dwrote",
  "femtovg",
- "glow",
+ "glow 0.13.1",
  "i-slint-common",
  "i-slint-core",
  "i-slint-core-macros",
@@ -4150,7 +4162,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
