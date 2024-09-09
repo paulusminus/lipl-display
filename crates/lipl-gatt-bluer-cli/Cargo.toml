@@ -17,4 +17,4 @@ serde_json = "1.0.114"
 thiserror = "1.0.57"
 tokio = { version = "1", features = ["io-util", "io-std", "rt", "macros", "signal"] }
 serde = { version = "1.0.197", features = ["derive"] }
-tokio-stream = { version = "0.1.15", features = ["signal"] }
+tokio-stream = { version = "0.1.16", features = ["signal"] }
