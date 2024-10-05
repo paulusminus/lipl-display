@@ -1,4 +1,4 @@
-use futures::channel::mpsc::TrySendError;
+use futures_channel::mpsc::TrySendError;
 use lipl_display_common::Message;
 use thiserror::Error;
 

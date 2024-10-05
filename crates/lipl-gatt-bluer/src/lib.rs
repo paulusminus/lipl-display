@@ -9,7 +9,8 @@ use bluer::{
 };
 use lipl_display_common::{BackgroundThread, Message};
 
-use futures::{channel::mpsc, Stream, StreamExt};
+use futures_channel::mpsc;
+use futures_util::{Stream, StreamExt};
 use log::{error, trace};
 use pin_project::{pin_project, pinned_drop};
 use std::pin::Pin;
@@ -23,9 +24,9 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[pin_project(PinnedDrop)]
 pub struct MessageStream {
-    values_tx: futures::channel::mpsc::Sender<Message>,
+    values_tx: mpsc::Sender<Message>,
     #[pin]
-    values_rx: futures::channel::mpsc::Receiver<Message>,
+    values_rx: mpsc::Receiver<Message>,
     adv_handle: Option<AdvertisementHandle>,
     app_handle: Option<ApplicationHandle>,
 }
@@ -45,7 +46,7 @@ impl PinnedDrop for MessageStream {
     }
 }
 
-impl futures::Stream for MessageStream {
+impl Stream for MessageStream {
     type Item = Message;
     fn poll_next(
         self: std::pin::Pin<&mut Self>,
@@ -90,7 +91,7 @@ pub struct ListenBluer {
 }
 
 fn wait() -> impl Stream<Item = Message> {
-    futures::stream::once(async { Message::Command(lipl_display_common::Command::Wait) })
+    futures_util::stream::once(async { Message::Command(lipl_display_common::Command::Wait) })
 }
 
 impl ListenBluer {

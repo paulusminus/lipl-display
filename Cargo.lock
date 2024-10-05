@@ -2193,7 +2193,8 @@ version = "0.4.5"
 dependencies = [
  "bluer",
  "env_logger",
- "futures",
+ "futures-channel",
+ "futures-util",
  "lipl-display-common",
  "log",
  "pin-project",
