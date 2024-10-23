@@ -10,14 +10,22 @@ repository.workspace = true
 version = "0.4.5"
 
 [dependencies]
-femtovg = { version = "0.9", default-features = false }
-glutin = { version = "0.32", default-features = false }
-glutin-winit = { version = "0.5", default-features = false, features = ["egl", "wayland"] }
+femtovg = { version = "0.10.0", default-features = false }
+glutin = { version = "0.32.1", default-features = false }
+glutin-winit = { version = "0.5.0", default-features = false, features = [
+  "egl",
+  "wayland",
+] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
-log = "0.4"
-env_logger = "0.11"
-winit = { version = "0.30", default-features = false, features = ["rwh_06", "wayland", "wayland-dlopen", "wayland-csd-adwaita"] }
+log = "0.4.22"
+env_logger = "0.11.5"
+winit = { version = "0.30.5", default-features = false, features = [
+  "rwh_06",
+  "wayland",
+  "wayland-dlopen",
+  "wayland-csd-adwaita",
+] }
 
 [build-dependencies]
-gl_generator = "0.14"
+gl_generator = "0.14.0"

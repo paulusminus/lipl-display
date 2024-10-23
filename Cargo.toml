@@ -1,13 +1,13 @@
 [workspace]
 members = [
-    "crates/lipl-display-common",
-    "crates/lipl-display-egui",
-    "crates/lipl-display-femtovg",
-#    "crates/lipl-display-gtk",
-    "crates/lipl-display-slint",
-    "crates/lipl-gatt-bluer",
-    "crates/lipl-gatt-bluer-cli",
-    "crates/login-poweroff-reboot"
+  "crates/lipl-display-common",
+  "crates/lipl-display-egui",
+  "crates/lipl-display-femtovg",
+  #    "crates/lipl-display-gtk",
+  "crates/lipl-display-slint",
+  "crates/lipl-gatt-bluer",
+  "crates/lipl-gatt-bluer-cli",
+  "crates/login-poweroff-reboot",
 ]
 resolver = "2"
 
@@ -17,7 +17,7 @@ edition = "2021"
 homepage = "https://www.paulmin.nl/lipl.html"
 license = "MIT"
 repository = "https://github.com/paulusminus/lipl-display/"
-version = "0.4.5"
+version = "0.4.6"
 
 [profile.release]
 lto = true
