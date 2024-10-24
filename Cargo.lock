@@ -2231,7 +2231,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "bluer",
  "env_logger",
@@ -2248,7 +2248,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer-cli"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "futures-util",
  "lipl-display-common",
