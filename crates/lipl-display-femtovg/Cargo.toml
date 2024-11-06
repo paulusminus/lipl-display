@@ -7,7 +7,7 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-version = "0.4.5"
+version.workspace = true
 
 [dependencies]
 femtovg = { version = "0.10.1", default-features = false }
@@ -16,7 +16,7 @@ glutin-winit = { version = "0.5.0", default-features = false, features = [
   "egl",
   "wayland",
 ] }
-lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
+lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 log = "0.4.22"
 env_logger = "0.11.5"

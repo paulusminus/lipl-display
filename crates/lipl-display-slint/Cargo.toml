@@ -6,7 +6,7 @@ edition.workspace = true
 homepage.workspace = true
 license.workspace = true
 repository.workspace = true
-version = "0.1.0"
+version = "0.1.1"
 build = "build.rs"
 
 [dependencies]
@@ -17,14 +17,14 @@ slint = { version = "1.8.0", default-features = false, features = [
   "backend-linuxkms",
 ] }
 # slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
-lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
-lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
-login-poweroff-reboot = { version = "0.4", path = "../login-poweroff-reboot" }
+lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
+lipl-gatt-bluer = { version = "0.4.6", path = "../lipl-gatt-bluer" }
+login-poweroff-reboot = { version = "0.4.5", path = "../login-poweroff-reboot" }
 tracing = "0.1.40"
 tracing-log = "0.2.0"
 tracing-appender = "0.2.3"
 tracing-subscriber = { version = "0.3.18", features = ["registry"] }
-toml = "0.8.8"
+toml = "0.8.19"
 serde = { version = "1.0.214", features = ["derive"] }
 serde_with = { version = "3.11.0", default-features = false, features = [
   "macros",
@@ -32,7 +32,7 @@ serde_with = { version = "3.11.0", default-features = false, features = [
 anyhow = "1.0.93"
 
 [build-dependencies]
-slint-build = "1.5"
+slint-build = "1.8.0"
 
 [package.metadata.deb]
 priority = "optional"
