@@ -10,7 +10,12 @@ version = "0.1.0"
 build = "build.rs"
 
 [dependencies]
-slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
+slint = { version = "1.8.0", default-features = false, features = [
+  "std",
+  "compat-1-2",
+  "renderer-femtovg",
+  "backend-linuxkms",
+] }
 # slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
@@ -20,9 +25,11 @@ tracing-log = "0.2.0"
 tracing-appender = "0.2.3"
 tracing-subscriber = { version = "0.3.18", features = ["registry"] }
 toml = "0.8.8"
-serde = { version = "1.0.193", features = ["derive"] }
-serde_with = { version = "3", default-features = false, features = ["macros"] }
-anyhow = "1.0.75"
+serde = { version = "1.0.214", features = ["derive"] }
+serde_with = { version = "3.11.0", default-features = false, features = [
+  "macros",
+] }
+anyhow = "1.0.93"
 
 [build-dependencies]
 slint-build = "1.5"
@@ -33,11 +40,18 @@ section = "misc"
 depends = "libinput10, seatd, libgbm1, libxkbcommon0, libegl1, libfontconfig1, passwd"
 maintainer-scripts = "pkg/debian/"
 assets = [
-    ["../../target/aarch64-unknown-linux-gnu/release/lipl-display-slint", "/usr/bin/", "755"],
-    ["pkg/common/lipl.toml", "/etc/", "664"],
+  [
+    "../../target/aarch64-unknown-linux-gnu/release/lipl-display-slint",
+    "/usr/bin/",
+    "755",
+  ],
+  [
+    "pkg/common/lipl.toml",
+    "/etc/",
+    "664",
+  ],
 ]
-systemd-units = [ 
-    { unit-name = "lipl", unit-scripts = "pkg/common", enable = false },
+systemd-units = [
+  { unit-name = "lipl", unit-scripts = "pkg/common", enable = false },
 ]
 conf-files = ["/etc/lipl.toml"]
-
