@@ -57,9 +57,9 @@ dependencies = [
 
 [[package]]
 name = "allocator-api2"
-version = "0.2.18"
+version = "0.2.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c6cb57a04249c6480766f7f7cef5467412af1490f8d1e243141daddada3264f"
+checksum = "611cc2ae7d2e242c457e4be7f97036b8ad9ca152b499f53faf99b1ed8fc2553f"
 
 [[package]]
 name = "android-activity"
@@ -79,7 +79,7 @@ dependencies = [
  "ndk-context",
  "ndk-sys",
  "num_enum",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -368,7 +368,7 @@ dependencies = [
  "polling",
  "rustix",
  "slab",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -398,9 +398,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.1.36"
+version = "1.1.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "baee610e9452a8f6f0a1b6194ec09ff9e2d85dea54432acdae41aa0761c95d70"
+checksum = "40545c26d092346d8a8dab71ee48e7685a7a9cba76e634790c215b41a4a7b4cf"
 dependencies = [
  "jobserver",
  "libc",
@@ -1727,7 +1727,7 @@ dependencies = [
  "rowan",
  "smol_str 0.3.2",
  "strum",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
  "url",
 ]
 
@@ -2116,7 +2116,7 @@ dependencies = [
  "combine",
  "jni-sys",
  "log",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
  "walkdir",
  "windows-sys 0.45.0",
 ]
@@ -2292,7 +2292,7 @@ name = "lipl-display-common"
 version = "0.4.6"
 dependencies = [
  "serde",
- "thiserror 2.0.0",
+ "thiserror 2.0.2",
  "uuid",
 ]
 
@@ -2354,7 +2354,7 @@ dependencies = [
  "log",
  "pin-project",
  "serde",
- "thiserror 2.0.0",
+ "thiserror 2.0.2",
  "tokio",
  "uuid",
 ]
@@ -2370,7 +2370,7 @@ dependencies = [
  "login-poweroff-reboot",
  "serde",
  "serde_json",
- "thiserror 2.0.0",
+ "thiserror 2.0.2",
  "tokio",
  "tokio-stream",
 ]
@@ -2434,7 +2434,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ca94c7bf1e2557c2798989c43416822c12fc5dcc5e17cc3307ef0e71894a955"
 dependencies = [
  "lyon_path",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -2531,7 +2531,7 @@ dependencies = [
  "ndk-sys",
  "num_enum",
  "raw-window-handle",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -3450,7 +3450,7 @@ checksum = "ec068281021ccd3a69dbe36a0caf207d88aa5b50945ced9000f17a5d2b139003"
 dependencies = [
  "i-slint-compiler",
  "spin_on",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
  "toml_edit",
 ]
 
@@ -3495,7 +3495,7 @@ dependencies = [
  "log",
  "memmap2",
  "rustix",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
  "wayland-backend",
  "wayland-client",
  "wayland-csd-frame",
@@ -3653,27 +3653,27 @@ checksum = "f18aa187839b2bdb1ad2fa35ead8c4c2976b64e4363c386d45ac0f7ee85c9233"
 
 [[package]]
 name = "thiserror"
-version = "1.0.68"
+version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02dd99dc800bbb97186339685293e1cc5d9df1f8fae2d0aecd9ff1c77efea892"
+checksum = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52"
 dependencies = [
- "thiserror-impl 1.0.68",
+ "thiserror-impl 1.0.69",
 ]
 
 [[package]]
 name = "thiserror"
-version = "2.0.0"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15291287e9bff1bc6f9ff3409ed9af665bec7a5fc8ac079ea96be07bca0e2668"
+checksum = "037e29b009aa709f293b974da5cd33b15783c049e07f8435778ce8c4871525d8"
 dependencies = [
- "thiserror-impl 2.0.0",
+ "thiserror-impl 2.0.2",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.68"
+version = "1.0.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7c61ec9a6f64d2793d8a45faba21efbe3ced62a886d44c36a009b2b519b4c7e"
+checksum = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3682,9 +3682,9 @@ dependencies = [
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.0"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "22efd00f33f93fa62848a7cab956c3d38c8d43095efda1decfc2b3a5dc0b8972"
+checksum = "ea4778c7e8ff768bdb32a58a2349903859fe719a320300d7d4ce8636f19a1e69"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3886,7 +3886,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3566e8ce28cc0a3fe42519fc80e6b4c943cc4c8cef275620eb8dac2d3d4e06cf"
 dependencies = [
  "crossbeam-channel",
- "thiserror 1.0.68",
+ "thiserror 1.0.69",
  "time",
  "tracing-subscriber",
 ]
