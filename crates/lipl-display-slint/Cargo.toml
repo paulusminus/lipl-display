@@ -23,7 +23,7 @@ login-poweroff-reboot = { version = "0.4.5", path = "../login-poweroff-reboot" }
 tracing = "0.1.40"
 tracing-log = "0.2.0"
 tracing-appender = "0.2.3"
-tracing-subscriber = { version = "0.3.18", features = ["registry"] }
+tracing-subscriber = { version = "0.3.19", features = ["registry"] }
 toml = "0.8.19"
 serde = { version = "1.0.214", features = ["derive"] }
 serde_with = { version = "3.11.0", default-features = false, features = [
