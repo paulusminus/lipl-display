@@ -14,7 +14,7 @@ futures-util = "0.3.31"
 futures-channel = "0.3.31"
 lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
 pin-project = "1.1.7"
-thiserror = "2.0.0"
+thiserror = "2.0.6"
 tokio = { version = "1.41.0", features = ["rt", "sync"] }
 log = "0.4.22"
 uuid = "1.11.0"
