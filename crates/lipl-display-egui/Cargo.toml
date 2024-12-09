@@ -9,7 +9,7 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-anyhow = "1.0.93"
+anyhow = "1.0.94"
 eframe = { version = "0.29.1", default-features = false, features = ["glow"] }
 lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
