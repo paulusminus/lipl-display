@@ -6,8 +6,8 @@ pub trait OrgFreedesktopLogin1Manager {
     // fn cancel_scheduled_shutdown(&self) -> Result<bool, dbus::Error>;
 }
 
-impl<'a, T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>> OrgFreedesktopLogin1Manager
-    for blocking::Proxy<'a, C>
+impl<T: blocking::BlockingSender, C: ::std::ops::Deref<Target = T>> OrgFreedesktopLogin1Manager
+    for blocking::Proxy<'_, C>
 {
     fn schedule_shutdown(&self, type_: &str, usec: u64) -> Result<(), dbus::Error> {
         self.method_call(
