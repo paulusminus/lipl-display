@@ -10,8 +10,8 @@ version.workspace = true
 
 [dependencies]
 anyhow = "1.0.93"
-gtk4 = "0.9.3"
-glib = { version = "0.20.5", features = ["log"] }
+gtk4 = "0.9.4"
+glib = { version = "0.20.7", features = ["log"] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 log = "0.4.22"

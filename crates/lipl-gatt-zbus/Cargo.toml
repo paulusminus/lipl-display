@@ -10,10 +10,10 @@ version.workspace = true
 
 [dependencies]
 async-channel = "2.3.1"
-async-io = "2.3.4"
+async-io = "2.4.0"
 derive_builder = "0.20.2"
 lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
-thiserror = "2.0.0"
-tracing = "0.1.40"
+thiserror = "2.0.8"
+tracing = "0.1.41"
 uuid = "1.11.0"
-zbus = "5.1.0"
+zbus = "5.2.0"

@@ -1,4 +1,5 @@
 use eframe::egui::{FontData, FontDefinitions, FontFamily};
+use std::sync::Arc;
 
 pub const FONT: &[u8] = include_bytes!("Roboto-Regular.ttf");
 pub const FONT_NAME: &str = "Roboto";
@@ -7,7 +8,7 @@ pub fn fonts() -> FontDefinitions {
     let mut font_defs = FontDefinitions::default();
     font_defs
         .font_data
-        .insert(FONT_NAME.to_owned(), FontData::from_static(FONT));
+        .insert(FONT_NAME.to_owned(), Arc::new(FontData::from_static(FONT)));
 
     font_defs
         .families
