@@ -10,16 +10,16 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-femtovg = { version = "0.11.2", default-features = false }
-glutin = { version = "0.32.1", default-features = false }
+femtovg = { version = "0.12.0", default-features = false }
+glutin = { version = "0.32.2", default-features = false }
 glutin-winit = { version = "0.5.0", default-features = false, features = [
   "egl",
   "wayland",
 ] }
 lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
-log = "0.4.22"
-env_logger = "0.11.5"
+log = "0.4.25"
+env_logger = "0.11.6"
 winit = { version = "0.30.5", default-features = false, features = [
   "rwh_06",
   "wayland",
