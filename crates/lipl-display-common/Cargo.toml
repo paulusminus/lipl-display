@@ -11,4 +11,4 @@ version = "0.4.6"
 [dependencies]
 serde = { version = "1.0.216", features = ["derive"] }
 thiserror = "2.0.8"
-uuid = "1.11.0"
+uuid = "1.12.1"
