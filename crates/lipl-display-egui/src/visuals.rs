@@ -37,8 +37,8 @@ fn widget_visuals(dark: bool) -> WidgetVisuals {
             color: dark.foreground(),
         },
         expansion: 1.0,
-        rounding: Default::default(),
-        weak_bg_fill: Default::default(),
+        corner_radius: Default::default(),
+        weak_bg_fill: dark.background(),
     }
 }
 
