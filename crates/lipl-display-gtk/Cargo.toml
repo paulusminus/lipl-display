@@ -1,7 +1,7 @@
 [package]
 authors.workspace = true
 description = "Displaying part on the screen using gtk"
-edition.workspace = true
+edition = "2021"
 homepage.workspace = true
 license.workspace = true
 name = "lipl-display-gtk"
