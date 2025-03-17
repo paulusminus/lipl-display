@@ -1,4 +1,4 @@
-#[allow(unsafe_op_in_unsafe_fn)]
+#![allow(unsafe_op_in_unsafe_fn)]
 use std::error::Error;
 
 use femtovg::{Canvas, Color, FontId, Paint, renderer::OpenGl};
