@@ -9,7 +9,7 @@ members = [
   "crates/lipl-gatt-bluer-cli",
   "crates/login-poweroff-reboot",
 ]
-resolver = "2"
+resolver = "3"
 
 [workspace.package]
 authors = ["Paul Min"]
