@@ -3052,7 +3052,7 @@ checksum = "6db9c683daf087dc577b7506e9695b3d556a9f3849903fa28186283afd6809e9"
 
 [[package]]
 name = "lipl-display-common"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "serde",
  "thiserror 2.0.12",
@@ -3061,7 +3061,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-egui"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "anyhow",
  "eframe",
@@ -3073,7 +3073,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-femtovg"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "env_logger",
  "femtovg 0.13.0",
@@ -3088,7 +3088,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-slint"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anyhow",
  "lipl-display-common",
@@ -3107,7 +3107,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "bluer",
  "env_logger",
@@ -3124,7 +3124,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer-cli"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "futures-util",
  "lipl-display-common",
@@ -3168,7 +3168,7 @@ checksum = "30bde2b3dc3671ae49d8e2e9f044c7c005836e7a023ee57cffa25ab82764bb9e"
 
 [[package]]
 name = "login-poweroff-reboot"
-version = "0.4.5"
+version = "0.4.7"
 dependencies = [
  "dbus",
  "strum 0.27.1",

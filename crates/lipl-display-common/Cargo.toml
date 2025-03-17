@@ -6,7 +6,7 @@ homepage.workspace = true
 license.workspace = true
 name = "lipl-display-common"
 repository.workspace = true
-version = "0.4.6"
+version.workspace = true
 
 [dependencies]
 serde = { version = "1.0.216", features = ["derive"] }
