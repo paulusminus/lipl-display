@@ -1,7 +1,7 @@
 #[allow(unsafe_op_in_unsafe_fn)]
 use std::error::Error;
 
-use femtovg::{renderer::OpenGl, Canvas, Color, FontId, Paint};
+use femtovg::{Canvas, Color, FontId, Paint, renderer::OpenGl};
 use glutin::surface::GlSurface;
 use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, Message};
 use lipl_gatt_bluer::ListenBluer;
@@ -31,11 +31,7 @@ mod gl {
 }
 
 fn get_colors(dark: bool) -> (Color, Color) {
-    if dark {
-        (WHITE, BLACK)
-    } else {
-        (BLACK, WHITE)
-    }
+    if dark { (WHITE, BLACK) } else { (BLACK, WHITE) }
 }
 
 fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {

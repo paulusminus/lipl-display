@@ -1,7 +1,7 @@
 use crate::LiplDisplay;
 use lipl_display_common::{Command, Message};
-use login_poweroff_reboot::{shutdown, Shutdown};
-use slint::{invoke_from_event_loop, quit_event_loop, Weak};
+use login_poweroff_reboot::{Shutdown, shutdown};
+use slint::{Weak, invoke_from_event_loop, quit_event_loop};
 use tracing::error;
 
 pub(crate) fn create_handle_message(ui_handle: Weak<LiplDisplay>) -> impl Fn(Message) {

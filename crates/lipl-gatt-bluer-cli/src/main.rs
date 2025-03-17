@@ -1,10 +1,10 @@
-use futures_util::{pin_mut, StreamExt};
+use futures_util::{StreamExt, pin_mut};
 use lipl_display_common::{Command, Message};
 use lipl_gatt_bluer::listen_stream;
-use login_poweroff_reboot::{shutdown, Shutdown};
+use login_poweroff_reboot::{Shutdown, shutdown};
 
 use error::{ErrInto, Error};
-use signal::{combine_signals, SignalKind, INTERRUPT, TERMINATE};
+use signal::{INTERRUPT, SignalKind, TERMINATE, combine_signals};
 
 mod error;
 mod out;

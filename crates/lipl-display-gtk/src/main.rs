@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
 use anyhow::Result;
-use async_channel::{bounded, Sender};
+use async_channel::{Sender, bounded};
 use glib::ExitCode;
 use gtk4::{
     glib::clone,
@@ -37,9 +37,13 @@ fn build_ui(application: &gtk4::Application) -> Result<()> {
     let mut app_window = window::AppWindow::new(application)?;
     let window_clone = app_window.clone();
 
-    application.connect_shutdown(clone!(@strong gatt => move |_| {
-        gatt.borrow_mut().stop();
-    }));
+    application.connect_shutdown(clone!(
+        #[strong]
+        gatt,
+        move |_| {
+            gatt.borrow_mut().stop();
+        }
+    ));
 
     glib::spawn_future_local(async move {
         while let Ok(value) = values_rx.recv().await {

@@ -8,8 +8,9 @@ mod visuals;
 use std::sync::mpsc::{Receiver, Sender};
 
 use eframe::{
+    App, Frame, NativeOptions,
     egui::{CentralPanel, Context, TopBottomPanel, ViewportCommand},
-    run_native, App, Frame, NativeOptions,
+    run_native,
 };
 use lipl_display::LiplDisplay;
 use lipl_display_common::{BackgroundThread, Command, Message};

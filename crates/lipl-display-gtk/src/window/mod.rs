@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use gtk4::prelude::*;
 
 pub const TEXT_ID: &str = "text";

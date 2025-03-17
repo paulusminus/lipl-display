@@ -1,6 +1,6 @@
 use eframe::egui::{
-    style::{WidgetVisuals, Widgets},
     Color32, Context, Stroke, Visuals,
+    style::{WidgetVisuals, Widgets},
 };
 
 trait ColorExt {

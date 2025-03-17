@@ -1,6 +1,6 @@
 use lipl_display_common::{BackgroundThread, Message};
 use log::{error, info};
-use std::sync::mpsc::{channel, Sender};
+use std::sync::mpsc::{Sender, channel};
 use tokio::main;
 
 fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {

@@ -3,9 +3,9 @@
 use std::{collections::BTreeMap, sync::Arc, thread::JoinHandle, time::Duration};
 
 use bluer::{
+    Uuid,
     adv::{Advertisement, AdvertisementHandle},
     gatt::local::{Application, ApplicationHandle, Characteristic, Service},
-    Uuid,
 };
 use lipl_display_common::{BackgroundThread, Message};
 

@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::str::FromStr;
-use uuid::{uuid, Uuid};
+use uuid::{Uuid, uuid};
 
 mod error;
 

@@ -7,7 +7,7 @@ use lipl_display_common::BackgroundThread;
 use lipl_gatt_bluer::ListenBluer;
 use tracing::level_filters::LevelFilter;
 use tracing_appender::rolling::Rotation;
-use tracing_subscriber::{layer::SubscriberExt, Layer};
+use tracing_subscriber::{Layer, layer::SubscriberExt};
 
 slint::include_modules!();
 

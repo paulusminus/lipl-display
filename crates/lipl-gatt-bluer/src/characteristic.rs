@@ -1,7 +1,7 @@
+use bluer::Uuid;
 use bluer::gatt::local::{
     Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError,
 };
-use bluer::Uuid;
 use futures_channel::mpsc;
 use futures_util::{FutureExt, SinkExt};
 use lipl_display_common::Message;

@@ -1,11 +1,11 @@
 use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
-use serde_with::{serde_as, DisplayFromStr};
+use serde_with::{DisplayFromStr, serde_as};
 use tracing::Level;
 use tracing_log::log::LevelFilter;
 
-use crate::{constant, ErrorExtension};
+use crate::{ErrorExtension, constant};
 
 #[serde_as]
 #[derive(Deserialize)]

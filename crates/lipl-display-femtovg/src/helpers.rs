@@ -1,6 +1,6 @@
 use std::num::NonZeroU32;
 
-use femtovg::{renderer::OpenGl, Canvas};
+use femtovg::{Canvas, renderer::OpenGl};
 use glutin::{
     config::ConfigTemplateBuilder,
     context::{ContextApi, ContextAttributesBuilder, PossiblyCurrentContext},
