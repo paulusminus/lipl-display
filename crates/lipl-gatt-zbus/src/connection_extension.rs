@@ -23,7 +23,7 @@ pub trait ConnectionExt {
 
 #[async_trait]
 impl ConnectionExt for Connection {
-    /// Query Object manager of org.bluze to find adapters
+    /// Query Object manager of org.bluez to find adapters
     /// Returns: the first advertising and gatt application capable adapter or Error
     async fn first_gatt_capable_adapter(&self) -> zbus::Result<OwnedObjectPath> {
         let proxy = ObjectManagerProxy::builder(self).destination("org.bluez")?.path("/")?.build().await?;
@@ -39,5 +39,18 @@ impl ConnectionExt for Connection {
 
     async fn object_manager_proxy(&self) -> Result<ObjectManagerProxy> {
         ObjectManagerProxy::builder(self).destination("org.bluez")?.path("/")?.build().await
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ConnectionExt;
+    use zbus::Connection;
+
+    #[tokio::test]
+    async fn test_first_gatt_capable_adapter() {
+        let connection = Connection::session().await.unwrap();
+        let _ = connection.first_gatt_capable_adapter().await.unwrap();
+
     }
 }

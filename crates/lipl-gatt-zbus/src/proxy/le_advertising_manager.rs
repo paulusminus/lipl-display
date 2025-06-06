@@ -1,6 +1,6 @@
-use zbus::dbus_proxy;
+use zbus::proxy;
 
-#[dbus_proxy(
+#[proxy(
     interface = "org.bluez.LEAdvertisingManager1",
     default_service = "org.bluez"
 )]
@@ -19,18 +19,18 @@ pub trait LEAdvertisingManager1 {
     ) -> zbus::Result<()>;
 
     /// ActiveInstances property
-    #[dbus_proxy(property)]
+    #[zbus(property)]
     fn active_instances(&self) -> zbus::Result<u8>;
 
     /// SupportedIncludes property
-    #[dbus_proxy(property)]
+    #[zbus(property)]
     fn supported_includes(&self) -> zbus::Result<Vec<String>>;
 
     /// SupportedInstances property
-    #[dbus_proxy(property)]
+    #[zbus(property)]
     fn supported_instances(&self) -> zbus::Result<u8>;
 
     /// SupportedSecondaryChannels property
-    #[dbus_proxy(property)]
+    #[zbus(property)]
     fn supported_secondary_channels(&self) -> zbus::Result<Vec<String>>;
 }

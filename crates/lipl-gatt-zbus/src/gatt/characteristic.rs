@@ -1,9 +1,13 @@
-use std::{collections::HashMap};
-use async_channel::{bounded, Sender};
+use futures_channel::mpsc::{Sender, channel};
+use futures_util::StreamExt;
+use std::collections::HashMap;
 
+use crate::{GattCharacteristicConfig, object_path_extensions::OwnedObjectPathExtensions};
 use uuid::Uuid;
-use zbus::{dbus_interface, zvariant::{OwnedObjectPath, Value}};
-use crate::{object_path_extensions::OwnedObjectPathExtensions, GattCharacteristicConfig};
+use zbus::{
+    interface,
+    zvariant::{OwnedObjectPath, Value},
+};
 
 #[derive(Clone, Debug)]
 pub struct Characteristic {
@@ -11,6 +15,7 @@ pub struct Characteristic {
     pub uuid: Uuid,
     pub read: bool,
     pub write: bool,
+    #[allow(dead_code)]
     pub notify: bool,
     pub service_path: String,
     pub descriptor_paths: Vec<String>,
@@ -18,8 +23,24 @@ pub struct Characteristic {
     pub service_uuid: Uuid,
 }
 
-impl From<(usize, &GattCharacteristicConfig, String, Sender<Request>, Uuid)> for Characteristic {
-    fn from(gatt_char_config: (usize, &GattCharacteristicConfig, String, Sender<Request>, Uuid)) -> Self {
+impl
+    From<(
+        usize,
+        &GattCharacteristicConfig,
+        String,
+        Sender<Request>,
+        Uuid,
+    )> for Characteristic
+{
+    fn from(
+        gatt_char_config: (
+            usize,
+            &GattCharacteristicConfig,
+            String,
+            Sender<Request>,
+            Uuid,
+        ),
+    ) -> Self {
         Characteristic::new(
             format!("{}/char{}", gatt_char_config.2, gatt_char_config.0 + 1),
             gatt_char_config.1.uuid,
@@ -29,7 +50,6 @@ impl From<(usize, &GattCharacteristicConfig, String, Sender<Request>, Uuid)> for
             gatt_char_config.1.write,
             gatt_char_config.4,
         )
-
     }
 }
 
@@ -62,13 +82,10 @@ pub enum Request {
 
 macro_rules! option_convert {
     ($option:expr, $key:literal, $output:ty, $variant:path, $convert:ident) => {
-        $option.get($key).and_then(|option| {
-            match option {
-                $variant(value) => Some(value.$convert()),
-                _ => None,
-            }
+        $option.get($key).and_then(|option| match option {
+            $variant(value) => Some(value.$convert()),
+            _ => None,
         })
-        
     };
 }
 
@@ -106,7 +123,7 @@ fn option_display<T: std::fmt::Display>(name: &str, option: &Option<T>) -> Optio
 struct VecU8<'a>(&'a Vec<u8>);
 
 impl<'a> VecU8<'a> {
-    fn display(&'a self) -> Option<&str> {
+    fn display(&'a self) -> Option<&'a str> {
         std::str::from_utf8(self.0.as_slice()).ok()
     }
 }
@@ -117,7 +134,11 @@ trait Joiner {
 
 impl Joiner for [Option<String>] {
     fn join(&self, seperator: &'static str) -> String {
-        self.iter().flatten().cloned().collect::<Vec<_>>().join(seperator)
+        self.iter()
+            .flatten()
+            .cloned()
+            .collect::<Vec<_>>()
+            .join(seperator)
     }
 }
 
@@ -137,7 +158,7 @@ impl std::fmt::Display for Request {
                     ]
                     .join(", ")
                 )
-            },
+            }
             Request::Read(request) => {
                 write!(
                     f,
@@ -150,7 +171,7 @@ impl std::fmt::Display for Request {
                     ]
                     .join(", ")
                 )
-            },
+            }
         }
     }
 }
@@ -179,10 +200,9 @@ impl Characteristic {
     }
 }
 
-#[dbus_interface(name = "org.bluez.GattCharacteristic1")]
+#[interface(name = "org.bluez.GattCharacteristic1")]
 impl Characteristic {
-
-    #[dbus_interface(property)]
+    #[zbus(property)]
     fn descriptors(&self) -> Vec<OwnedObjectPath> {
         self.descriptor_paths
             .clone()
@@ -191,7 +211,7 @@ impl Characteristic {
             .collect()
     }
 
-    #[dbus_interface(property)]
+    #[zbus(property)]
     fn flags(&self) -> Vec<String> {
         let mut flags = vec![];
         if self.read {
@@ -203,36 +223,52 @@ impl Characteristic {
         flags
     }
 
-    #[dbus_interface(property)]
+    #[zbus(property)]
     fn service(&self) -> OwnedObjectPath {
         self.service_path.to_owned_object_path()
     }
 
-    #[dbus_interface(property, name = "UUID")]
+    #[zbus(property, name = "UUID")]
     fn uuid(&self) -> String {
         self.uuid.to_string().to_uppercase()
     }
 
-    #[dbus_interface(name = "ReadValue")]
-    async fn read_value(&mut self, options: HashMap<String, Value<'_>>) -> zbus::fdo::Result<Vec<u8>> {
-        if !self.read { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
-        let (tx, rx) = bounded::<Vec<u8>>(1);
+    #[zbus(name = "ReadValue")]
+    async fn read_value(
+        &mut self,
+        options: HashMap<String, Value<'_>>,
+    ) -> zbus::fdo::Result<Vec<u8>> {
+        if !self.read {
+            return Err(zbus::fdo::Error::NotSupported(
+                "org.bluez.Error.NotSupported".into(),
+            ));
+        }
+        let (tx, mut rx) = channel::<Vec<u8>>(10);
         let read_request: ReadRequest = (self.uuid, &options, tx, self.service_uuid).into();
         self.sender
             .try_send(Request::Read(read_request))
             .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))?;
-        let result = rx.recv().await.map_err(|error| zbus::fdo::Error::IOError(error.to_string()))?;
+        let result = rx
+            .next()
+            .await
+            .ok_or_else(|| zbus::fdo::Error::IOError("".to_string()))?;
         Ok(result)
     }
 
-    #[dbus_interface(name = "WriteValue")]
-    fn write_value(&mut self, value: Vec<u8>, options: HashMap<String, Value>) -> zbus::fdo::Result<()> {
-        if !self.write { return Err(zbus::fdo::Error::NotSupported("org.bluez.Error.NotSupported".into())); }
+    #[zbus(name = "WriteValue")]
+    fn write_value(
+        &mut self,
+        value: Vec<u8>,
+        options: HashMap<String, Value>,
+    ) -> zbus::fdo::Result<()> {
+        if !self.write {
+            return Err(zbus::fdo::Error::NotSupported(
+                "org.bluez.Error.NotSupported".into(),
+            ));
+        }
         let write_request: WriteRequest = (self.uuid, value, &options, self.service_uuid).into();
-        self
-            .sender
+        self.sender
             .try_send(Request::Write(write_request))
-            .map_err(|e| zbus::fdo::Error::Failed(e.to_string())) 
-    }   
-
+            .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))
+    }
 }

@@ -1,6 +1,6 @@
+use crate::object_path_extensions::OwnedObjectPathExtensions;
 use uuid::Uuid;
-use zbus::{dbus_interface, zvariant::OwnedObjectPath};
-use crate::object_path_extensions::{OwnedObjectPathExtensions};
+use zbus::{interface, zvariant::OwnedObjectPath};
 
 #[derive(Clone, Debug)]
 pub struct Service {
@@ -10,20 +10,23 @@ pub struct Service {
     pub characteristic_paths: Vec<String>,
 }
 
-#[dbus_interface(name = "org.bluez.GattService1")]
+#[interface(name = "org.bluez.GattService1")]
 impl Service {
-    #[dbus_interface(property)]
+    #[zbus(property)]
     fn primary(&self) -> bool {
         self.primary
     }
 
-    #[dbus_interface(property, name = "UUID")]
+    #[zbus(property, name = "UUID")]
     fn uuid(&self) -> String {
         self.uuid.to_string().to_uppercase()
     }
 
-    #[dbus_interface(property)]
+    #[zbus(property)]
     fn characteristics(&self) -> Vec<OwnedObjectPath> {
-        self.characteristic_paths.iter().map(|s| s.to_owned_object_path()).collect()
+        self.characteristic_paths
+            .iter()
+            .map(|s| s.to_owned_object_path())
+            .collect()
     }
 }

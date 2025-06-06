@@ -9,11 +9,17 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-async-channel = "2.3.1"
-async-io = "2.4.0"
 derive_builder = "0.20.2"
-lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
-thiserror = "2.0.8"
+futures-channel = "0.3.31"
+futures-util = "0.3.31"
+lipl-display-common = { path = "../lipl-display-common" }
+pin-project = "1.1.7"
+thiserror = "2.0.12"
+tokio = "1.45.1"
 tracing = "0.1.41"
-uuid = "1.11.0"
-zbus = "5.2.0"
+uuid = "1.17.0"
+zbus = { version = "5.7.1", default-features = false, features = ["tokio"] }
+
+[dev-dependencies]
+tokio = { version = "1.45.1", features = ["macros"] }
+tracing-subscriber = "0.3.19"

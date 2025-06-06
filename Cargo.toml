@@ -7,6 +7,7 @@ members = [
     "crates/lipl-display-slint",
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
+    "crates/lipl-gatt-zbus",
     "crates/login-poweroff-reboot",
 ]
 resolver = "3"

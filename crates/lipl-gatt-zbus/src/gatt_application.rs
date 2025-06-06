@@ -1,10 +1,8 @@
-use async_channel::Sender;
+use futures_channel::mpsc::Sender;
 use uuid::Uuid;
 use derive_builder::Builder;
 
 use crate::gatt::{Service, Characteristic, Request};
-
-pub trait CharacteristicTypeTrait: Clone + Default + Send + Sync {}
 
 #[derive(Clone, Debug)]
 pub(crate) struct GattApplication {
