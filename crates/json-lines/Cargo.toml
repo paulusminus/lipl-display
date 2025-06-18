@@ -1,0 +1,11 @@
+[package]
+name = "json-lines"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+futures-util = "0.3.31"
+tokio = { version = "1.45.1", features = ["fs"] }
+tokio-stream = { version = "0.1.17", features = ["io-util"] }
+serde = "1.0.219"
+serde_json = "1.0.140"

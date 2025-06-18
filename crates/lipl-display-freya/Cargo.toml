@@ -1,0 +1,16 @@
+[package]
+name = "lipl-display-freya"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = []
+fake = []
+
+[dependencies]
+freya = { git = "https://github.com/marc2332/freya" }
+futures-util = "0.3.31"
+lipl-display-common = "0.4.6"
+lipl-gatt-bluer = "0.4.6"
+tokio = { version = "1.45.1", features = ["full"] }
+json-lines = { path = "../json-lines" }
