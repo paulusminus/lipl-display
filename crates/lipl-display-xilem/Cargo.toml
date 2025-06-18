@@ -1,0 +1,15 @@
+[package]
+name = "lipl-display-xilem"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+futures-util = "0.3.31"
+json-lines = { path = "../json-lines" }
+lipl-display-common = "0.4.6"
+masonry = "0.3.0"
+masonry_winit = "0.3.0"
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+winit = "0.30.11"
+xilem = "0.3.0"
