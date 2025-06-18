@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "crates/lipl-display-common",
+    "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
     "crates/lipl-display-freya",

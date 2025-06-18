@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.dark {
+    color: black;
+    background-color: white;
+}
+
+.light {
+    color: white;
+    background-color: black;
+}
+
+html,
+body {
+    height: 100vh;
+}
+
+/* p {
+    padding: 25px;
+} */
+
+p.part {
+    height: 86vh;
+    padding: 25px;
+}
+
+p.status {
+    height: 14vh;
+    padding-left: 25px;
+    padding-bottom: 25px;
+}
