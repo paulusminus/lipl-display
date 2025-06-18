@@ -4,6 +4,7 @@ members = [
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
     "crates/lipl-display-freya",
+    "crates/lipl-display-gpui",
     "crates/lipl-display-gtk",
     "crates/lipl-display-slint",
     "crates/lipl-gatt-bluer",
