@@ -666,7 +666,7 @@ checksum = "b58e62a27cd02fb3f63f82bb31fdda7e6c43141497cbe97e8816d7c914043f55"
 dependencies = [
  "bitflags 2.9.1",
  "cairo-sys-rs 0.20.10",
- "glib 0.20.10",
+ "glib 0.20.12",
  "libc",
 ]
 
@@ -1918,7 +1918,7 @@ checksum = "2fd242894c084f4beed508a56952750bce3e96e85eb68fdc153637daa163e10c"
 dependencies = [
  "gdk-pixbuf-sys 0.20.10",
  "gio 0.20.11",
- "glib 0.20.10",
+ "glib 0.20.12",
  "libc",
 ]
 
@@ -1975,7 +1975,7 @@ dependencies = [
  "gdk-pixbuf 0.20.10",
  "gdk4-sys",
  "gio 0.20.11",
- "glib 0.20.10",
+ "glib 0.20.12",
  "libc",
  "pango 0.20.10",
 ]
@@ -2086,7 +2086,7 @@ dependencies = [
  "futures-io",
  "futures-util",
  "gio-sys 0.20.10",
- "glib 0.20.10",
+ "glib 0.20.12",
  "libc",
  "pin-project-lite",
  "smallvec",
@@ -2154,9 +2154,9 @@ dependencies = [
 
 [[package]]
 name = "glib"
-version = "0.20.10"
+version = "0.20.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c501c495842c2b23cdacead803a5a343ca2a5d7a7ddaff14cc5f6cf22cfb92c2"
+checksum = "ffc4b6e352d4716d84d7dde562dd9aee2a7d48beb872dd9ece7f2d1515b2d683"
 dependencies = [
  "bitflags 2.9.1",
  "futures-channel",
@@ -2354,7 +2354,7 @@ version = "0.20.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6b86dfad7d14251c9acaf1de63bc8754b7e3b4e5b16777b6f5a748208fe9519b"
 dependencies = [
- "glib 0.20.10",
+ "glib 0.20.12",
  "graphene-sys",
  "libc",
 ]
@@ -2379,7 +2379,7 @@ checksum = "61f5e72f931c8c9f65fbfc89fe0ddc7746f147f822f127a53a9854666ac1f855"
 dependencies = [
  "cairo-rs 0.20.10",
  "gdk4",
- "glib 0.20.10",
+ "glib 0.20.12",
  "graphene-rs",
  "gsk4-sys",
  "libc",
@@ -2466,7 +2466,7 @@ dependencies = [
  "gdk-pixbuf 0.20.10",
  "gdk4",
  "gio 0.20.11",
- "glib 0.20.10",
+ "glib 0.20.12",
  "graphene-rs",
  "gsk4",
  "gtk4-macros",
@@ -3351,7 +3351,7 @@ version = "0.4.7"
 dependencies = [
  "anyhow",
  "async-channel",
- "glib 0.20.10",
+ "glib 0.20.12",
  "gtk4",
  "lipl-display-common",
  "lipl-gatt-bluer",
@@ -4221,7 +4221,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d88d37c161f2848f0d9382597f0168484c9335ac800995f3956641abb7002938"
 dependencies = [
  "gio 0.20.11",
- "glib 0.20.10",
+ "glib 0.20.12",
  "libc",
  "pango-sys 0.20.10",
 ]
