@@ -1,27 +1,32 @@
-use freya::prelude::*;
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum Theme {
+    Dark,
+    Light,
+}
 
-#[derive(Props, Debug, Clone, PartialEq)]
-pub struct Theme {
-    dark: bool,
+impl From<bool> for Theme {
+    fn from(dark: bool) -> Self {
+        if dark { Theme::Dark } else { Theme::Light }
+    }
 }
 
 impl Theme {
     pub fn dark() -> Self {
-        Theme { dark: true }
+        Theme::Dark
     }
     pub fn light() -> Self {
-        Theme { dark: false }
+        Theme::Light
     }
     pub fn bg_color(&self) -> &'static str {
-        match self.dark {
-            true => "black",
-            false => "light",
+        match self {
+            Self::Dark => "black",
+            Self::Light => "white",
         }
     }
     pub fn fg_color(&self) -> &'static str {
-        match self.dark {
-            true => "white",
-            false => "black",
+        match self {
+            Self::Dark => "white",
+            Self::Light => "black",
         }
     }
 }

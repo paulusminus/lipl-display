@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+mod font_size;
 mod theme;
 
 #[cfg(feature = "fake")]
@@ -13,11 +14,12 @@ use constant::{
     APPLICATION_HEIGHT, APPLICATION_TITLE, APPLICATION_WIDTH, FONT_SIZE_INCREMENT,
     MINIMUM_FONT_SIZE, WAIT_MESSAGE,
 };
+use font_size::FontSize;
 use freya::launch::launch_with_props;
 use freya::prelude::*;
 use futures_util::{FutureExt, TryStreamExt};
 use lipl_display_common::{Command, Message};
-use std::time::Duration;
+use std::{ops::Deref, time::Duration};
 use theme::Theme;
 use tokio::time::sleep;
 
@@ -27,8 +29,6 @@ mod constant;
 async fn background_task(
     mut part: Signal<String>,
     mut status: Signal<String>,
-    mut theme: Signal<Theme>,
-    mut font_size: Signal<usize>,
 ) -> Result<(), std::io::Error> {
     #[cfg(feature = "fake")]
     let f = INPUT;
@@ -43,17 +43,21 @@ async fn background_task(
                 Message::Status(s) => status.set(s),
                 Message::Command(c) => match c {
                     Command::Dark => {
-                        theme.set(Theme::dark());
+                        use_context::<Signal<Theme>>().set(Theme::dark());
                     }
                     Command::Light => {
-                        theme.set(Theme::light());
+                        use_context::<Signal<Theme>>().set(Theme::light());
                     }
                     Command::Increase => {
-                        font_size.set(font_size() + FONT_SIZE_INCREMENT);
+                        let mut font_size = use_context::<Signal<FontSize>>();
+                        let f = font_size.peek().value();
+                        font_size.set(*font_size.peek().deref() + FONT_SIZE_INCREMENT);
                     }
                     Command::Decrease => {
-                        if font_size() > MINIMUM_FONT_SIZE {
-                            font_size.set(font_size() - FONT_SIZE_INCREMENT);
+                        let font_size = { use_context::<Signal<FontSize>>().peek() };
+                        if font_size.value() > MINIMUM_FONT_SIZE {
+                            use_context::<Signal<FontSize>>()
+                                .set((font_size.value() - FONT_SIZE_INCREMENT).into());
                         }
                     }
                     Command::Wait => {
@@ -63,7 +67,9 @@ async fn background_task(
                     Command::Exit => {
                         use_platform().exit();
                     }
-                    _ => {}
+                    Command::Poweroff => {
+                        use_platform().exit();
+                    }
                 },
             }
             sleep(Duration::from_secs(1)).map(|_| Ok(()))
@@ -71,15 +77,45 @@ async fn background_task(
         .await
 }
 
+fn show_part() -> Element {
+    let theme = use_context::<Signal<Theme>>();
+    let font_size = use_context::<Signal<FontSize>>();
+    rsx!(
+        rect {
+            width: "100%",
+            height: "90%",
+            background: theme().bg_color(),
+            color: theme().fg_color(),
+            font_size: font_size.to_string(),
+            padding: "20",
+            label {
+                {part}
+            }
+        }
+        rect {
+            width: "100%",
+            height: "10%",
+            background: theme().bg_color(),
+            color: theme().fg_color(),
+            padding: "20",
+            font_size: font_size.to_string(),
+            label {
+                {status}
+            }
+        }
+    )
+}
+
 fn app() -> Element {
     use_platform().set_fullscreen_window(true);
-
+    use_context_provider(|| Signal::new(|| Theme::dark()));
+    use_context_provider(|| Signal::new(|| FontSize::from(22)));
     let part = use_signal(|| "".to_string());
     let status = use_signal(|| WAIT_MESSAGE.to_string());
     let theme = use_signal(|| Theme::light());
     let font_size = use_signal(|| 22usize);
 
-    use_future(move || background_task(part, status, theme, font_size));
+    use_future(move || background_task(part, status, font_size));
     rsx!(
         rect {
             width: "100%",

@@ -12,7 +12,7 @@ members = [
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
     "crates/lipl-gatt-zbus",
-    "crates/login-poweroff-reboot",
+    "crates/login-poweroff-reboot", "crates/util",
 ]
 resolver = "3"
 

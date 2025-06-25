@@ -6,14 +6,9 @@ license = "MIT"
 publish = false
 
 [dependencies]
-blitz-dom = { git = "https://github.com/dioxuslabs/blitz" }
-mini-dxn = { git = "https://github.com/dioxuslabs/blitz", default-features = false, features = [
-    "tracing",
-    "autofocus",
-    "cpu_backend",
-    "net",
-] }
-dioxus = { version = "=0.7.0-alpha.1" }
+dioxus-native = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
 tokio = { version = "1.42", features = ["rt", "time"] }
 tracing-subscriber = "0.3"
 chrono = "0.4.41"
+json-lines = { path = "../json-lines" }
