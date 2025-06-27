@@ -8,7 +8,7 @@ default = []
 fake = []
 
 [dependencies]
-freya = "0.3.4"
+freya = { git = "https://github.com/marc2332/freya", branch = "main" }
 futures-util = "0.3.31"
 lipl-display-common = "0.4.6"
 lipl-gatt-bluer = "0.4.6"
