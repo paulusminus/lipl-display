@@ -23,7 +23,7 @@ static GLIB_LOGGER: gtk4::glib::GlibLogger = gtk4::glib::GlibLogger::new(
 fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {
     move |message| {
         if let Err(error) = tx.send_blocking(message) {
-            error!("Error sending message: {}", error);
+            error!("Error sending message: {error}");
         }
     }
 }
@@ -107,7 +107,7 @@ fn main() -> Result<ExitCode> {
 
     application.connect_activate(move |app| {
         if let Err(err) = build_ui(app) {
-            eprintln!("{}", err);
+            eprintln!("{err}");
         }
     });
 

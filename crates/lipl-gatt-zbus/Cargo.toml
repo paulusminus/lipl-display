@@ -10,10 +10,9 @@ version.workspace = true
 
 [dependencies]
 derive_builder = "0.20.2"
-futures-channel = "0.3.31"
-futures-util = "0.3.31"
+futures = "0.3.31"
 lipl-display-common = { path = "../lipl-display-common" }
-pin-project = "1.1.7"
+pin-project = "1.1.10"
 thiserror = "2.0.12"
 tokio = "1.45.1"
 tracing = "0.1.41"

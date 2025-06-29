@@ -37,7 +37,7 @@ fn get_colors(dark: bool) -> (Color, Color) {
 fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
     move |message| {
         if let Err(error) = proxy.send_event(message) {
-            error!("Error sending to main loop: {}", error);
+            error!("Error sending to main loop: {error}");
         }
     }
 }
@@ -122,7 +122,7 @@ impl Application {
             match graphics.canvas.fill_text(x, y, &self.screen.status, &paint) {
                 Ok(_) => {}
                 Err(e) => {
-                    eprintln!("Error: {}", e);
+                    eprintln!("Error: {e}");
                 }
             }
 
@@ -183,7 +183,7 @@ impl ApplicationHandler<Message> for Application {
                 scale_factor,
                 inner_size_writer: _,
             } => {
-                log::info!("window_event scalefactorchanged {}", scale_factor);
+                log::info!("window_event scalefactorchanged {scale_factor}");
             }
             WindowEvent::Resized(physical_size) => {
                 log::info!("window_event: resized");
@@ -194,7 +194,7 @@ impl ApplicationHandler<Message> for Application {
                 event_loop.exit();
             }
             _ => {
-                log::debug!("window_event {:#?}", event);
+                log::debug!("window_event {event:#?}");
             }
         }
     }
@@ -204,11 +204,11 @@ impl ApplicationHandler<Message> for Application {
         _event_loop: &winit::event_loop::ActiveEventLoop,
         cause: winit::event::StartCause,
     ) {
-        log::debug!("new_events {:#?}", cause);
+        log::debug!("new_events {cause:#?}");
     }
 
     fn user_event(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, event: Message) {
-        log::info!("user_event: {}", event);
+        log::info!("user_event: {event}");
         if [
             Message::Command(Command::Exit),
             Message::Command(Command::Poweroff),
@@ -227,7 +227,7 @@ impl ApplicationHandler<Message> for Application {
         device_id: winit::event::DeviceId,
         _event: winit::event::DeviceEvent,
     ) {
-        log::debug!("device_event {:?}", device_id);
+        log::debug!("device_event {device_id:?}");
     }
 
     fn about_to_wait(&mut self, _event_loop: &winit::event_loop::ActiveEventLoop) {

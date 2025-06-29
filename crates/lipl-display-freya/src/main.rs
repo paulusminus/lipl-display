@@ -4,6 +4,8 @@
 )]
 
 mod font_size;
+mod part;
+mod status;
 mod theme;
 
 #[cfg(feature = "fake")]
@@ -19,17 +21,16 @@ use freya::launch::launch_with_props;
 use freya::prelude::*;
 use futures_util::{FutureExt, TryStreamExt};
 use lipl_display_common::{Command, Message};
-use std::{ops::Deref, time::Duration};
+use part::Part;
+use status::Status;
+use std::time::Duration;
 use theme::Theme;
 use tokio::time::sleep;
 
 mod constant;
 // mod file_input;
 
-async fn background_task(
-    mut part: Signal<String>,
-    mut status: Signal<String>,
-) -> Result<(), std::io::Error> {
+async fn background_task() -> Result<(), std::io::Error> {
     #[cfg(feature = "fake")]
     let f = INPUT;
     #[cfg(not(feature = "fake"))]
@@ -38,9 +39,9 @@ async fn background_task(
         .try_for_each(move |message| {
             match message {
                 Message::Part(p) => {
-                    part.set(p);
+                    use_context::<Signal<Part>>().set(p.into());
                 }
-                Message::Status(s) => status.set(s),
+                Message::Status(s) => use_context::<Signal<Status>>().set(s.into()),
                 Message::Command(c) => match c {
                     Command::Dark => {
                         use_context::<Signal<Theme>>().set(Theme::dark());
@@ -51,18 +52,18 @@ async fn background_task(
                     Command::Increase => {
                         let mut font_size = use_context::<Signal<FontSize>>();
                         let f = font_size.peek().value();
-                        font_size.set(*font_size.peek().deref() + FONT_SIZE_INCREMENT);
+                        font_size.set((f + FONT_SIZE_INCREMENT).into());
                     }
                     Command::Decrease => {
-                        let font_size = { use_context::<Signal<FontSize>>().peek() };
-                        if font_size.value() > MINIMUM_FONT_SIZE {
+                        let font_size = use_context::<Signal<FontSize>>().peek().value();
+                        if font_size > MINIMUM_FONT_SIZE {
                             use_context::<Signal<FontSize>>()
-                                .set((font_size.value() - FONT_SIZE_INCREMENT).into());
+                                .set((font_size - FONT_SIZE_INCREMENT).into());
                         }
                     }
                     Command::Wait => {
-                        part.set("".to_owned());
-                        status.set(WAIT_MESSAGE.to_owned());
+                        use_context::<Signal<Part>>().set("".to_owned().into());
+                        use_context::<Signal<Status>>().set(WAIT_MESSAGE.to_owned().into());
                     }
                     Command::Exit => {
                         use_platform().exit();
@@ -77,9 +78,15 @@ async fn background_task(
         .await
 }
 
-fn show_part() -> Element {
+#[component]
+fn Root() -> Element {
     let theme = use_context::<Signal<Theme>>();
     let font_size = use_context::<Signal<FontSize>>();
+    let status = use_context::<Signal<Status>>();
+    let part = use_context::<Signal<Part>>();
+
+    use_future(background_task);
+
     rsx!(
         rect {
             width: "100%",
@@ -89,7 +96,7 @@ fn show_part() -> Element {
             font_size: font_size.to_string(),
             padding: "20",
             label {
-                {part}
+                {part.to_string()}
             }
         }
         rect {
@@ -100,7 +107,7 @@ fn show_part() -> Element {
             padding: "20",
             font_size: font_size.to_string(),
             label {
-                {status}
+                {status.to_string()}
             }
         }
     )
@@ -108,38 +115,12 @@ fn show_part() -> Element {
 
 fn app() -> Element {
     use_platform().set_fullscreen_window(true);
-    use_context_provider(|| Signal::new(|| Theme::dark()));
+    use_context_provider(|| Signal::new(Theme::dark));
     use_context_provider(|| Signal::new(|| FontSize::from(22)));
-    let part = use_signal(|| "".to_string());
-    let status = use_signal(|| WAIT_MESSAGE.to_string());
-    let theme = use_signal(|| Theme::light());
-    let font_size = use_signal(|| 22usize);
+    use_context_provider(|| Signal::new(|| Status::from(WAIT_MESSAGE.to_owned())));
+    use_context_provider(|| Signal::new(|| Part::from("".to_owned())));
 
-    use_future(move || background_task(part, status, font_size));
-    rsx!(
-        rect {
-            width: "100%",
-            height: "90%",
-            background: theme().bg_color(),
-            color: theme().fg_color(),
-            font_size: font_size,
-            padding: "20",
-            label {
-                {part}
-            }
-        }
-        rect {
-            width: "100%",
-            height: "10%",
-            background: theme().bg_color(),
-            color: theme().fg_color(),
-            padding: "20",
-            font_size: font_size,
-            label {
-                {status}
-            }
-        }
-    )
+    rsx!(Root {})
 }
 
 fn main() {

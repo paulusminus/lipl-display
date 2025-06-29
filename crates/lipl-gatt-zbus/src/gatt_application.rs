@@ -1,8 +1,8 @@
-use futures_channel::mpsc::Sender;
-use uuid::Uuid;
 use derive_builder::Builder;
+use futures::channel::mpsc::Sender;
+use uuid::Uuid;
 
-use crate::gatt::{Service, Characteristic, Request};
+use crate::gatt::{Characteristic, Request, Service};
 
 #[derive(Clone, Debug)]
 pub(crate) struct GattApplication {
@@ -44,34 +44,42 @@ impl From<(GattApplicationConfig, Sender<Request>)> for GattApplication {
         let mut characteristics = vec![];
 
         for (service_index, service_config) in config.0.services.iter().enumerate() {
-            let service_object_path = format!("{}/service{}", config.0.app_object_path, service_index + 1);
+            let service_object_path =
+                format!("{}/service{}", config.0.app_object_path, service_index + 1);
 
-            let service_characteristics = 
-                service_config
+            let service_characteristics = service_config
                 .characteristics
                 .iter()
                 .enumerate()
-                .map(
-                    |gatt_char_config|
-                        Characteristic::from((gatt_char_config.0, gatt_char_config.1, service_object_path.clone(), config.1.clone(), service_config.uuid))
-                )
+                .map(|gatt_char_config| {
+                    Characteristic::from((
+                        gatt_char_config.0,
+                        gatt_char_config.1,
+                        service_object_path.clone(),
+                        config.1.clone(),
+                        service_config.uuid,
+                    ))
+                })
                 .collect::<Vec<_>>();
 
             let service = Service {
                 object_path: service_object_path,
                 primary: service_config.primary,
                 uuid: service_config.uuid,
-                characteristic_paths: service_characteristics.iter().map(|p| p.object_path.clone()).collect(),
+                characteristic_paths: service_characteristics
+                    .iter()
+                    .map(|p| p.object_path.clone())
+                    .collect(),
             };
             services.push(service);
             characteristics.extend(service_characteristics);
         }
 
-        Self { 
+        Self {
             local_name: config.0.local_name,
             app_object_path: config.0.app_object_path,
-            services, 
+            services,
             characteristics,
         }
-    }   
+    }
 }

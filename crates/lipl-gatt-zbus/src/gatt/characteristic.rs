@@ -1,5 +1,5 @@
-use futures_channel::mpsc::{Sender, channel};
-use futures_util::StreamExt;
+use futures::StreamExt;
+use futures::channel::mpsc::{Sender, channel};
 use std::collections::HashMap;
 
 use crate::{GattCharacteristicConfig, object_path_extensions::OwnedObjectPathExtensions};

@@ -450,9 +450,9 @@ checksum = "dde20b3d026af13f561bdd0f15edf01fc734f0dafcedbaf42bba506a9517f223"
 
 [[package]]
 name = "arboard"
-version = "3.5.0"
+version = "3.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1df21f715862ede32a0c525ce2ca4d52626bb0007f8c18b87a384503ac33e70"
+checksum = "55f533f8e0af236ffe5eb979b99381df3258853f00ba2e44b6e1955292c75227"
 dependencies = [
  "clipboard-win",
  "image",
@@ -538,7 +538,7 @@ dependencies = [
 [[package]]
 name = "askpass"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "futures",
@@ -1630,7 +1630,7 @@ dependencies = [
 [[package]]
 name = "clock"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "serde",
  "smallvec",
@@ -1751,7 +1751,7 @@ dependencies = [
 [[package]]
 name = "collections"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "indexmap",
  "rustc-hash 2.1.1",
@@ -1799,7 +1799,7 @@ dependencies = [
 [[package]]
 name = "component"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "collections",
  "gpui",
@@ -2534,7 +2534,7 @@ dependencies = [
 [[package]]
 name = "derive_refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2587,11 +2587,11 @@ dependencies = [
  "dioxus-core 0.7.0-alpha.1",
  "dioxus-core-macro 0.7.0-alpha.1",
  "dioxus-devtools",
- "dioxus-document 0.7.0-alpha.1",
+ "dioxus-document",
  "dioxus-fullstack",
- "dioxus-history 0.7.0-alpha.1",
+ "dioxus-history",
  "dioxus-hooks 0.7.0-alpha.1",
- "dioxus-html 0.7.0-alpha.1",
+ "dioxus-html",
  "dioxus-logger",
  "dioxus-signals 0.7.0-alpha.1",
  "dioxus-web",
@@ -2768,36 +2768,17 @@ dependencies = [
 
 [[package]]
 name = "dioxus-document"
-version = "0.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "802a2014d1662b6615eec0a275745822ee4fc66aacd9d0f2fb33d6c8da79b8f2"
-dependencies = [
- "dioxus-core 0.6.3",
- "dioxus-core-macro 0.6.3",
- "dioxus-core-types 0.6.2",
- "dioxus-html 0.6.3",
- "futures-channel",
- "futures-util",
- "generational-box 0.6.2",
- "lazy-js-bundle 0.6.2",
- "serde",
- "serde_json",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-document"
 version = "0.7.0-alpha.1"
 source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f47a6810b3ac"
 dependencies = [
  "dioxus-core 0.7.0-alpha.1",
  "dioxus-core-macro 0.7.0-alpha.1",
  "dioxus-core-types 0.7.0-alpha.1",
- "dioxus-html 0.7.0-alpha.1",
+ "dioxus-html",
  "futures-channel",
  "futures-util",
  "generational-box 0.7.0-alpha.1",
- "lazy-js-bundle 0.7.0-alpha.1",
+ "lazy-js-bundle",
  "serde",
  "serde_json",
  "tracing",
@@ -2814,7 +2795,7 @@ dependencies = [
  "dioxus-devtools",
  "dioxus-fullstack-hooks",
  "dioxus-fullstack-protocol",
- "dioxus-history 0.7.0-alpha.1",
+ "dioxus-history",
  "dioxus-lib 0.7.0-alpha.1",
  "dioxus-web",
  "dioxus_server_macro",
@@ -2833,7 +2814,7 @@ source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f
 dependencies = [
  "dioxus-core 0.7.0-alpha.1",
  "dioxus-fullstack-protocol",
- "dioxus-history 0.7.0-alpha.1",
+ "dioxus-history",
  "dioxus-hooks 0.7.0-alpha.1",
  "dioxus-signals 0.7.0-alpha.1",
  "futures-channel",
@@ -2849,16 +2830,6 @@ dependencies = [
  "ciborium",
  "dioxus-core 0.7.0-alpha.1",
  "serde",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-history"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ae4e22616c698f35b60727313134955d885de2d32e83689258e586ebc9b7909"
-dependencies = [
- "dioxus-core 0.6.3",
  "tracing",
 ]
 
@@ -2906,28 +2877,6 @@ dependencies = [
 
 [[package]]
 name = "dioxus-html"
-version = "0.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "59c9a40e6fee20ce7990095492dedb6a753eebe05e67d28271a249de74dc796d"
-dependencies = [
- "async-trait",
- "dioxus-core 0.6.3",
- "dioxus-core-macro 0.6.3",
- "dioxus-core-types 0.6.2",
- "dioxus-hooks 0.6.2",
- "dioxus-html-internal-macro 0.6.2",
- "enumset",
- "euclid",
- "futures-channel",
- "generational-box 0.6.2",
- "keyboard-types 0.7.0",
- "lazy-js-bundle 0.6.2",
- "rustversion",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-html"
 version = "0.7.0-alpha.1"
 source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f47a6810b3ac"
 dependencies = [
@@ -2936,27 +2885,15 @@ dependencies = [
  "dioxus-core-macro 0.7.0-alpha.1",
  "dioxus-core-types 0.7.0-alpha.1",
  "dioxus-hooks 0.7.0-alpha.1",
- "dioxus-html-internal-macro 0.7.0-alpha.1",
+ "dioxus-html-internal-macro",
  "enumset",
  "euclid",
  "futures-channel",
  "generational-box 0.7.0-alpha.1",
  "keyboard-types 0.7.0",
- "lazy-js-bundle 0.7.0-alpha.1",
+ "lazy-js-bundle",
  "rustversion",
  "tracing",
-]
-
-[[package]]
-name = "dioxus-html-internal-macro"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43ba87b53688a2c9f619ecdf4b3b955bc1f08bd0570a80a0d626c405f6d14a76"
-dependencies = [
- "convert_case 0.6.0",
- "proc-macro2",
- "quote",
- "syn 2.0.104",
 ]
 
 [[package]]
@@ -2976,7 +2913,7 @@ version = "0.7.0-alpha.1"
 source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f47a6810b3ac"
 dependencies = [
  "js-sys",
- "lazy-js-bundle 0.7.0-alpha.1",
+ "lazy-js-bundle",
  "rustc-hash 2.1.1",
  "sledgehammer_bindgen",
  "sledgehammer_utils",
@@ -2994,13 +2931,9 @@ dependencies = [
  "dioxus-config-macro 0.6.2",
  "dioxus-core 0.6.3",
  "dioxus-core-macro 0.6.3",
- "dioxus-document 0.6.3",
- "dioxus-history 0.6.2",
  "dioxus-hooks 0.6.2",
- "dioxus-html 0.6.3",
  "dioxus-rsx 0.6.2",
  "dioxus-signals 0.6.3",
- "warnings",
 ]
 
 [[package]]
@@ -3009,9 +2942,9 @@ version = "0.7.0-alpha.1"
 source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f47a6810b3ac"
 dependencies = [
  "dioxus-core 0.7.0-alpha.1",
- "dioxus-document 0.7.0-alpha.1",
- "dioxus-history 0.7.0-alpha.1",
- "dioxus-html 0.7.0-alpha.1",
+ "dioxus-document",
+ "dioxus-history",
+ "dioxus-html",
 ]
 
 [[package]]
@@ -3042,9 +2975,9 @@ dependencies = [
  "dioxus-cli-config",
  "dioxus-core 0.7.0-alpha.1",
  "dioxus-devtools",
- "dioxus-document 0.7.0-alpha.1",
- "dioxus-history 0.7.0-alpha.1",
- "dioxus-html 0.7.0-alpha.1",
+ "dioxus-document",
+ "dioxus-history",
+ "dioxus-html",
  "futures-util",
  "keyboard-types 0.7.0",
  "rustc-hash 2.1.1",
@@ -3118,10 +3051,10 @@ dependencies = [
  "dioxus-core 0.7.0-alpha.1",
  "dioxus-core-types 0.7.0-alpha.1",
  "dioxus-devtools",
- "dioxus-document 0.7.0-alpha.1",
+ "dioxus-document",
  "dioxus-fullstack-protocol",
- "dioxus-history 0.7.0-alpha.1",
- "dioxus-html 0.7.0-alpha.1",
+ "dioxus-history",
+ "dioxus-html",
  "dioxus-interpreter-js",
  "dioxus-signals 0.7.0-alpha.1",
  "futures-channel",
@@ -3129,7 +3062,7 @@ dependencies = [
  "generational-box 0.7.0-alpha.1",
  "gloo-timers",
  "js-sys",
- "lazy-js-bundle 0.7.0-alpha.1",
+ "lazy-js-bundle",
  "rustc-hash 2.1.1",
  "serde",
  "serde-wasm-bindgen",
@@ -4118,8 +4051,8 @@ dependencies = [
 
 [[package]]
 name = "freya"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "dioxus 0.6.3",
  "dioxus-core 0.6.3",
@@ -4138,8 +4071,8 @@ dependencies = [
 
 [[package]]
 name = "freya-components"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "dioxus 0.6.3",
  "freya-core",
@@ -4157,8 +4090,8 @@ dependencies = [
 
 [[package]]
 name = "freya-core"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "accesskit 0.19.0",
  "accesskit_winit 0.27.0",
@@ -4172,6 +4105,7 @@ dependencies = [
  "itertools 0.13.0",
  "keyboard-types 0.7.0",
  "nom",
+ "ragnarok",
  "rustc-hash 2.1.1",
  "shipyard",
  "smallvec",
@@ -4183,8 +4117,8 @@ dependencies = [
 
 [[package]]
 name = "freya-elements"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "dioxus-core 0.6.3",
  "dioxus-rsx 0.6.2",
@@ -4195,8 +4129,8 @@ dependencies = [
 
 [[package]]
 name = "freya-engine"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "bitflags 2.9.1",
  "glutin",
@@ -4205,8 +4139,8 @@ dependencies = [
 
 [[package]]
 name = "freya-hooks"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "bitflags 2.9.1",
  "bytes",
@@ -4228,21 +4162,21 @@ dependencies = [
 
 [[package]]
 name = "freya-native-core"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "dioxus-core 0.6.3",
  "parking_lot",
+ "ragnarok",
  "rustc-hash 2.1.1",
  "shipyard",
- "smallvec",
  "torin",
 ]
 
 [[package]]
 name = "freya-native-core-macro"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "quote",
  "syn 2.0.104",
@@ -4250,8 +4184,8 @@ dependencies = [
 
 [[package]]
 name = "freya-router"
-version = "0.3.0"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "dioxus-lib 0.6.2",
  "freya-elements",
@@ -4265,8 +4199,8 @@ dependencies = [
 
 [[package]]
 name = "freya-router-macro"
-version = "0.3.0"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "base16",
  "digest",
@@ -4279,8 +4213,8 @@ dependencies = [
 
 [[package]]
 name = "freya-winit"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "accesskit 0.19.0",
  "accesskit_winit 0.27.0",
@@ -4298,6 +4232,7 @@ dependencies = [
  "image",
  "itertools 0.13.0",
  "keyboard-types 0.7.0",
+ "ragnarok",
  "raw-window-handle",
  "tokio",
  "torin",
@@ -4308,7 +4243,7 @@ dependencies = [
 [[package]]
 name = "fs"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "ashpd",
@@ -4343,7 +4278,7 @@ dependencies = [
 [[package]]
 name = "fsevent"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "bitflags 2.9.1",
  "core-foundation 0.10.1",
@@ -4720,7 +4655,7 @@ dependencies = [
 [[package]]
 name = "git"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "askpass",
@@ -5023,7 +4958,7 @@ dependencies = [
 [[package]]
 name = "gpui"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "ashpd",
@@ -5112,7 +5047,7 @@ dependencies = [
 [[package]]
 name = "gpui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
@@ -5124,7 +5059,7 @@ dependencies = [
 [[package]]
 name = "gpui_tokio"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "gpui",
  "tokio",
@@ -5442,7 +5377,7 @@ dependencies = [
 [[package]]
 name = "http_client"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "bytes",
@@ -5795,7 +5730,7 @@ dependencies = [
 [[package]]
 name = "icons"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "serde",
  "strum 0.27.1",
@@ -6440,12 +6375,6 @@ dependencies = [
 
 [[package]]
 name = "lazy-js-bundle"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e49596223b9d9d4947a14a25c142a6e7d8ab3f27eb3ade269d238bb8b5c267e2"
-
-[[package]]
-name = "lazy-js-bundle"
 version = "0.7.0-alpha.1"
 source = "git+https://github.com/dioxuslabs/dioxus#6cc379718b59184746138d66fcc5f47a6810b3ac"
 
@@ -6841,8 +6770,7 @@ name = "lipl-gatt-zbus"
 version = "0.4.7"
 dependencies = [
  "derive_builder",
- "futures-channel",
- "futures-util",
+ "futures",
  "lipl-display-common 0.4.7",
  "pin-project",
  "thiserror 2.0.12",
@@ -7161,7 +7089,7 @@ dependencies = [
 [[package]]
 name = "media"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "bindgen",
@@ -7210,7 +7138,7 @@ dependencies = [
 [[package]]
 name = "menu"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "gpui",
  "workspace-hack",
@@ -8387,7 +8315,7 @@ dependencies = [
 [[package]]
 name = "paths"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "dirs 4.0.0",
  "util",
@@ -8791,7 +8719,7 @@ dependencies = [
 [[package]]
 name = "proto"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "prost",
@@ -8885,6 +8813,17 @@ name = "radium"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09"
+
+[[package]]
+name = "ragnarok"
+version = "0.1.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
+dependencies = [
+ "euclid",
+ "itertools 0.13.0",
+ "rustc-hash 2.1.1",
+ "tracing",
+]
 
 [[package]]
 name = "rand"
@@ -9108,7 +9047,7 @@ dependencies = [
 [[package]]
 name = "refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "derive_refineable",
  "workspace-hack",
@@ -9175,7 +9114,7 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 [[package]]
 name = "release_channel"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "gpui",
  "workspace-hack",
@@ -9270,7 +9209,7 @@ dependencies = [
 [[package]]
 name = "rope"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "arrayvec",
  "log",
@@ -9655,7 +9594,7 @@ checksum = "0f7d95a54511e0c7be3f51e8867aa8cf35148d7b9445d44de2f943e2b206e749"
 [[package]]
 name = "semantic_version"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "serde",
@@ -9876,7 +9815,7 @@ dependencies = [
 [[package]]
 name = "settings"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "collections",
@@ -10598,7 +10537,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "sum_tree"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "arrayvec",
  "log",
@@ -10931,7 +10870,7 @@ dependencies = [
 [[package]]
 name = "text"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "clock",
@@ -10956,7 +10895,7 @@ checksum = "f18aa187839b2bdb1ad2fa35ead8c4c2976b64e4363c386d45ac0f7ee85c9233"
 [[package]]
 name = "theme"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "collections",
@@ -11292,8 +11231,8 @@ checksum = "5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801"
 
 [[package]]
 name = "torin"
-version = "0.3.3"
-source = "git+https://github.com/marc2332/freya?branch=main#884e9aff7ce1bbe8c77dfd45d4951e160275e773"
+version = "0.4.0"
+source = "git+https://github.com/marc2332/freya?branch=main#0120ed3fea0a2714b4ef3c72fcf400288862ccfa"
 dependencies = [
  "euclid",
  "rustc-hash 2.1.1",
@@ -11586,7 +11525,7 @@ dependencies = [
 [[package]]
 name = "ui"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "chrono",
  "component",
@@ -11630,7 +11569,7 @@ dependencies = [
 [[package]]
 name = "ui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "quote",
  "syn 2.0.104",
@@ -11820,7 +11759,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.192.6#dcca5514e8fcada1a94b0c7a201fc749e0612efd"
+source = "git+https://github.com/zed-industries/zed?tag=v0.192.7#ab5a291e6ffbfdd5c7293f9580daae7dd8651f37"
 dependencies = [
  "anyhow",
  "async-fs",

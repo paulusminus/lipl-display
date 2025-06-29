@@ -127,7 +127,7 @@ impl ListenBluer {
                                     break;
                                 },
                                 Err(error) => {
-                                    log::error!("Error receiving signal to quit background thread: {}", error);
+                                    log::error!("Error receiving signal to quit background thread: {error}");
                                     break;
                                 },
                             }

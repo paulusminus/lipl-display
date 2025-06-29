@@ -70,9 +70,9 @@ impl std::fmt::Display for Message {
             f,
             "{}",
             match self {
-                Message::Part(text) => format!("Text: {}", text),
-                Message::Status(status) => format!("Status: {}", status),
-                Message::Command(command) => format!("Command: {}", command),
+                Message::Part(text) => format!("Text: {text}"),
+                Message::Status(status) => format!("Status: {status}"),
+                Message::Command(command) => format!("Command: {command}"),
             }
         )
     }

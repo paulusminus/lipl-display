@@ -21,7 +21,7 @@ const TEXT_DEFAULT: &str = "Even geduld a.u.b. ...";
 fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {
     move |message| {
         if let Err(error) = tx.send(message) {
-            log::error!("Error sending message: {}", error);
+            log::error!("Error sending message: {error}");
         }
     }
 }

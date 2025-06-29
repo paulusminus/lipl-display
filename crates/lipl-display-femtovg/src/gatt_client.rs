@@ -14,7 +14,7 @@ impl ProcessChild {
         let out = child
             .stdout
             .take()
-            .ok_or(std::io::Error::new(std::io::ErrorKind::Other, "no stdout"))?;
+            .ok_or(std::io::Error::other("no stdout"))?;
         Ok(Self { child, out })
     }
 
@@ -26,7 +26,7 @@ impl ProcessChild {
 impl Drop for ProcessChild {
     fn drop(&mut self) {
         if let Err(error) = self.child.kill() {
-            eprintln!("Failed to kill child process: {}", error);
+            eprintln!("Failed to kill child process: {error}");
         }
     }
 }
