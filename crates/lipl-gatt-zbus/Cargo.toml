@@ -14,11 +14,11 @@ futures = "0.3.31"
 lipl-display-common = { path = "../lipl-display-common" }
 pin-project = "1.1.10"
 thiserror = "2.0.12"
-tokio = "1.45.1"
+tokio = { version = "1.45.1", features = ["rt", "rt-multi-thread"] }
 tracing = "0.1.41"
 uuid = "1.17.0"
 zbus = { version = "5.7.1", default-features = false, features = ["tokio"] }
 
 [dev-dependencies]
 tokio = { version = "1.45.1", features = ["macros"] }
-tracing-subscriber = "0.3.19"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }

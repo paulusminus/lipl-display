@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+#[derive(Debug, Clone)]
 pub struct Part(String);
 
 impl From<String> for Part {

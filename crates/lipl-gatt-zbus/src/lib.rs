@@ -1,6 +1,8 @@
 use std::collections::hash_map::RandomState;
 use std::pin::Pin;
 use std::task::{Context, Poll};
+use std::thread;
+use std::time::Duration;
 use std::{collections::HashMap, vec};
 
 use crate::gatt_application::GattApplication;
@@ -14,6 +16,7 @@ pub use lipl_display_common::{BackgroundThread, Command, Message};
 use object_path_extensions::OwnedObjectPathExtensions;
 use pin_project::{pin_project, pinned_drop};
 use proxy::{Adapter1Proxy, Device1Proxy, GattManager1Proxy, LEAdvertisingManager1Proxy};
+use tokio::task::block_in_place;
 use zbus::fdo::{ObjectManagerProxy, PropertiesProxy};
 use zbus::names::InterfaceName;
 use zbus::{
@@ -57,6 +60,14 @@ impl PinnedDrop for GattListener {
         let this = self.project();
         if let Some(terminate) = this.terminate.take() {
             terminate.send(()).ok();
+            block_in_place(|| {
+                let mut count: usize = 0;
+                while !this.task.is_finished() && count < 100 {
+                    count += 1;
+                    thread::sleep(Duration::from_millis(4));
+                }
+                tracing::info!("Count = {count}");
+            });
         }
     }
 }
