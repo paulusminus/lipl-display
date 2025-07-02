@@ -9,10 +9,29 @@ use tokio::{
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    let listener = GattListener::default();
-    select! {
-        _ = listener.map(|message| println!("{:?}", message)).collect::<Vec<_>>() => {}
-        _ = sleep(Duration::from_secs(1)) => {}
+    let mut listener = GattListener::default();
+
+    loop {
+        select! {
+            message = listener.next() => {
+                match message {
+                    Some(message) => {
+                        println!("{:?}", message);
+                    }
+                    None => {
+                        break;
+                    }
+                }
+            }
+            _ = sleep(Duration::from_secs(10)) => {
+                break;
+            }
+        }
     }
+
+    if let Err(err) = listener.await {
+        eprintln!("Error: {}", err);
+    }
+
     println!("Finished");
 }

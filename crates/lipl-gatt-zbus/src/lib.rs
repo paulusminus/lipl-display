@@ -1,10 +1,3 @@
-use std::collections::hash_map::RandomState;
-use std::pin::Pin;
-use std::task::{Context, Poll};
-use std::thread;
-use std::time::Duration;
-use std::{collections::HashMap, vec};
-
 use crate::gatt_application::GattApplication;
 use crate::message_handler::{characteristics_map, handle_write_request};
 use advertisement::PeripheralAdvertisement;
@@ -14,9 +7,12 @@ use futures::{FutureExt, Stream, StreamExt, TryFutureExt, select};
 use gatt::{Application, Characteristic, Request, Service};
 pub use lipl_display_common::{BackgroundThread, Command, Message};
 use object_path_extensions::OwnedObjectPathExtensions;
-use pin_project::{pin_project, pinned_drop};
+use pin_project::pin_project;
 use proxy::{Adapter1Proxy, Device1Proxy, GattManager1Proxy, LEAdvertisingManager1Proxy};
-use tokio::task::block_in_place;
+use std::collections::HashMap;
+use std::collections::hash_map::RandomState;
+use std::pin::Pin;
+use std::task::{Context, Poll};
 use zbus::fdo::{ObjectManagerProxy, PropertiesProxy};
 use zbus::names::InterfaceName;
 use zbus::{
@@ -46,30 +42,12 @@ type Interfaces =
 
 pub use error::{CommonError, Error, Result};
 
-#[pin_project(PinnedDrop)]
+#[pin_project]
 pub struct GattListener {
     task: tokio::task::JoinHandle<()>,
     #[pin]
     receiver: futures::channel::mpsc::Receiver<Message>,
-    terminate: Option<futures::channel::oneshot::Sender<()>>,
-}
-
-#[pinned_drop]
-impl PinnedDrop for GattListener {
-    fn drop(self: Pin<&mut Self>) {
-        let this = self.project();
-        if let Some(terminate) = this.terminate.take() {
-            terminate.send(()).ok();
-            block_in_place(|| {
-                let mut count: usize = 0;
-                while !this.task.is_finished() && count < 100 {
-                    count += 1;
-                    thread::sleep(Duration::from_millis(4));
-                }
-                tracing::info!("Count = {count}");
-            });
-        }
-    }
+    terminate: futures::channel::oneshot::Sender<()>,
 }
 
 impl Stream for GattListener {
@@ -82,6 +60,16 @@ impl Stream for GattListener {
 impl Default for GattListener {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl IntoFuture for GattListener {
+    type Output = std::io::Result<()>;
+    type IntoFuture = Pin<Box<dyn Future<Output = Self::Output> + Send + 'static>>;
+
+    fn into_future(self) -> Self::IntoFuture {
+        self.terminate.send(()).ok();
+        async move { self.task.await.map_err(std::io::Error::other) }.boxed()
     }
 }
 
@@ -128,7 +116,7 @@ impl GattListener {
                 dispose.await.expect("Cannot dispose");
             }),
             receiver,
-            terminate: Some(terminate),
+            terminate,
         }
     }
 }
