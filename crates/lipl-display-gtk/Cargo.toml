@@ -15,4 +15,4 @@ glib = { version = "0.20.7", features = ["log"] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
 log = "0.4.22"
-async-channel = "2.3.1"
+async-channel = "2.5.0"
