@@ -60,17 +60,21 @@ pub struct WriteRequest {
     pub mtu: Option<u16>,
     pub device: Option<String>,
     pub offset: Option<u16>,
+    #[allow(dead_code)]
     pub write_type: Option<String>,
     pub service_uuid: Uuid,
 }
 
 #[derive(Debug)]
 pub struct ReadRequest {
+    #[allow(dead_code)]
     pub uuid: Uuid,
     pub mtu: Option<u16>,
     pub device: Option<String>,
     pub offset: Option<u16>,
+    #[allow(dead_code)]
     pub sender: Option<Sender<Vec<u8>>>,
+    #[allow(dead_code)]
     pub service_uuid: Uuid,
 }
 

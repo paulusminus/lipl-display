@@ -23,7 +23,7 @@ async fn main() {
                     }
                 }
             }
-            _ = sleep(Duration::from_secs(10)) => {
+            _ = sleep(Duration::from_secs(300)) => {
                 break;
             }
         }
