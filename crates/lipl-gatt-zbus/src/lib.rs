@@ -1,13 +1,10 @@
 use futures::{FutureExt, Stream, StreamExt, TryFutureExt, select};
 use gatt::Request;
-use gatt_application::GattApplication;
 use lipl_display_common::{Command, Message};
 use message_handler::{characteristics_map, handle_write_request};
 use peripheral::Peripheral;
 use pin_project::pin_project;
-use proxy::{Adapter1Proxy, GattManager1Proxy, LEAdvertisingManager1Proxy};
 use std::collections::HashMap;
-use std::collections::hash_map::RandomState;
 use std::pin::Pin;
 use std::task::{Context, Poll};
 use zbus::{names::OwnedInterfaceName, zvariant::OwnedValue};
@@ -19,14 +16,13 @@ mod gatt_application;
 mod message_handler;
 mod object_path_extensions;
 mod peripheral;
-pub(crate) mod proxy;
+mod proxy;
 
 use gatt_application::{
     GattApplicationConfig, GattApplicationConfigBuilder, GattCharacteristicConfig,
     GattCharacteristicConfigBuilder, GattServiceConfigBuilder,
 };
-type Interfaces =
-    HashMap<OwnedInterfaceName, HashMap<String, OwnedValue, RandomState>, RandomState>;
+type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue>>;
 
 #[pin_project]
 pub struct GattListener {
@@ -56,7 +52,6 @@ impl IntoFuture for GattListener {
     fn into_future(self) -> Self::IntoFuture {
         self.terminate.send(()).ok();
         self.task.map_err(std::io::Error::other).boxed()
-        // async move { self.task.await.map_err(std::io::Error::other) }.boxed()
     }
 }
 

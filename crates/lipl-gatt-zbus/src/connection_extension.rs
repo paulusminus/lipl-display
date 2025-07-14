@@ -56,7 +56,9 @@ mod tests {
 
     #[tokio::test]
     async fn test_first_gatt_capable_adapter() {
-        let connection = Connection::session().await.unwrap();
-        let _ = connection.first_gatt_capable_adapter().await.unwrap();
+        let connection = Connection::system().await.unwrap();
+        assert_eq!(connection.is_bus(), true);
+        let path = connection.first_gatt_capable_adapter().await.unwrap();
+        assert_eq!(path.as_str(), "/org/bluez/hci0")
     }
 }
