@@ -28,6 +28,14 @@ pub const CHARACTERISTIC_TEXT_UUID: Uuid = uuid!("04973569-c039-4ce9-ad96-861589
 pub const CHARACTERISTIC_STATUS_UUID: Uuid = uuid!("61a8cb7f-d4c1-49b7-a3cf-f2c69dbb7aeb");
 /// Uuid identifying the command characteristic on the gatt peripheral
 pub const CHARACTERISTIC_COMMAND_UUID: Uuid = uuid!("da35e0b2-7864-49e5-aa47-8050d1cc1484");
+pub const SERVICE: (Uuid, [Uuid; 3]) = (
+    SERVICE_UUID,
+    [
+        CHARACTERISTIC_TEXT_UUID,
+        CHARACTERISTIC_STATUS_UUID,
+        CHARACTERISTIC_COMMAND_UUID,
+    ],
+);
 
 pub const WAIT_MESSAGE: &str = "Even geduld a.u.b. ...";
 

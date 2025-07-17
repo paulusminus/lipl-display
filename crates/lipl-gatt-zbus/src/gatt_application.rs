@@ -1,8 +1,7 @@
+use crate::gatt::{Characteristic, Request, Service};
 use derive_builder::Builder;
 use futures::channel::mpsc::Sender;
 use uuid::Uuid;
-
-use crate::gatt::{Characteristic, Request, Service};
 
 #[derive(Clone, Debug)]
 pub(crate) struct GattApplication {
