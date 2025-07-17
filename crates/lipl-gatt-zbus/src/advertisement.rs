@@ -53,7 +53,7 @@ impl PeripheralAdvertisement {
     }
 
     #[zbus(property, name = "ManufacturerData")]
-    fn manufacturer_data(&self) -> HashMap<u16, zbus::zvariant::Value> {
+    fn manufacturer_data(&self) -> HashMap<u16, zbus::zvariant::Value<'_>> {
         self.manufacturer_data
             .clone()
             .into_iter()
