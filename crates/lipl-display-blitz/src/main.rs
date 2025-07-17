@@ -12,7 +12,11 @@ fn main() {
     launch(app);
 }
 
-async fn background_task(mut part: Signal<String>, mut status: Signal<String>, dark: Signal<bool>) {
+async fn background_task(
+    mut part: Signal<String>,
+    mut status: Signal<String>,
+    _dark: Signal<bool>,
+) {
     let mut count: usize = 0;
     let mut interval = interval(Duration::from_millis(1000));
     loop {
@@ -21,7 +25,7 @@ async fn background_task(mut part: Signal<String>, mut status: Signal<String>, d
         let time = Local::now();
         let fmt = "%H:%M:%S";
         part.set(time.format(fmt).to_string());
-        status.set(format!("Teller = {}", count));
+        status.set(format!("Teller = {count}"));
     }
 }
 

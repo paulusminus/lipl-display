@@ -14,11 +14,11 @@ export component LiplDisplay inherits Window {
     in-out property<int> fontsize: 40;
 
     VerticalBox {
-        padding-left: 0.03 * root.width;
-        padding-right: 0.03 * root.width;
-        padding-top: 0.03 * root.height;
-        padding-bottom: 0.03 * root.height;
-        
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
         HorizontalLayout {
             alignment: center;
 
@@ -37,7 +37,7 @@ export component LiplDisplay inherits Window {
                     text: "\{root.status}";
                     height: 5%;
                     horizontal-alignment: left;
-                }    
+                }
             }
         }
     }
