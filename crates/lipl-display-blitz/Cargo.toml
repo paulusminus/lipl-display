@@ -6,8 +6,8 @@ license = "MIT"
 publish = false
 
 [dependencies]
-dioxus-native = { git = "https://github.com/dioxuslabs/dioxus" }
-dioxus = { git = "https://github.com/dioxuslabs/dioxus" }
+dioxus-native = "0.7.0-alpha.3"
+dioxus = "0.7.0-alpha.3"
 tokio = { version = "1.42", features = ["rt", "time"] }
 tracing-subscriber = "0.3"
 chrono = "0.4.41"
