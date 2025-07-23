@@ -1,10 +1,17 @@
 use async_channel::Receiver;
-use gpui::{AppContext, AsyncApp, Entity, Hsla};
+use gpui::{AppContext, AsyncApp, Entity, Hsla, WeakEntity};
 use lipl_display_common::{Command, Message};
 use std::cmp::max;
 use ui::Pixels;
 
 use crate::constant::{DARK, DEFAULT_STATUS, INITIAL_FONT_SIZE, MIN_FONT_SIZE};
+
+fn update(lipl_screen_weak: WeakEntity<LiplScreen>, cx: &mut gpui::App) {
+    if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
+        cx.update_entity(lipl_screen, |lipl_screen, _| {})
+        // ...
+    }
+}
 
 pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScreen> {
     let lipl_screen = cx.new(|_| LiplScreen::new(DARK, INITIAL_FONT_SIZE));
@@ -13,15 +20,21 @@ pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScree
     });
     let lipl_screen_weak = lipl_screen.downgrade();
     cx.spawn(async move |cx: &mut AsyncApp| {
-        let display = lipl_screen_weak.upgrade().unwrap();
         while let Ok(message) = receiver.recv().await {
             match message {
                 Message::Part(part) => {
                     // Process the message
-                    cx.update_entity(&display, |display, _| {
-                        display.set_text(&part);
-                    })
-                    .unwrap();
+                    lipl_screen_weak.upgrade().as_ref().is_some_and(|display| {
+                        cx.update_entity(display, |display, _| {
+                            display.set_text(&part);
+                        })
+                        .is_ok()
+                    });
+                    if let Some(display) = lipl_screen_weak.upgrade().as_ref() {
+                        cx.update_entity(display, |display, _| {
+                            display.set_text(&part);
+                        });
+                    }
                 }
                 Message::Status(status) => {
                     // Process the message
