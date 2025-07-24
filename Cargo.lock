@@ -9772,9 +9772,9 @@ checksum = "500f379645e8a87fd03fe88607a5edcb0d8e4e423baa74ba52db198a06a0c261"
 
 [[package]]
 name = "stylo_taffy"
-version = "0.1.0-rc.1"
+version = "0.1.0-rc.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94014fa36fdc4698a0b36179385d70810b6f0825b90c1df52de2aa5ee670328a"
+checksum = "dce8876a33e0f3b16916b2b4da1cdbb64b9985d5ae61033d23024d95e45569ac"
 dependencies = [
  "stylo",
  "taffy 0.8.3",
