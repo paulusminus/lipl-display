@@ -8,7 +8,7 @@ pub struct Error {
 impl<E: std::error::Error + Send + Sync + 'static> From<E> for Error {
     fn from(source: E) -> Self {
         Self {
-            source: Box::new(source),
+            source: source.into(),
         }
     }
 }
@@ -28,3 +28,20 @@ impl<T, E: Into<Error>> ErrInto<T> for Result<T, E> {
         self.map_err(Into::into)
     }
 }
+
+#[derive(Debug)]
+pub struct NoGattCapabilityError {}
+
+impl NoGattCapabilityError {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
+
+impl std::fmt::Display for NoGattCapabilityError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "No GATT capability error: ")
+    }
+}
+
+impl std::error::Error for NoGattCapabilityError {}

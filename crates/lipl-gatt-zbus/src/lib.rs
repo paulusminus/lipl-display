@@ -56,7 +56,7 @@ impl IntoFuture for GattListener {
         if !self.task.is_finished() {
             self.terminate.send(()).ok();
         }
-        self.task.map_err(Into::into).boxed()
+        self.task.err_into().boxed()
     }
 }
 

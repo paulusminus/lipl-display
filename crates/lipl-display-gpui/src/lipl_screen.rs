@@ -6,10 +6,30 @@ use ui::Pixels;
 
 use crate::constant::{DARK, DEFAULT_STATUS, INITIAL_FONT_SIZE, MIN_FONT_SIZE};
 
-fn update(lipl_screen_weak: WeakEntity<LiplScreen>, cx: &mut gpui::App) {
+fn update<T>(
+    lipl_screen_weak: &WeakEntity<LiplScreen>,
+    cx: &mut gpui::AsyncApp,
+    f: fn(&mut LiplScreen, T),
+    t: T,
+) {
     if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
-        cx.update_entity(lipl_screen, |lipl_screen, _| {})
-        // ...
+        cx.update_entity(lipl_screen, |screen, _| {
+            f(screen, t);
+        })
+        .ok();
+    }
+}
+
+fn update_no(
+    lipl_screen_weak: &WeakEntity<LiplScreen>,
+    cx: &mut gpui::AsyncApp,
+    f: fn(&mut LiplScreen),
+) {
+    if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
+        cx.update_entity(lipl_screen, |screen, _| {
+            f(screen);
+        })
+        .ok();
     }
 }
 
@@ -23,64 +43,40 @@ pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScree
         while let Ok(message) = receiver.recv().await {
             match message {
                 Message::Part(part) => {
-                    // Process the message
-                    lipl_screen_weak.upgrade().as_ref().is_some_and(|display| {
-                        cx.update_entity(display, |display, _| {
-                            display.set_text(&part);
-                        })
-                        .is_ok()
-                    });
-                    if let Some(display) = lipl_screen_weak.upgrade().as_ref() {
-                        cx.update_entity(display, |display, _| {
-                            display.set_text(&part);
-                        });
-                    }
+                    update(&lipl_screen_weak, cx, LiplScreen::set_text, &part);
                 }
                 Message::Status(status) => {
                     // Process the message
-                    cx.update_entity(&display, |display, _| {
-                        display.set_status(&status);
-                    })
-                    .unwrap();
+                    update(&lipl_screen_weak, cx, LiplScreen::set_status, &status);
                 }
                 Message::Command(command) => {
                     match command {
                         Command::Dark => {
                             // Process the message
-                            cx.update_entity(&display, |display, _| {
-                                display.set_dark(true);
-                            })
-                            .unwrap();
+                            update(&lipl_screen_weak, cx, LiplScreen::set_dark, true);
                         }
                         Command::Light => {
                             // Process the message
-                            cx.update_entity(&display, |display, _| {
-                                display.set_dark(false);
-                            })
-                            .unwrap();
+                            update(&lipl_screen_weak, cx, LiplScreen::set_dark, false);
                         }
                         Command::Exit => {}
                         Command::Poweroff => {
                             // Process the message
                         }
                         Command::Increase => {
-                            cx.update_entity(&display, |display, _| {
-                                display.increase_font_size();
-                            })
-                            .unwrap();
+                            update_no(&lipl_screen_weak, cx, LiplScreen::increase_font_size);
                         }
                         Command::Decrease => {
-                            cx.update_entity(&display, |display, _| {
-                                display.decrease_font_size();
-                            })
-                            .unwrap();
+                            update_no(&lipl_screen_weak, cx, LiplScreen::decrease_font_size);
                         }
                         Command::Wait => {
-                            cx.update_entity(&display, |display, _| {
-                                display.set_text("");
-                                display.set_status(DEFAULT_STATUS)
-                            })
-                            .unwrap();
+                            update(&lipl_screen_weak, cx, LiplScreen::set_text, "");
+                            update(
+                                &lipl_screen_weak,
+                                cx,
+                                LiplScreen::set_status,
+                                DEFAULT_STATUS,
+                            );
                         }
                     }
                 }
