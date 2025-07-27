@@ -1,7 +1,6 @@
 use crate::Interfaces;
 use crate::Result;
-use crate::error::ErrInto;
-use crate::error::NoGattCapabilityError;
+use crate::error::{ErrInto, NoGattCapabilityError};
 use futures::TryFutureExt;
 use zbus::fdo::ManagedObjects;
 use zbus::zvariant::ObjectPath;
