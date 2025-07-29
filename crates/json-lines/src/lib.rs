@@ -52,18 +52,34 @@ where
 #[cfg(test)]
 mod test {
     use futures_util::TryStreamExt;
+    use serde::{Deserialize, Serialize};
 
     use super::*;
 
+    #[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
+    struct Person {
+        name: String,
+        age: u32,
+    }
+
     #[tokio::test]
     async fn test_json_lines() {
-        let json = r#"{"key": "value"}"#;
+        let json = r#"{"name": "Paul Min", "age": 30}
+            {"name": "John Doe", "age": 25}"#;
         let lines = Lines::from(json.as_bytes());
-        let result: Vec<serde_json::Value> = lines
-            .json_lines::<serde_json::Value>()
-            .try_collect()
-            .await
-            .unwrap();
-        assert_eq!(result, vec![serde_json::json!({"key": "value"})]);
+        let result: Vec<Person> = lines.json_lines::<Person>().try_collect().await.unwrap();
+        assert_eq!(
+            result,
+            vec![
+                Person {
+                    name: "Paul Min".to_string(),
+                    age: 30
+                },
+                Person {
+                    name: "John Doe".to_string(),
+                    age: 25
+                }
+            ]
+        );
     }
 }
