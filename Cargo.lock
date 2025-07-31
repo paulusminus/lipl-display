@@ -538,7 +538,7 @@ dependencies = [
 [[package]]
 name = "askpass"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "futures",
@@ -1607,7 +1607,7 @@ dependencies = [
 [[package]]
 name = "clock"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "serde",
  "smallvec",
@@ -1706,7 +1706,7 @@ dependencies = [
 [[package]]
 name = "collections"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "indexmap",
  "rustc-hash 2.1.1",
@@ -1754,7 +1754,7 @@ dependencies = [
 [[package]]
 name = "component"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "collections",
  "gpui",
@@ -2435,7 +2435,7 @@ dependencies = [
 [[package]]
 name = "derive_refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3354,7 +3354,7 @@ dependencies = [
  "cc",
  "memchr",
  "rustc_version",
- "toml 0.9.3",
+ "toml 0.9.4",
  "vswhom",
  "winreg",
 ]
@@ -3933,7 +3933,7 @@ dependencies = [
 [[package]]
 name = "freya"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "dioxus 0.6.3",
  "dioxus-core 0.6.3",
@@ -3953,7 +3953,7 @@ dependencies = [
 [[package]]
 name = "freya-components"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "dioxus 0.6.3",
  "freya-core",
@@ -3972,7 +3972,7 @@ dependencies = [
 [[package]]
 name = "freya-core"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "accesskit 0.19.0",
  "accesskit_winit 0.27.0",
@@ -3999,7 +3999,7 @@ dependencies = [
 [[package]]
 name = "freya-elements"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "dioxus-core 0.6.3",
  "dioxus-rsx 0.6.2",
@@ -4011,7 +4011,7 @@ dependencies = [
 [[package]]
 name = "freya-engine"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "bitflags 2.9.1",
  "glutin",
@@ -4021,7 +4021,7 @@ dependencies = [
 [[package]]
 name = "freya-hooks"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "bitflags 2.9.1",
  "bytes",
@@ -4044,7 +4044,7 @@ dependencies = [
 [[package]]
 name = "freya-native-core"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "dioxus-core 0.6.3",
  "parking_lot",
@@ -4057,7 +4057,7 @@ dependencies = [
 [[package]]
 name = "freya-native-core-macro"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "quote",
  "syn 2.0.104",
@@ -4066,7 +4066,7 @@ dependencies = [
 [[package]]
 name = "freya-router"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "dioxus-lib 0.6.2",
  "freya-elements",
@@ -4081,7 +4081,7 @@ dependencies = [
 [[package]]
 name = "freya-router-macro"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "base16",
  "digest",
@@ -4095,7 +4095,7 @@ dependencies = [
 [[package]]
 name = "freya-winit"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "accesskit 0.19.0",
  "accesskit_winit 0.27.0",
@@ -4124,7 +4124,7 @@ dependencies = [
 [[package]]
 name = "fs"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "ashpd",
@@ -4159,7 +4159,7 @@ dependencies = [
 [[package]]
 name = "fsevent"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "bitflags 2.9.1",
  "core-foundation 0.10.1",
@@ -4515,7 +4515,7 @@ dependencies = [
 [[package]]
 name = "git"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "askpass",
@@ -4818,7 +4818,7 @@ dependencies = [
 [[package]]
 name = "gpui"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "ashpd",
@@ -4884,7 +4884,7 @@ dependencies = [
  "smol",
  "strum 0.27.2",
  "sum_tree",
- "taffy 0.4.4",
+ "taffy 0.5.1",
  "thiserror 2.0.12",
  "usvg",
  "util",
@@ -4906,7 +4906,7 @@ dependencies = [
 [[package]]
 name = "gpui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
@@ -4918,7 +4918,7 @@ dependencies = [
 [[package]]
 name = "gpui_tokio"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "gpui",
  "tokio",
@@ -4951,9 +4951,9 @@ dependencies = [
 
 [[package]]
 name = "grid"
-version = "0.13.0"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d196ffc1627db18a531359249b2bf8416178d84b729f3cebeb278f285fb9b58c"
+checksum = "be136d9dacc2a13cc70bb6c8f902b414fb2641f8db1314637c6b7933411a8f82"
 
 [[package]]
 name = "grid"
@@ -5229,13 +5229,14 @@ dependencies = [
 [[package]]
 name = "http_client"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "bytes",
  "derive_more 0.99.20",
  "futures",
  "http",
+ "http-body",
  "log",
  "serde",
  "serde_json",
@@ -5354,7 +5355,7 @@ dependencies = [
 [[package]]
 name = "icons"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "serde",
  "strum 0.27.2",
@@ -6085,9 +6086,9 @@ checksum = "f9fbbcab51052fe104eb5e5d351cf728d30a5be1fe14d9be8a3b097481fb97de"
 
 [[package]]
 name = "libredox"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "360e552c93fa0e8152ab463bc4c4837fce76a225df11dfaeea66c313de5e61f7"
+checksum = "391290121bad3d37fbddad76d8f5d1c1c314cfc646d143d7e07a3086ddff0ce3"
 dependencies = [
  "bitflags 2.9.1",
  "libc",
@@ -6601,7 +6602,7 @@ dependencies = [
 [[package]]
 name = "media"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "bindgen 0.71.1",
@@ -6650,7 +6651,7 @@ dependencies = [
 [[package]]
 name = "menu"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "gpui",
  "workspace-hack",
@@ -6847,7 +6848,7 @@ dependencies = [
 [[package]]
 name = "net"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "async-io",
@@ -7739,7 +7740,7 @@ dependencies = [
 [[package]]
 name = "paths"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "dirs 4.0.0",
  "util",
@@ -8166,7 +8167,7 @@ dependencies = [
 [[package]]
 name = "proto"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "prost",
@@ -8264,7 +8265,7 @@ checksum = "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09"
 [[package]]
 name = "ragnarok"
 version = "0.1.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "euclid",
  "itertools 0.13.0",
@@ -8502,7 +8503,7 @@ dependencies = [
 [[package]]
 name = "refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "derive_refineable",
  "workspace-hack",
@@ -8569,7 +8570,7 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 [[package]]
 name = "release_channel"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "gpui",
  "workspace-hack",
@@ -8661,7 +8662,7 @@ dependencies = [
 [[package]]
 name = "rope"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "arrayvec",
  "log",
@@ -8779,9 +8780,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.23.29"
+version = "0.23.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2491382039b29b9b11ff08b76ff6c97cf287671dbb74f0be44bda389fffe9bd1"
+checksum = "c0ebcbd2f03de0fc1122ad9bb24b127a5a6cd51d72604a3f3c50ac459762b6cc"
 dependencies = [
  "once_cell",
  "rustls-pki-types",
@@ -8985,7 +8986,7 @@ checksum = "0f7d95a54511e0c7be3f51e8867aa8cf35148d7b9445d44de2f943e2b206e749"
 [[package]]
 name = "semantic_version"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "serde",
@@ -9191,7 +9192,7 @@ dependencies = [
 [[package]]
 name = "settings"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "collections",
@@ -9829,7 +9830,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "sum_tree"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "arrayvec",
  "log",
@@ -10042,12 +10043,12 @@ dependencies = [
 
 [[package]]
 name = "taffy"
-version = "0.4.4"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ec17858c2d465b2f734b798b920818a974faf0babb15d7fef81818a4b2d16f1"
+checksum = "e8b61630cba2afd2c851821add2e1bb1b7851a2436e839ab73b56558b009035e"
 dependencies = [
  "arrayvec",
- "grid 0.13.0",
+ "grid 0.14.0",
  "num-traits",
  "serde",
  "slotmap",
@@ -10136,7 +10137,7 @@ dependencies = [
 [[package]]
 name = "text"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "clock",
@@ -10155,7 +10156,7 @@ dependencies = [
 [[package]]
 name = "theme"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "collections",
@@ -10466,9 +10467,9 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.9.3"
+version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e06723639aaded957e5a80be250c1f82f274b9d23ebb4d94163668470623461c"
+checksum = "41ae868b5a0f67631c14589f7e250c1ea2c574ee5ba21c6c8dd4b1485705a5a1"
 dependencies = [
  "indexmap",
  "serde",
@@ -10535,7 +10536,7 @@ checksum = "fcc842091f2def52017664b53082ecbbeb5c7731092bad69d2c63050401dfd64"
 [[package]]
 name = "torin"
 version = "0.4.0"
-source = "git+https://github.com/marc2332/freya?branch=main#4d56191cd565b33e827696b737b30063c68d848b"
+source = "git+https://github.com/marc2332/freya?branch=main#76ad9458916553dc28ba14d8c57bedb48d934296"
 dependencies = [
  "euclid",
  "rustc-hash 2.1.1",
@@ -10793,7 +10794,7 @@ dependencies = [
 [[package]]
 name = "ui"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "chrono",
  "component",
@@ -10837,7 +10838,7 @@ dependencies = [
 [[package]]
 name = "ui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "quote",
  "syn 2.0.104",
@@ -11021,7 +11022,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "async-fs",
@@ -13201,7 +13202,7 @@ dependencies = [
 [[package]]
 name = "zlog"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.196.6#f80bd3a66b03049475d936e2da848431fa0c7e4e"
+source = "git+https://github.com/zed-industries/zed?tag=v0.197.3#002b8b9f5a5df0c991bfe7fcbd755737f1d55d82"
 dependencies = [
  "anyhow",
  "chrono",
@@ -13226,9 +13227,9 @@ dependencies = [
 
 [[package]]
 name = "zune-jpeg"
-version = "0.4.19"
+version = "0.4.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c9e525af0a6a658e031e95f14b7f889976b74a11ba0eca5a5fc9ac8a1c43a6a"
+checksum = "fc1f7e205ce79eb2da3cd71c5f55f3589785cb7c79f6a03d1c8d1491bda5d089"
 dependencies = [
  "zune-core",
 ]
