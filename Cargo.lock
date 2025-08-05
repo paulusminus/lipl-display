@@ -3767,9 +3767,9 @@ dependencies = [
 
 [[package]]
 name = "femtovg"
-version = "0.15.0"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a9e6f44e8b03e063fabb39f3709a2e1e2c1aea33409e1ef81017331aed715a4"
+checksum = "c66a4045686ce22a7e99a1e9ec3b5c86f43cdedf678a699f544f10af286da893"
 dependencies = [
  "bitflags 2.9.1",
  "bytemuck",
@@ -6667,7 +6667,7 @@ name = "lipl-display-femtovg"
 version = "0.4.7"
 dependencies = [
  "env_logger",
- "femtovg 0.15.0",
+ "femtovg 0.16.0",
  "gl_generator",
  "glutin",
  "glutin-winit",
