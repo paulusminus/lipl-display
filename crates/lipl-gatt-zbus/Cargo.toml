@@ -13,7 +13,7 @@ derive_builder = "0.20.2"
 futures = "0.3.31"
 lipl-display-common = { path = "../lipl-display-common" }
 pin-project = "1.1.10"
-thiserror = "2.0.12"
+thiserror = "2.0.14"
 tokio = { version = "1.45.1", features = ["rt", "rt-multi-thread"] }
 tracing = "0.1.41"
 uuid = "1.17.0"
