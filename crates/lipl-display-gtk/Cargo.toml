@@ -9,7 +9,7 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-anyhow = "1.0.93"
+anyhow = "1.0.99"
 gtk4 = "0.10.0"
 glib = { version = "0.21.0", features = ["log"] }
 lipl-display-common = { version = "0.4", path = "../lipl-display-common" }
