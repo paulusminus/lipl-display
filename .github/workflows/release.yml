@@ -20,7 +20,7 @@ jobs:
       contents: write
     steps:
       - name: Install dependencies
-        run: apt install -y libgtk-4-dev libdbus-1-dev pkg-config
+        run: sudo apt install -y libgtk-4-dev libdbus-1-dev pkg-config
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
       - uses: cargo-bins/cargo-binstall@main
