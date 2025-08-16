@@ -21,14 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
-      - name: Install cross
-        run: cargo install cross
+      - uses: cargo-bins/cargo-binstall@main
       - name: Install cargo-deb
-        run: cargo install cargo-deb
-      - name: Build
-        run: cargo build --release -p lipl-display-slint
+        run: cargo binstall cargo-deb
       - name: Build debian package
-        run: cargo-deb -v --no-build -p lipl-display-slint
+        run: cargo-deb -v -p lipl-display-gtk
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "target/debian/*.deb"
