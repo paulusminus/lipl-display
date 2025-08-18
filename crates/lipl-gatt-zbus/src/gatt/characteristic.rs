@@ -219,10 +219,12 @@ impl Characteristic {
     fn flags(&self) -> Vec<String> {
         let mut flags = vec![];
         if self.read {
-            flags.push("encrypt-authenticated-read".into());
+            flags.push("read".into());
+            // flags.push("encrypt-authenticated-read".into());
         }
         if self.write {
-            flags.push("encrypt-authenticated-write".to_owned());
+            flags.push("write-without-response".into());
+            // flags.push("encrypt-authenticated-write".to_owned());
         }
         flags
     }
@@ -271,6 +273,7 @@ impl Characteristic {
             ));
         }
         let write_request: WriteRequest = (self.uuid, value, &options, self.service_uuid).into();
+        tracing::info!("Write request {:?} {:?}", write_request, self.service_uuid);
         self.sender
             .try_send(Request::Write(write_request))
             .map_err(|e| zbus::fdo::Error::Failed(e.to_string()))

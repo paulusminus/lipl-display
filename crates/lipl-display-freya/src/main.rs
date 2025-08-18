@@ -17,7 +17,7 @@ use constant::{
     MINIMUM_FONT_SIZE, WAIT_MESSAGE,
 };
 use font_size::FontSize;
-use freya::launch::launch_with_props;
+use freya::launch::launch_with_params;
 use freya::prelude::*;
 use futures_util::{FutureExt, TryStreamExt};
 use lipl_display_common::{Command, Message};
@@ -66,10 +66,10 @@ async fn background_task() -> Result<(), std::io::Error> {
                         use_context::<Signal<Status>>().set(WAIT_MESSAGE.to_owned().into());
                     }
                     Command::Exit => {
-                        use_platform().exit();
+                        use_platform().close_window();
                     }
                     Command::Poweroff => {
-                        use_platform().exit();
+                        use_platform().close_window();
                     }
                 },
             }
@@ -124,7 +124,7 @@ fn app() -> Element {
 }
 
 fn main() {
-    launch_with_props(
+    launch_with_params(
         app,
         APPLICATION_TITLE,
         (APPLICATION_WIDTH, APPLICATION_HEIGHT),

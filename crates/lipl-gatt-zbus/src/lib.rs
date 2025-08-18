@@ -103,6 +103,7 @@ async fn handle_messages(
                 match request {
                     Some(Request::Write(mut write_request)) => {
                         if let Some(message) = handle_write_request(&mut write_request, &mut map) {
+                            tracing::info!("Received message: {:?}", message);
                             if [Message::Command(Command::Exit), Message::Command(Command::Poweroff)].contains(&message)
                             {
                                 break;
