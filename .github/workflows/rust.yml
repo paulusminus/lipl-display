@@ -14,8 +14,7 @@ jobs:
     steps:
       - name: Install ubuntu dependencies
         run: sudo apt update && sudo apt install libdbus-1-dev libgtk-4-dev libudev-dev libgbm-dev libxkbcommon-dev libfontconfig1-dev libseat-dev libsystemd-dev libinput-dev libsdl2-dev libsdl2-ttf-dev
-      - name: List installed components
-        run: rustup component list
+      - uses: actions/checkout@v4
       - name: Formatting
         run: cargo fmt --all -- --check
       - name: Clippy Slint version
