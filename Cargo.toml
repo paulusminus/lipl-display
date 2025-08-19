@@ -7,7 +7,7 @@ members = [
     "crates/lipl-display-freya",
     "crates/lipl-display-gpui",
     "crates/lipl-display-gtk",
-    "crates/lipl-display-slint",
+    # "crates/lipl-display-slint",
     "crates/lipl-display-xilem",
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
