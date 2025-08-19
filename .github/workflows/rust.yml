@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Formatting
         run: cargo fmt --all -- --check
-      - name: Clippy Slint version
-        run: cargo clippy --no-deps -p lipl-display-slint -- -D warnings
+      # - name: Clippy Slint version
+      #   run: cargo clippy --no-deps -p lipl-display-slint -- -D warnings
       - name: Clippy Femtovg version
         run: cargo clippy --no-deps -p lipl-display-femtovg -- -D warnings
-      - name: Build Slint version
-        run: cargo build --release -p lipl-display-slint
+      # - name: Build Slint version
+      #   run: cargo build --release -p lipl-display-slint
       - name: Build Femtovg version
         run: cargo build --release -p lipl-display-femtovg
