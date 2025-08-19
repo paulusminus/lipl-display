@@ -6855,7 +6855,7 @@ dependencies = [
  "serde_with",
  "slint",
  "slint-build",
- "toml 0.8.23",
+ "toml 0.9.5",
  "tracing",
  "tracing-appender",
  "tracing-log",
