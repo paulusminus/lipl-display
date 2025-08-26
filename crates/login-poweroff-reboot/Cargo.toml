@@ -9,5 +9,5 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-dbus = "0.9.7"
+dbus = "0.9.8"
 strum = { version = "0.27.0", features = ["derive"] }
