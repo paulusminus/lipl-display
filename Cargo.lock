@@ -144,7 +144,7 @@ dependencies = [
  "futures-lite 2.6.1",
  "futures-util",
  "serde",
- "zbus 5.9.0",
+ "zbus 5.10.0",
 ]
 
 [[package]]
@@ -533,7 +533,7 @@ dependencies = [
  "serde",
  "serde_repr",
  "url",
- "zbus 5.9.0",
+ "zbus 5.10.0",
 ]
 
 [[package]]
@@ -864,7 +864,7 @@ dependencies = [
  "enumflags2",
  "serde",
  "static_assertions",
- "zbus 5.9.0",
+ "zbus 5.10.0",
  "zbus-lockstep 0.5.1",
  "zbus-lockstep-macros 0.5.1",
  "zbus_names 4.2.0",
@@ -892,7 +892,7 @@ dependencies = [
  "atspi-common 0.9.0",
  "atspi-proxies 0.9.0",
  "futures-lite 2.6.1",
- "zbus 5.9.0",
+ "zbus 5.10.0",
 ]
 
 [[package]]
@@ -915,7 +915,7 @@ checksum = "d2eebcb9e7e76f26d0bcfd6f0295e1cd1e6f33bedbc5698a971db8dc43d7751c"
 dependencies = [
  "atspi-common 0.9.0",
  "serde",
- "zbus 5.9.0",
+ "zbus 5.10.0",
 ]
 
 [[package]]
@@ -6370,7 +6370,7 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "uuid",
- "zbus 5.9.0",
+ "zbus 5.10.0",
 ]
 
 [[package]]
@@ -7556,8 +7556,8 @@ dependencies = [
  "serde",
  "sha2",
  "subtle",
- "zbus 5.9.0",
- "zbus_macros 5.9.0",
+ "zbus 5.10.0",
+ "zbus_macros 5.10.0",
  "zeroize",
  "zvariant 5.6.0",
 ]
@@ -13202,9 +13202,9 @@ dependencies = [
 
 [[package]]
 name = "zbus"
-version = "5.9.0"
+version = "5.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4bb4f9a464286d42851d18a605f7193b8febaf5b0919d71c6399b7b26e5b0aad"
+checksum = "67a073be99ace1adc48af593701c8015cd9817df372e14a1a6b0ee8f8bf043be"
 dependencies = [
  "async-broadcast",
  "async-executor",
@@ -13227,9 +13227,9 @@ dependencies = [
  "tokio",
  "tracing",
  "uds_windows",
- "windows-sys 0.59.0",
+ "windows-sys 0.60.2",
  "winnow",
- "zbus_macros 5.9.0",
+ "zbus_macros 5.10.0",
  "zbus_names 4.2.0",
  "zvariant 5.6.0",
 ]
@@ -13297,9 +13297,9 @@ dependencies = [
 
 [[package]]
 name = "zbus_macros"
-version = "5.9.0"
+version = "5.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef9859f68ee0c4ee2e8cde84737c78e3f4c54f946f2a38645d0d4c7a95327659"
+checksum = "0e80cd713a45a49859dcb648053f63265f4f2851b6420d47a958e5697c68b131"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
