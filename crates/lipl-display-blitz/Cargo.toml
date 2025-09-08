@@ -10,5 +10,5 @@ dioxus-native = "0.7.0-rc.0"
 dioxus = "0.7.0-rc.0"
 tokio = { version = "1.42", features = ["rt", "time"] }
 tracing-subscriber = "0.3"
-chrono = "0.4.41"
+chrono = "0.4.42"
 json-lines = { path = "../json-lines" }
