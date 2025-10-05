@@ -10,7 +10,7 @@ version = "0.1.2"
 build = "build.rs"
 
 [dependencies]
-slint = { git = "https://github.com/slint-ui/slint", default-features = false, features = [
+slint = { version = "1.13", default-features = false, features = [
     "std",
     "compat-1-2",
     "renderer-femtovg",
