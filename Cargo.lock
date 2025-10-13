@@ -384,9 +384,9 @@ dependencies = [
 
 [[package]]
 name = "anyrender_svg"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "288fdd6061de8e82213e4381c4e4c7e41d1252c8d34b21a1bc7c9ffca12022a7"
+checksum = "f40554c3b19e6298c6210d21902796cb02f4dd1a472f393bb94a067c2c9562bc"
 dependencies = [
  "anyrender",
  "image",
@@ -3643,9 +3643,9 @@ dependencies = [
 
 [[package]]
 name = "femtovg"
-version = "0.19.2"
+version = "0.19.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32b10d5c0f6d9a8a289698fd671b8ab260741846c9311cace95d640a0d133819"
+checksum = "be5d925785ad33d7b0ae2b445d9f157c3ab42ff3c515fff0b46d53d4a86c43c5"
 dependencies = [
  "bitflags 2.9.4",
  "bytemuck",
@@ -4272,9 +4272,9 @@ dependencies = [
 
 [[package]]
 name = "generic-array"
-version = "0.14.7"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
+checksum = "1dc8f7d2ded5f9209535e4b3fd4d39c002f30902ff5ce9f64e2c33d549576500"
 dependencies = [
  "typenum",
  "version_check",
@@ -6386,7 +6386,7 @@ name = "lipl-display-femtovg"
 version = "0.4.7"
 dependencies = [
  "env_logger",
- "femtovg 0.19.2",
+ "femtovg 0.19.3",
  "gl_generator",
  "glutin",
  "glutin-winit",
