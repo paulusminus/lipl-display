@@ -10,9 +10,9 @@ version.workspace = true
 
 [dependencies]
 anyhow = "1.0.94"
-eframe = { version = "0.32.0", default-features = false, features = [
-    "glow",
-    "wayland",
+eframe = { version = "0.33.0", default-features = false, features = [
+  "glow",
+  "wayland",
 ] }
 lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
