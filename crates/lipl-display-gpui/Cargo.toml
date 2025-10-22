@@ -16,4 +16,4 @@ gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v0.209.4", 
 lipl-display-common = { path = "../lipl-display-common" }
 lipl-gatt-bluer = { path = "../lipl-gatt-bluer" }
 log = "0.4.27"
-ui = { git = "https://github.com/zed-industries/zed", tag = "v0.209.4", default-features = false }
+ui = { git = "https://github.com/zed-industries/zed", tag = "v0.209.5", default-features = false }
