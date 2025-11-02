@@ -6,8 +6,8 @@ license = "MIT"
 publish = false
 
 [dependencies]
-dioxus-native = "0.7.0-rc.3"
-dioxus = "0.7.0-rc.3"
+dioxus-native = "0.7.0"
+dioxus = "0.7.0"
 tokio = { version = "1.42", features = ["rt", "time"] }
 tracing-subscriber = "0.3"
 chrono = "0.4.41"

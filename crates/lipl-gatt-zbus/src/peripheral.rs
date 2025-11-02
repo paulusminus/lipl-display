@@ -90,7 +90,7 @@ impl Peripheral {
         gatt_application_config: GattApplicationConfig,
     ) -> Result<(
         Receiver<Request>,
-        Pin<Box<(dyn Future<Output = Result<()>> + Send)>>,
+        Pin<Box<dyn Future<Output = Result<()>> + Send>>,
     )> {
         let (tx, rx) = channel::<Request>(1);
         // let object_server = self.connection.object_server().clone();
