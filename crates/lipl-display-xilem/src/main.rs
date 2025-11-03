@@ -1,15 +1,21 @@
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
 use masonry::widgets::GridParams;
-use masonry_winit::widgets::{CrossAxisAlignment, MainAxisAlignment};
+use std::str;
 use std::time::Duration;
 use winit::error::EventLoopError;
-use winit::window::{Fullscreen, Window};
 use xilem::core::{MessageProxy, fork};
-use xilem::view::{Axis, GridExt, flex, grid, label, sized_box, task};
-use xilem::{Color, EventLoop, WidgetView, Xilem, tokio};
+use xilem::style::{Background, Style};
+use xilem::view::{
+    Axis, CrossAxisAlignment, GridExt, MainAxisAlignment, flex, grid, label, sized_box, task,
+};
+use xilem::{Color, EventLoop, WidgetView, WindowOptions, Xilem, tokio};
 
-const APP_TITLE: &str = "Elm";
+const APP_TITLE: &str = "Lipl Display";
+const WAIT_MESSAGE: &str = "Even geduld a.u.b. ...";
+const ROBOTO_FONT: &[u8] = include_bytes!("/usr/share/fonts/google-roboto/Roboto-Regular.ttf");
+const DEFAULT_DARK: bool = true;
+const DEFAULT_FONT_SIZE: f32 = 22.0;
 
 trait LiplScreenExt {
     fn bg_color(&self) -> Color;
@@ -38,19 +44,21 @@ fn display(screen: &mut LiplScreen) -> impl WidgetView<LiplScreen> + use<> {
     sized_box(grid(
         (
             flex(
+                Axis::Horizontal,
                 label(screen.text.clone())
                     .text_size(screen.font_size)
                     .font("Roboto")
-                    .brush(screen.fg_color()),
+                    .color(screen.fg_color()),
             )
             .direction(Axis::Horizontal)
             .main_axis_alignment(MainAxisAlignment::Center)
             .cross_axis_alignment(CrossAxisAlignment::Center)
             .grid_item(GridParams::new(0, 0, 1, 11)),
             flex(
-                label(screen.status.clone())
+                Axis::Horizontal,
+                label(screen.status.as_str())
                     .text_size(screen.font_size)
-                    .brush(screen.fg_color()),
+                    .color(screen.fg_color()),
             )
             .direction(Axis::Horizontal)
             .main_axis_alignment(MainAxisAlignment::Center)
@@ -59,7 +67,7 @@ fn display(screen: &mut LiplScreen) -> impl WidgetView<LiplScreen> + use<> {
         1,
         12,
     ))
-    .background(screen.bg_color())
+    .background(Background::Color(screen.bg_color()))
 }
 
 async fn background_task(proxy: MessageProxy<Message>) {
@@ -91,8 +99,8 @@ fn on_message_received(screen: &mut LiplScreen, message: Message) {
     let handled = {
         if let Message::Command(command) = &message {
             if *command == Command::Wait {
-                screen.text = "".into();
-                screen.status = "Even geduld a.u.b. ...".into();
+                screen.text = String::default();
+                screen.status = WAIT_MESSAGE.into();
                 true
             } else {
                 false
@@ -112,19 +120,16 @@ fn app_logic(screen: &mut LiplScreen) -> impl WidgetView<LiplScreen> + use<> {
 
 fn main() -> Result<(), EventLoopError> {
     tracing_subscriber::fmt::init();
-    let app = Xilem::new(
+    Xilem::new_simple(
         LiplScreen {
-            text: "".into(),
-            status: "Even geduld a.u.b. ...".into(),
-            font_size: 22.0,
-            dark: false,
+            text: String::default(),
+            status: WAIT_MESSAGE.into(),
+            font_size: DEFAULT_FONT_SIZE,
+            dark: DEFAULT_DARK,
         },
         app_logic,
+        WindowOptions::new(APP_TITLE),
     )
-    .with_font(include_bytes!("/usr/share/fonts/google-roboto/Roboto-Regular.ttf").to_vec());
-    let attributes = Window::default_attributes()
-        .with_title(APP_TITLE)
-        .with_fullscreen(Some(Fullscreen::Borderless(None)));
-    app.run_windowed_in(EventLoop::with_user_event(), attributes)?;
-    Ok(())
+    .with_font(ROBOTO_FONT.to_vec())
+    .run_in(EventLoop::with_user_event())
 }
