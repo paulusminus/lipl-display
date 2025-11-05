@@ -7,9 +7,6 @@ edition = "2024"
 futures-util = "0.3.31"
 json-lines = { path = "../json-lines" }
 lipl-display-common = "0.4.6"
-masonry = "0.4.0"
-masonry_winit = "0.4.0"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
-winit = "0.30.12"
 xilem = "0.4.0"

@@ -1,13 +1,12 @@
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
-use masonry::widgets::GridParams;
 use std::str;
 use std::time::Duration;
-use winit::error::EventLoopError;
 use xilem::core::{MessageProxy, fork};
 use xilem::style::{Background, Style};
 use xilem::view::{
-    Axis, CrossAxisAlignment, GridExt, MainAxisAlignment, flex, grid, label, sized_box, task,
+    Axis, CrossAxisAlignment, GridExt, GridParams, MainAxisAlignment, flex, grid, label, sized_box,
+    task,
 };
 use xilem::{Color, EventLoop, WidgetView, WindowOptions, Xilem, tokio};
 
@@ -118,7 +117,7 @@ fn app_logic(screen: &mut LiplScreen) -> impl WidgetView<LiplScreen> + use<> {
     fork(display(screen), task(background_task, on_message_received))
 }
 
-fn main() -> Result<(), EventLoopError> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
     Xilem::new_simple(
         LiplScreen {
@@ -132,4 +131,5 @@ fn main() -> Result<(), EventLoopError> {
     )
     .with_font(ROBOTO_FONT.to_vec())
     .run_in(EventLoop::with_user_event())
+    .map_err(Into::into)
 }
