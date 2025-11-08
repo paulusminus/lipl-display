@@ -12,7 +12,7 @@ use xilem::{Color, EventLoop, WidgetView, WindowOptions, Xilem, tokio};
 
 const APP_TITLE: &str = "Lipl Display";
 const WAIT_MESSAGE: &str = "Even geduld a.u.b. ...";
-const ROBOTO_FONT: &[u8] = include_bytes!("/usr/share/fonts/google-roboto/Roboto-Regular.ttf");
+const ROBOTO_FONT: &[u8] = include_bytes!("Roboto-Regular.ttf");
 const DEFAULT_DARK: bool = true;
 const DEFAULT_FONT_SIZE: f32 = 22.0;
 
