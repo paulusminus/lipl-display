@@ -2008,6 +2008,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "convert_case"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "633458d4ef8c78b72454de2d54fd6ab2e60f9e02be22f3c6104cdc8a4e0fceb9"
+dependencies = [
+ "unicode-segmentation",
+]
+
+[[package]]
 name = "copypasta"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2625,21 +2634,23 @@ dependencies = [
 
 [[package]]
 name = "derive_more"
-version = "2.0.1"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "093242cf7570c207c83073cf82f79706fe7b8317e98620a47d5be7c3d8497678"
+checksum = "10b768e943bed7bf2cab53df09f4bc34bfd217cdb57d971e769874c9a6710618"
 dependencies = [
  "derive_more-impl",
 ]
 
 [[package]]
 name = "derive_more-impl"
-version = "2.0.1"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bda628edc44c4bb645fbe0f758797143e4e07926f7ebf4e9bdfbd3d2ce621df3"
+checksum = "6d286bfdaf75e988b4a78e013ecd79c581e06399ab53fbacd2d916c2f904f30b"
 dependencies = [
+ "convert_case 0.10.0",
  "proc-macro2",
  "quote",
+ "rustc_version",
  "syn 2.0.111",
  "unicode-xid",
 ]
@@ -5314,7 +5325,7 @@ dependencies = [
  "cfg-if",
  "cfg_aliases 0.2.1",
  "copypasta",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "futures",
  "glutin",
  "glutin-winit",
@@ -5358,7 +5369,7 @@ dependencies = [
  "by_address",
  "codemap",
  "codemap-diagnostic",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "fontdue",
  "i-slint-common",
  "image",
@@ -5391,7 +5402,7 @@ dependencies = [
  "chrono",
  "clru",
  "const-field-offset",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "euclid",
  "i-slint-common",
  "i-slint-core-macros",
@@ -5443,7 +5454,7 @@ checksum = "03d85d77f899ecb1f05c50c659a6d356fba44463686713f1f925c8be48de6afb"
 dependencies = [
  "cfg-if",
  "const-field-offset",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "femtovg",
  "glow 0.16.0",
  "i-slint-common",
@@ -5468,7 +5479,7 @@ dependencies = [
  "cfg-if",
  "cfg_aliases 0.2.1",
  "const-field-offset",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "glow 0.16.0",
  "glutin",
  "i-slint-common",
@@ -6198,9 +6209,9 @@ checksum = "7a79a3332a6609480d7d0c9eab957bca6b455b91bb84e66d19f5ff66294b85b8"
 
 [[package]]
 name = "libc"
-version = "0.2.177"
+version = "0.2.178"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976"
+checksum = "37c93d8daa9d8a012fd8ab92f088405fb202ea0b6ab73ee2482ae66af4f42091"
 
 [[package]]
 name = "libdbus-sys"
@@ -6551,11 +6562,11 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.28"
+version = "0.4.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
+checksum = "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897"
 dependencies = [
- "serde",
+ "serde_core",
  "value-bag",
 ]
 
@@ -9601,7 +9612,7 @@ checksum = "09975d3195f34dce9c7b381cb0f00c3c13381d4d3735c0f1a9c894b283b302ab"
 dependencies = [
  "bitflags 2.10.0",
  "cssparser",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "log",
  "new_debug_unreachable",
  "phf 0.11.3",
@@ -10061,7 +10072,7 @@ version = "1.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6f9e30dfc58198894a4a4fe38d126a24ed4121d11cd8564643f3b7915752adc"
 dependencies = [
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "i-slint-compiler",
  "spin_on",
  "toml_edit 0.23.7",
@@ -10424,7 +10435,7 @@ dependencies = [
  "bitflags 2.10.0",
  "byteorder",
  "cssparser",
- "derive_more 2.0.1",
+ "derive_more 2.1.0",
  "encoding_rs",
  "euclid",
  "icu_segmenter",
