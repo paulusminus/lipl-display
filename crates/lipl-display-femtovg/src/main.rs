@@ -13,7 +13,7 @@ use winit::{
     event_loop::{EventLoop, EventLoopProxy},
 };
 
-const ROBOTO_REGULAR: &[u8] = include_bytes!("../assets/Roboto-Regular.ttf");
+const ROBOTO_REGULAR: &[u8] = include_bytes!("../../../font/Roboto-Regular.ttf");
 const DEFAULT_FONT_SIZE: f32 = 32.0;
 const BLACK: femtovg::Color = femtovg::Color::black();
 const WHITE: femtovg::Color = femtovg::Color::white();

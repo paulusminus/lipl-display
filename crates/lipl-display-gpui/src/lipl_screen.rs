@@ -1,8 +1,7 @@
 use async_channel::Receiver;
-use gpui::{AppContext, AsyncApp, Entity, Hsla, WeakEntity};
+use gpui::{AppContext, AsyncApp, Entity, Hsla, Pixels, WeakEntity};
 use lipl_display_common::{Command, Message};
 use std::cmp::max;
-use ui::Pixels;
 
 use crate::constant::{DARK, DEFAULT_STATUS, INITIAL_FONT_SIZE, MIN_FONT_SIZE};
 

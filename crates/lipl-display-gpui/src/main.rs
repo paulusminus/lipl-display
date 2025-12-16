@@ -1,11 +1,11 @@
 use constant::{APP_ID, FONT, WINDOW_HEIGHT, WINDOW_WIDTH};
 use gpui::{
-    App, Application, Bounds, Context, Render, Window, WindowBounds, WindowOptions, div, px, size,
+    App, Application, Bounds, Context, IntoElement, ParentElement, Render, Styled, Window,
+    WindowBounds, WindowOptions, div, px, size,
 };
 
 use lipl_display_common::Message;
 use lipl_screen::LiplScreen;
-use ui::{IntoElement, ParentElement, Styled};
 
 mod constant;
 mod lipl_screen;

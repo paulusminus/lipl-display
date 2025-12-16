@@ -1,7 +1,7 @@
 use eframe::egui::{FontData, FontDefinitions, FontFamily};
 use std::sync::Arc;
 
-pub const FONT: &[u8] = include_bytes!("Roboto-Regular.ttf");
+pub const FONT: &[u8] = include_bytes!("../../../font/Roboto-Regular.ttf");
 pub const FONT_NAME: &str = "Roboto";
 
 pub fn fonts() -> FontDefinitions {
