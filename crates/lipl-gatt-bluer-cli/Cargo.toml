@@ -23,4 +23,4 @@ tokio = { version = "1.42.0", features = [
   "signal",
 ] }
 serde = { version = "1.0.216", features = ["derive"] }
-tokio-stream = { version = "0.1.17", features = ["signal"] }
+tokio-stream = { version = "0.1.18", features = ["signal"] }
