@@ -3528,6 +3528,27 @@ dependencies = [
  "imgref",
  "itertools 0.14.0",
  "log",
+ "rgb",
+ "slotmap",
+ "ttf-parser 0.25.1",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "femtovg"
+version = "0.20.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a125295d4de2b2473e731c4612599ba3cdf7e05af6bba16f324ba8ffbf093436"
+dependencies = [
+ "bitflags 2.10.0",
+ "bytemuck",
+ "fnv",
+ "glow 0.16.0",
+ "image",
+ "imgref",
+ "itertools 0.14.0",
+ "log",
  "lru",
  "rgb",
  "rustybuzz 0.20.1",
@@ -5113,7 +5134,7 @@ dependencies = [
  "cfg-if",
  "const-field-offset",
  "derive_more 2.1.1",
- "femtovg",
+ "femtovg 0.19.3",
  "glow 0.16.0",
  "i-slint-common",
  "i-slint-core",
@@ -5957,7 +5978,7 @@ name = "lipl-display-femtovg"
 version = "0.4.7"
 dependencies = [
  "env_logger",
- "femtovg",
+ "femtovg 0.20.1",
  "gl_generator",
  "glutin",
  "glutin-winit",
