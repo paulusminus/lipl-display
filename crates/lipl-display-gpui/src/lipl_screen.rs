@@ -14,8 +14,7 @@ fn update<T>(
     if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
         cx.update_entity(lipl_screen, |screen, _| {
             f(screen, t);
-        })
-        .ok();
+        });
     }
 }
 
@@ -27,8 +26,7 @@ fn update_no(
     if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
         cx.update_entity(lipl_screen, |screen, _| {
             f(screen);
-        })
-        .ok();
+        });
     }
 }
 
@@ -80,7 +78,7 @@ pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScree
                     }
                 }
             }
-            cx.refresh().unwrap();
+            cx.refresh();
         }
     })
     .detach();
