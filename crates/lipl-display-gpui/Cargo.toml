@@ -8,11 +8,11 @@ anyhow = "1.0.98"
 async-channel = "2.3.1"
 env_logger = "0.11.8"
 futures = "0.3.31"
-gpui = { git = "https://github.com/zed-industries/zed", tag = "v0.220.6", default-features = false, features = [
+gpui = { git = "https://github.com/zed-industries/zed", tag = "v0.221.4", default-features = false, features = [
     "wayland",
     "font-kit",
 ] }
-gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v0.220.6", default-features = false }
+gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v0.221.4", default-features = false }
 lipl-display-common = { path = "../lipl-display-common" }
 lipl-gatt-bluer = { path = "../lipl-gatt-bluer" }
 log = "0.4.27"
