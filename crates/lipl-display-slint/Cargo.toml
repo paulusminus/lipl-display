@@ -24,7 +24,7 @@ tracing = "0.1.41"
 tracing-log = "0.2.0"
 tracing-appender = "0.2.3"
 tracing-subscriber = { version = "0.3.19", features = ["registry"] }
-toml = "0.9.8"
+toml = "1.0.0"
 serde = { version = "1.0.216", features = ["derive"] }
 serde_with = { version = "3.11.0", default-features = false, features = [
   "macros",
