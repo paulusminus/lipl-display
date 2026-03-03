@@ -2,7 +2,6 @@ use std::{cell::RefCell, rc::Rc};
 
 use anyhow::Result;
 use async_channel::{Sender, bounded};
-use glib::ExitCode;
 use gtk4::{
     glib::clone,
     prelude::{ApplicationExt, ApplicationExtManual},
@@ -15,9 +14,9 @@ mod css;
 mod cursor;
 mod window;
 
-static GLIB_LOGGER: gtk4::glib::GlibLogger = gtk4::glib::GlibLogger::new(
-    gtk4::glib::GlibLoggerFormat::Plain,
-    gtk4::glib::GlibLoggerDomain::CrateTarget,
+static GLIB_LOGGER: glib::GlibLogger = glib::GlibLogger::new(
+    glib::GlibLoggerFormat::Plain,
+    glib::GlibLoggerDomain::CrateTarget,
 );
 
 fn create_callback(tx: Sender<Message>) -> impl Fn(Message) {
@@ -96,7 +95,7 @@ fn build_ui(application: &gtk4::Application) -> Result<()> {
     Ok(())
 }
 
-fn main() -> Result<ExitCode> {
+fn main() -> Result<gtk4::glib::ExitCode> {
     log::set_logger(&GLIB_LOGGER).unwrap();
     log::set_max_level(log::LevelFilter::Trace);
 
