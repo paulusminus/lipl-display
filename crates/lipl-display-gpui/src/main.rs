@@ -44,8 +44,9 @@ fn window_bounds(cx: &mut App) -> Option<WindowBounds> {
 }
 
 fn main() {
+    let linux_platform = gpui_linux::current_platform(false);
     env_logger::init();
-    Application::new().run(|cx: &mut App| {
+    Application::with_platform(linux_platform).run(|cx: &mut App| {
         gpui_tokio::init(cx);
         let (sender, receiver) = async_channel::unbounded::<Message>();
         listen_bluer::init(cx, sender);
