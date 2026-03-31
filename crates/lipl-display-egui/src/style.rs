@@ -3,7 +3,7 @@ use eframe::egui::{Context, TextStyle};
 pub const FONT_SMALL_FACTOR: f32 = 0.7;
 
 pub fn set_font_size(ctx: &Context, font_size: f32) {
-    let mut style = (*ctx.style()).clone();
+    let mut style = (*ctx.global_style()).clone();
     style.text_styles.insert(
         TextStyle::Body,
         eframe::epaint::FontId {
@@ -18,5 +18,5 @@ pub fn set_font_size(ctx: &Context, font_size: f32) {
             family: Default::default(),
         },
     );
-    ctx.set_style(style);
+    ctx.set_global_style(style);
 }

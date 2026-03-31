@@ -9,7 +9,7 @@ use std::sync::mpsc::{Receiver, Sender};
 
 use eframe::{
     App, Frame, NativeOptions,
-    egui::{CentralPanel, Context, TopBottomPanel, ViewportCommand},
+    egui::{CentralPanel, Context, Panel, Ui, ViewportCommand},
     run_native,
 };
 use lipl_display::LiplDisplay;
@@ -52,6 +52,14 @@ impl LiplDisplay {
 }
 
 impl App for LiplDisplay {
+    fn ui(&mut self, ui: &mut Ui, _frame: &mut Frame) {
+        Panel::bottom("Status")
+            .max_size(3. * (self.config.font_size * style::FONT_SMALL_FACTOR))
+            .show_inside(ui, |ui| self.render_status(ui));
+
+        CentralPanel::default().show_inside(ui, |ui| self.render_text(ui));
+    }
+
     fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
         ctx.request_repaint();
 
@@ -95,12 +103,6 @@ impl App for LiplDisplay {
                 },
             };
         }
-
-        TopBottomPanel::bottom("Status")
-            .max_height(3. * (self.config.font_size * style::FONT_SMALL_FACTOR))
-            .show(ctx, |ui| self.render_status(ui));
-
-        CentralPanel::default().show(ctx, |ui| self.render_text(ui));
     }
 }
 
