@@ -6173,7 +6173,7 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-common"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "serde",
  "thiserror 2.0.18",
@@ -6182,26 +6182,25 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-egui"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "anyhow",
  "eframe",
  "env_logger",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "log",
 ]
 
 [[package]]
 name = "lipl-display-femtovg"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "env_logger",
  "femtovg 0.23.1",
- "gl_generator",
  "glutin",
  "glutin-winit",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "log",
  "winit",
@@ -6218,20 +6217,20 @@ dependencies = [
  "gpui",
  "gpui_linux",
  "gpui_tokio",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "log",
 ]
 
 [[package]]
 name = "lipl-display-gtk"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "anyhow",
  "async-channel 2.5.0",
  "glib",
  "gtk4",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "log",
 ]
@@ -6241,7 +6240,7 @@ name = "lipl-display-slint"
 version = "0.1.2"
 dependencies = [
  "anyhow",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "login-poweroff-reboot",
  "serde",
@@ -6269,13 +6268,13 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "bluer",
  "env_logger",
  "futures-channel",
  "futures-util",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "log",
  "pin-project",
  "serde",
@@ -6286,10 +6285,10 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-bluer-cli"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "futures-util",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "lipl-gatt-bluer",
  "log",
  "login-poweroff-reboot",
@@ -6302,11 +6301,11 @@ dependencies = [
 
 [[package]]
 name = "lipl-gatt-zbus"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "derive_builder",
  "futures",
- "lipl-display-common 0.4.7",
+ "lipl-display-common 0.4.8",
  "pin-project",
  "thiserror 2.0.18",
  "tokio",
@@ -6349,7 +6348,7 @@ dependencies = [
 
 [[package]]
 name = "login-poweroff-reboot"
-version = "0.4.7"
+version = "0.4.8"
 dependencies = [
  "dbus",
  "strum 0.28.0",

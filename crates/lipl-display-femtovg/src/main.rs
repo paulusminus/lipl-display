@@ -1,4 +1,3 @@
-#![allow(unsafe_op_in_unsafe_fn)]
 use std::error::Error;
 
 use femtovg::{Canvas, Color, FontId, Paint, renderer::OpenGl};
@@ -21,14 +20,6 @@ const WHITE: femtovg::Color = femtovg::Color::white();
 #[allow(dead_code)]
 mod gatt_client;
 mod helpers;
-
-mod gl {
-    #![allow(clippy::all)]
-    include!(concat!(env!("OUT_DIR"), "/gl_bindings.rs"));
-
-    #[allow(unused_imports)]
-    pub use Gles2 as Gl;
-}
 
 fn get_colors(dark: bool) -> (Color, Color) {
     if dark { (WHITE, BLACK) } else { (BLACK, WHITE) }

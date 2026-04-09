@@ -1,7 +1,6 @@
 [package]
 name = "lipl-display-femtovg"
 authors.workspace = true
-build = "build.rs"
 description = "Displaying part on the screen using femtovg"
 edition.workspace = true
 homepage.workspace = true
@@ -26,6 +25,3 @@ winit = { version = "0.30.5", default-features = false, features = [
     "wayland-dlopen",
     "wayland-csd-adwaita",
 ] }
-
-[build-dependencies]
-gl_generator = "0.14.0"
