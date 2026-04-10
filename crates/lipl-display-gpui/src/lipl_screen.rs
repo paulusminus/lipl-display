@@ -5,23 +5,10 @@ use std::cmp::max;
 
 use crate::constant::{DARK, DEFAULT_STATUS, INITIAL_FONT_SIZE, MIN_FONT_SIZE};
 
-fn update<T>(
+fn update(
     lipl_screen_weak: &WeakEntity<LiplScreen>,
     cx: &mut gpui::AsyncApp,
-    f: fn(&mut LiplScreen, T),
-    t: T,
-) {
-    if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
-        cx.update_entity(lipl_screen, |screen, _| {
-            f(screen, t);
-        });
-    }
-}
-
-fn update_no(
-    lipl_screen_weak: &WeakEntity<LiplScreen>,
-    cx: &mut gpui::AsyncApp,
-    f: fn(&mut LiplScreen),
+    f: impl Fn(&mut LiplScreen),
 ) {
     if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
         cx.update_entity(lipl_screen, |screen, _| {
@@ -29,6 +16,18 @@ fn update_no(
         });
     }
 }
+
+// fn update_no(
+//     lipl_screen_weak: &WeakEntity<LiplScreen>,
+//     cx: &mut gpui::AsyncApp,
+//     f: fn(&mut LiplScreen),
+// ) {
+//     if let Some(lipl_screen) = lipl_screen_weak.upgrade().as_ref() {
+//         cx.update_entity(lipl_screen, |screen, _| {
+//             f(screen);
+//         });
+//     }
+// }
 
 pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScreen> {
     let lipl_screen = cx.new(|_| LiplScreen::new(DARK, INITIAL_FONT_SIZE));
@@ -40,40 +39,37 @@ pub fn init(cx: &mut gpui::App, receiver: Receiver<Message>) -> Entity<LiplScree
         while let Ok(message) = receiver.recv().await {
             match message {
                 Message::Part(part) => {
-                    update(&lipl_screen_weak, cx, LiplScreen::set_text, &part);
+                    update(&lipl_screen_weak, cx, |screen| screen.set_text(&part));
                 }
                 Message::Status(status) => {
                     // Process the message
-                    update(&lipl_screen_weak, cx, LiplScreen::set_status, &status);
+                    update(&lipl_screen_weak, cx, |screen| screen.set_status(&status));
                 }
                 Message::Command(command) => {
                     match command {
                         Command::Dark => {
                             // Process the message
-                            update(&lipl_screen_weak, cx, LiplScreen::set_dark, true);
+                            update(&lipl_screen_weak, cx, |screen| screen.set_dark(true));
                         }
                         Command::Light => {
                             // Process the message
-                            update(&lipl_screen_weak, cx, LiplScreen::set_dark, false);
+                            update(&lipl_screen_weak, cx, |screen| screen.set_dark(false));
                         }
                         Command::Exit => {}
                         Command::Poweroff => {
                             // Process the message
                         }
                         Command::Increase => {
-                            update_no(&lipl_screen_weak, cx, LiplScreen::increase_font_size);
+                            update(&lipl_screen_weak, cx, |screen| screen.increase_font_size());
                         }
                         Command::Decrease => {
-                            update_no(&lipl_screen_weak, cx, LiplScreen::decrease_font_size);
+                            update(&lipl_screen_weak, cx, |screen| screen.decrease_font_size());
                         }
                         Command::Wait => {
-                            update(&lipl_screen_weak, cx, LiplScreen::set_text, "");
-                            update(
-                                &lipl_screen_weak,
-                                cx,
-                                LiplScreen::set_status,
-                                DEFAULT_STATUS,
-                            );
+                            update(&lipl_screen_weak, cx, |screen| screen.set_text(""));
+                            update(&lipl_screen_weak, cx, |screen| {
+                                screen.set_status(DEFAULT_STATUS)
+                            });
                         }
                     }
                 }
