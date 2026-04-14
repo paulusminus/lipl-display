@@ -10,18 +10,13 @@ env:
 
 jobs:
   build:
-    runs-on: ${{ matrix.platform.os }}
-    strategy:
-      matrix:
-        platform:
-          - target: aarch64-unknown-linux-gnu
-            os: ubuntu-24.04-arm
+    runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
     steps:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libdbus-1-dev pkg-config
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: Swatinem/rust-cache@v2
       - uses: cargo-bins/cargo-binstall@main
       - name: Install cargo-deb
