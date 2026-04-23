@@ -1701,7 +1701,7 @@ dependencies = [
 [[package]]
 name = "collections"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "indexmap",
  "rustc-hash 2.1.2",
@@ -2463,7 +2463,7 @@ dependencies = [
 [[package]]
 name = "derive_refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4368,7 +4368,7 @@ dependencies = [
 [[package]]
 name = "gpui"
 version = "0.2.2"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "async-channel 2.5.0",
@@ -4447,7 +4447,7 @@ dependencies = [
 [[package]]
 name = "gpui_linux"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "ashpd",
@@ -4491,7 +4491,7 @@ dependencies = [
 [[package]]
 name = "gpui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
@@ -4502,7 +4502,7 @@ dependencies = [
 [[package]]
 name = "gpui_shared_string"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "derive_more",
  "gpui_util",
@@ -4513,7 +4513,7 @@ dependencies = [
 [[package]]
 name = "gpui_tokio"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "gpui",
@@ -4524,7 +4524,7 @@ dependencies = [
 [[package]]
 name = "gpui_util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "log",
@@ -4533,7 +4533,7 @@ dependencies = [
 [[package]]
 name = "gpui_wgpu"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -4934,7 +4934,7 @@ dependencies = [
 [[package]]
 name = "http_client"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -5041,11 +5041,12 @@ dependencies = [
 
 [[package]]
 name = "i-slint-backend-linuxkms"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "580bb55cd14cb12bd9169920661235797f4c8220318d0071e971fce345e28488"
+checksum = "3224c3aa9f3ea568daf38389d0f7ace164eda4d6f1851042eb83750ac43e1a65"
 dependencies = [
  "calloop 0.14.4",
+ "cfg_aliases 0.2.1",
  "drm",
  "gbm",
  "glutin",
@@ -5061,9 +5062,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-backend-selector"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ed4d0e693f83dbe68fea69b8ebebda8b245f34350d83e5f8fd62c0333d938b8"
+checksum = "f93c9c4203e0a2c5c396b8f1686160816f73e9b9cadaf3915aa3b888a83448aa"
 dependencies = [
  "cfg-if",
  "i-slint-backend-linuxkms",
@@ -5076,9 +5077,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-backend-winit"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90f7fddf48d12b366f352f8fb78d59665c490cf279786772f1d1592e143edd0d"
+checksum = "f4df6ec88d452e3c22e418d20c96bc1ccbc9509e81e6596426d3388bf226a5f9"
 dependencies = [
  "block2 0.6.2",
  "cfg-if",
@@ -5116,9 +5117,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-common"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f44bc19b68be0295354769bc456ccca1c8cb5a38c4cbb5566b0b3fdb918921b"
+checksum = "40cae5cd0a81ce044029ac303256e025f98a4c59495b5189fc22b588da094e01"
 dependencies = [
  "derive_more",
  "fontique 0.8.0",
@@ -5129,9 +5130,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-compiler"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dba63c5a2774a878478572a0b48b2af4895323d1dc969432c690362f0ab67d5c"
+checksum = "a7b7f9834faf2a62cc36f01decc7c683e66bb0861b53511723c3da9ad914d9bb"
 dependencies = [
  "annotate-snippets",
  "by_address",
@@ -5162,9 +5163,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-core"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bac8ed92f61140aa03e426b28cd135e252c82891bc1ed88f2f799ba367f21c8"
+checksum = "89e4a57afd78d8a1f599a78781dc1413af68545b2bc5ba5e143ecf022c75d5f3"
 dependencies = [
  "auto_enums",
  "bitflags 2.11.1",
@@ -5210,9 +5211,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-core-macros"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "315b38ab2265294fedd11a578468ab146fd579a5765d68d42824a060a4772fc4"
+checksum = "7931356d5238281e6be994ec15241fb2d9e66359776d53b4bd6b2fdd9c257c6e"
 dependencies = [
  "quote",
  "serde_json",
@@ -5221,9 +5222,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-renderer-femtovg"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f1b4e3873e9dd6000ecbf5724ceaea638d089bdd5367f30fcffb3f43e1f235f"
+checksum = "72b28a8f0a7a777e670fbe2af6cbcec4935c37335bc0dab100f73bdc197dfa3a"
 dependencies = [
  "cfg-if",
  "const-field-offset",
@@ -5243,9 +5244,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-renderer-skia"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9cd39e5a129ba4c30d18159c344e756e81d4ea2d0ab3dc5c9834d47339d3e580"
+checksum = "d4030ff9eeb1b99fdf9b47472f3a7a582f3bcb57207c9bc07505dc6998abdcbc"
 dependencies = [
  "bytemuck",
  "cfg-if",
@@ -5280,9 +5281,9 @@ dependencies = [
 
 [[package]]
 name = "i-slint-renderer-software"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a8fa9e24ad40900de052eda07ee1dbbe0d66efcb25742d81296b1ba9d28c9d0"
+checksum = "ee8a21285f3a81a8e1b1e7c385eefe89bf9487f53fabfd5b238c68bc895d6013"
 dependencies = [
  "bytemuck",
  "clru",
@@ -5730,9 +5731,9 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jiff"
-version = "0.2.23"
+version = "0.2.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a3546dc96b6d42c5f24902af9e2538e82e39ad350b0c766eb3fbf2d8f3d8359"
+checksum = "f00b5dbd620d61dfdcb6007c9c1f6054ebd75319f163d886a9055cec1155073d"
 dependencies = [
  "jiff-static",
  "log",
@@ -5743,9 +5744,9 @@ dependencies = [
 
 [[package]]
 name = "jiff-static"
-version = "0.2.23"
+version = "0.2.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a8c8b344124222efd714b73bb41f8b5120b27a7cc1c75593a6ff768d9d05aa4"
+checksum = "e000de030ff8022ea1da3f466fbb0f3a809f5e51ed31f6dd931c35181ad8e6d7"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6636,7 +6637,7 @@ dependencies = [
 [[package]]
 name = "media"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "bindgen 0.71.1",
@@ -7847,9 +7848,9 @@ dependencies = [
 
 [[package]]
 name = "pathfinder_simd"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bf9027960355bf3afff9841918474a81a5f972ac6d226d518060bba758b5ad57"
+checksum = "4500030c302e4af1d423f36f3b958d1aecb6c04184356ed5a833bf6b60435777"
 dependencies = [
  "rustc_version",
 ]
@@ -7899,7 +7900,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 [[package]]
 name = "perf"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "collections",
  "serde",
@@ -8607,7 +8608,7 @@ dependencies = [
 [[package]]
 name = "refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "derive_refineable",
 ]
@@ -8898,9 +8899,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.23.38"
+version = "0.23.39"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "69f9466fb2c14ea04357e91413efb882e2a6d4a406e625449bc0a5d360d53a21"
+checksum = "7c2c118cb077cca2822033836dfb1b975355dfb784b5e8da48f7b6c5db74e60e"
 dependencies = [
  "once_cell",
  "rustls-pki-types",
@@ -8989,7 +8990,7 @@ dependencies = [
 [[package]]
 name = "scheduler"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "async-task",
  "backtrace",
@@ -9484,9 +9485,9 @@ dependencies = [
 
 [[package]]
 name = "slint"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "364a1e8fae7f1969224acc59ba729f06aeaf808123796389eae458c396119ef0"
+checksum = "d46bc502cc6b113bfd1a7e9a0876532a9454ff4ee905afe09784eaa2ec3f3f33"
 dependencies = [
  "const-field-offset",
  "i-slint-backend-selector",
@@ -9505,9 +9506,9 @@ dependencies = [
 
 [[package]]
 name = "slint-build"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec94124d27a1b691fd8613c653bae47ece44cb469af11ce0edf645acf458ae61"
+checksum = "a73854b9adf81fa1600b46df488ffc3796400e8e9b40d504a94a36b55c8f3d0a"
 dependencies = [
  "derive_more",
  "fontique 0.8.0",
@@ -9518,9 +9519,9 @@ dependencies = [
 
 [[package]]
 name = "slint-macros"
-version = "1.16.0"
+version = "1.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2f2659f0896ccf5921a1b0af835c4d5285a3292bfcf36cb9bf9e4fbcbe874fc"
+checksum = "6d5884e06072c329da7096ad1367eb83b98c78e5313f7ac90d66f90d4acc62ee"
 dependencies = [
  "i-slint-compiler",
  "proc-macro2",
@@ -10088,7 +10089,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "sum_tree"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "heapless",
  "log",
@@ -11257,7 +11258,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "async-fs",
@@ -11296,7 +11297,7 @@ dependencies = [
 [[package]]
 name = "util_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "perf",
  "quote",
@@ -13792,7 +13793,7 @@ dependencies = [
 [[package]]
 name = "zlog"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "anyhow",
  "chrono",
@@ -13809,7 +13810,7 @@ checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"
 [[package]]
 name = "ztracing"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 dependencies = [
  "tracing",
  "tracing-subscriber",
@@ -13820,7 +13821,7 @@ dependencies = [
 [[package]]
 name = "ztracing_macro"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v0.233.5#bbaf713a125a6bdd61511d33d18cafe017db8090"
+source = "git+https://github.com/zed-industries/zed?tag=v0.233.8#aa7f9dc9f87ca27252eea8f6ef0a46122af043f7"
 
 [[package]]
 name = "zune-core"
