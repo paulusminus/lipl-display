@@ -3441,6 +3441,26 @@ dependencies = [
  "bytemuck",
  "fnv",
  "glow 0.17.0",
+ "imgref",
+ "itertools 0.14.0",
+ "log",
+ "rgb",
+ "slotmap",
+ "swash",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "femtovg"
+version = "0.24.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75f98c9ad5e0886b078572197e2c43a7d7e92c7f389efeaff57f003eb4f552f8"
+dependencies = [
+ "bitflags 2.11.1",
+ "bytemuck",
+ "fnv",
+ "glow 0.17.0",
  "image",
  "imgref",
  "itertools 0.14.0",
@@ -3449,7 +3469,6 @@ dependencies = [
  "rgb",
  "rustybuzz",
  "slotmap",
- "swash",
  "ttf-parser",
  "unicode-bidi",
  "unicode-segmentation",
@@ -5229,7 +5248,7 @@ dependencies = [
  "cfg-if",
  "const-field-offset",
  "derive_more",
- "femtovg",
+ "femtovg 0.23.2",
  "glow 0.17.0",
  "i-slint-common",
  "i-slint-core",
@@ -6177,7 +6196,7 @@ name = "lipl-display-femtovg"
 version = "0.4.8"
 dependencies = [
  "env_logger",
- "femtovg",
+ "femtovg 0.24.0",
  "glutin",
  "glutin-winit",
  "lipl-display-common 0.4.8",
@@ -6351,9 +6370,9 @@ dependencies = [
 
 [[package]]
 name = "lru"
-version = "0.16.4"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f66e8d5d03f609abc3a39e6f08e4164ebf1447a732906d39eb9b99b7919ef39"
+checksum = "8a860605968fce16869fd239cf4237a82f3ac470723415db603b0e8b6c8d4fb9"
 
 [[package]]
 name = "lyon"
