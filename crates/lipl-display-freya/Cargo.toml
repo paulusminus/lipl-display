@@ -8,9 +8,9 @@ default = []
 fake = []
 
 [dependencies]
-freya = { git = "https://github.com/marc2332/freya", branch = "main" }
-futures-util = "0.3.31"
-lipl-display-common = "0.4.6"
-lipl-gatt-bluer = "0.4.6"
-tokio = { version = "1.45.1", features = ["time"] }
-json-lines = { path = "../json-lines" }
+freya = { workspace = true }
+futures-util = { workspace = true }
+lipl-display-common = { workspace = true }
+lipl-gatt-bluer = { workspace = true }
+tokio = { workspace = true, features = ["time"] }
+json-lines = { workspace = true }

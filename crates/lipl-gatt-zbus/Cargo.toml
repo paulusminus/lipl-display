@@ -9,16 +9,16 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-derive_builder = "0.20.2"
-futures = "0.3.31"
-lipl-display-common = { path = "../lipl-display-common" }
-pin-project = "1.1.10"
-thiserror = "2.0.12"
-tokio = { version = "1.45.1", features = ["rt", "rt-multi-thread"] }
-tracing = "0.1.41"
-uuid = "1.17.0"
-zbus = { version = "5.7.1", default-features = false, features = ["tokio"] }
+derive_builder = { workspace = true }
+futures = { workspace = true }
+lipl-display-common = { workspace = true }
+pin-project = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["rt", "rt-multi-thread"] }
+tracing = { workspace = true }
+uuid = { workspace = true }
+zbus = { workspace = true, features = ["tokio"] }
 
 [dev-dependencies]
-tokio = { version = "1.45.1", features = ["macros"] }
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+tokio = { workspace = true, features = ["macros"] }
+tracing-subscriber = { workspace = true }

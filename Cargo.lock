@@ -1775,7 +1775,7 @@ version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1b60b5124979fccd9addd89d8b97a1d6eebb4950694520c75ddd722535ea443f"
 dependencies = [
- "nix 0.31.2",
+ "nix 0.31.3",
  "thiserror 2.0.18",
 ]
 
@@ -4222,6 +4222,7 @@ dependencies = [
  "cgl",
  "dispatch2",
  "glutin_egl_sys",
+ "glutin_glx_sys",
  "glutin_wgl_sys 0.6.1",
  "libloading 0.8.9",
  "objc2 0.6.4",
@@ -4232,6 +4233,7 @@ dependencies = [
  "raw-window-handle",
  "wayland-sys",
  "windows-sys 0.52.0",
+ "x11-dl",
 ]
 
 [[package]]
@@ -4254,6 +4256,16 @@ checksum = "4c4680ba6195f424febdc3ba46e7a42a0e58743f2edb115297b86d7f8ecc02d2"
 dependencies = [
  "gl_generator",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "glutin_glx_sys"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a7bb2938045a88b612499fbcba375a77198e01306f52272e692f8c1f3751185"
+dependencies = [
+ "gl_generator",
+ "x11-dl",
 ]
 
 [[package]]
@@ -6158,17 +6170,6 @@ dependencies = [
 
 [[package]]
 name = "lipl-display-common"
-version = "0.4.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b23893382bf31078c208e20a1a6856d2d0c79930c0c765f3ded7610538c3d8a"
-dependencies = [
- "serde",
- "thiserror 2.0.18",
- "uuid",
-]
-
-[[package]]
-name = "lipl-display-common"
 version = "0.4.8"
 dependencies = [
  "serde",
@@ -6183,7 +6184,7 @@ dependencies = [
  "anyhow",
  "eframe",
  "env_logger",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
 ]
@@ -6196,7 +6197,7 @@ dependencies = [
  "femtovg 0.24.0",
  "glutin",
  "glutin-winit",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
  "winit",
@@ -6213,7 +6214,7 @@ dependencies = [
  "gpui",
  "gpui_linux",
  "gpui_tokio",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
 ]
@@ -6226,7 +6227,7 @@ dependencies = [
  "async-channel 2.5.0",
  "glib",
  "gtk4",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
 ]
@@ -6236,7 +6237,7 @@ name = "lipl-display-slint"
 version = "0.1.2"
 dependencies = [
  "anyhow",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "login-poweroff-reboot",
  "serde",
@@ -6256,7 +6257,7 @@ version = "0.1.0"
 dependencies = [
  "futures-util",
  "json-lines",
- "lipl-display-common 0.4.6",
+ "lipl-display-common",
  "tracing",
  "tracing-subscriber",
  "xilem",
@@ -6270,7 +6271,7 @@ dependencies = [
  "env_logger",
  "futures-channel",
  "futures-util",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "log",
  "pin-project",
  "serde",
@@ -6284,7 +6285,7 @@ name = "lipl-gatt-bluer-cli"
 version = "0.4.8"
 dependencies = [
  "futures-util",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "lipl-gatt-bluer",
  "log",
  "login-poweroff-reboot",
@@ -6301,7 +6302,7 @@ version = "0.4.8"
 dependencies = [
  "derive_builder",
  "futures",
- "lipl-display-common 0.4.8",
+ "lipl-display-common",
  "pin-project",
  "thiserror 2.0.18",
  "tokio",
@@ -6985,9 +6986,9 @@ dependencies = [
 
 [[package]]
 name = "nix"
-version = "0.31.2"
+version = "0.31.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d6d0705320c1e6ba1d912b5e37cf18071b6c2e9b7fa8215a1e8a7651966f5d3"
+checksum = "cf20d2fde8ff38632c426f1165ed7436270b44f199fc55284c38276f9db47c3d"
 dependencies = [
  "bitflags 2.11.1",
  "cfg-if",
@@ -9267,9 +9268,9 @@ dependencies = [
 
 [[package]]
 name = "serde_with"
-version = "3.19.0"
+version = "3.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f05839ce67618e14a09b286535c0d9c94e85ef25469b0e13cb4f844e5593eb19"
+checksum = "e72c1c2cb7b223fafb600a619537a871c2818583d619401b785e7c0b746ccde2"
 dependencies = [
  "serde_core",
  "serde_with_macros",
@@ -9277,9 +9278,9 @@ dependencies = [
 
 [[package]]
 name = "serde_with_macros"
-version = "3.19.0"
+version = "3.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf2ebbe86054f9b45bc3881e865683ccfaccce97b9b4cb53f3039d67f355a334"
+checksum = "b90c488738ecb4fb0262f41f43bc40efc5868d9fb744319ddf5f5317f417bfac"
 dependencies = [
  "darling 0.23.0",
  "proc-macro2",
@@ -10619,7 +10620,6 @@ dependencies = [
  "bytes",
  "libc",
  "mio",
- "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2",

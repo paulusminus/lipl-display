@@ -20,7 +20,6 @@ impl Render for LiplScreen {
             .text_color(self.foreground_color())
             .text_size(self.font_size())
             .font_family(FONT)
-            .cursor_none(gpui::CursorStyle::None)
             .children([
                 div()
                     .h(0.9 * window.bounds().bottom())

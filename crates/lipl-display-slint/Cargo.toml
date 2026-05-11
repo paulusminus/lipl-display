@@ -10,29 +10,27 @@ version = "0.1.2"
 build = "build.rs"
 
 [dependencies]
-slint = { version = "1.13", default-features = false, features = [
+slint = { workspace = true, features = [
   "std",
   "compat-1-2",
   "renderer-femtovg",
   "backend-linuxkms",
 ] }
 # slint = { version = "1.6", default-features = false, features = ["std", "compat-1-2", "backend-qt"] }
-lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
-lipl-gatt-bluer = { version = "0.4.6", path = "../lipl-gatt-bluer" }
-login-poweroff-reboot = { version = "0.4.5", path = "../login-poweroff-reboot" }
-tracing = "0.1.41"
-tracing-log = "0.2.0"
-tracing-appender = "0.2.3"
-tracing-subscriber = { version = "0.3.19", features = ["registry"] }
-toml = "1.0.0"
-serde = { version = "1.0.216", features = ["derive"] }
-serde_with = { version = "3.11.0", default-features = false, features = [
-  "macros",
-] }
-anyhow = "1.0.94"
+lipl-display-common = { workspace = true }
+lipl-gatt-bluer = { workspace = true }
+login-poweroff-reboot = { workspace = true }
+tracing = { workspace = true }
+tracing-log = { workspace = true }
+tracing-appender = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["registry"] }
+toml = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_with = { workspace = true }
+anyhow = { workspace = true }
 
 [build-dependencies]
-slint-build = "1.12.1"
+slint-build = "1.16.1"
 
 [package.metadata.deb]
 priority = "optional"

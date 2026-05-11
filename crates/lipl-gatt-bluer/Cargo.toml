@@ -9,16 +9,16 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-bluer = { version = "0.17.3", features = ["bluetoothd"] }
-futures-util = "0.3.31"
-futures-channel = "0.3.31"
-lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
-pin-project = "1.1.7"
-thiserror = "2.0.8"
-tokio = { version = "1.42.0", features = ["rt", "sync"] }
-log = "0.4.22"
-uuid = "1.11.0"
-serde = { version = "1.0.216", features = ["derive"] }
+bluer = { workspace = true }
+futures-util = { workspace = true }
+futures-channel = { workspace = true }
+lipl-display-common = { workspace = true }
+pin-project = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["rt", "sync"] }
+log = { workspace = true }
+uuid = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
-env_logger = "0.11.5"
+env_logger = { workspace = true }

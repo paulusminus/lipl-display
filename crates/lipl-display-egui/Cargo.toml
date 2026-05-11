@@ -9,12 +9,9 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-anyhow = "1.0.94"
-eframe = { version = "0.34.0", default-features = false, features = [
-  "glow",
-  "wayland",
-] }
-lipl-display-common = { version = "0.4.6", path = "../lipl-display-common" }
-lipl-gatt-bluer = { version = "0.4", path = "../lipl-gatt-bluer" }
-log = "0.4.22"
-env_logger = "0.11.5"
+anyhow = { workspace = true }
+eframe = { workspace = true }
+lipl-display-common = { workspace = true }
+lipl-gatt-bluer = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }

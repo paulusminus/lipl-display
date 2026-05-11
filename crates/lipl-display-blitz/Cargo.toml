@@ -6,9 +6,9 @@ license = "MIT"
 publish = false
 
 [dependencies]
-dioxus-native = "0.7.0"
-dioxus = "0.7.0"
-tokio = { version = "1.42", features = ["rt", "time"] }
-tracing-subscriber = "0.3"
-chrono = "0.4.41"
-json-lines = { path = "../json-lines" }
+dioxus = { workspace = true }
+dioxus-native = { workspace = true }
+tokio = { workspace = true, features = ["rt", "time"] }
+tracing-subscriber = { workspace = true }
+chrono = { workspace = true }
+json-lines = { workspace = true }
