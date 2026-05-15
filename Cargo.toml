@@ -50,7 +50,7 @@ eframe = { version = "0.34.2", default-features = false, features = [
   "wayland",
 ]}
 env_logger = "0.11.10"
-femtovg = "0.24.0"
+femtovg = "0.25.0"
 freya = { git = "https://github.com/marc2332/freya", tag = "v0.4.0-rc.19" }
 futures = "0.3.32"
 futures-channel = "0.3.32"
@@ -58,12 +58,12 @@ futures-util = "0.3.32"
 glib = { version = "0.22.7", features = ["log"] }
 glutin = { version = "0.32.3", default-features = false }
 glutin-winit = "0.5.0"
-gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.1.8", default-features = false, features = [
+gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.2.4", default-features = false, features = [
     "wayland",
     "font-kit",
 ] }
-gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.1.8", default-features = false, features = ["wayland"] }
-gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.1.8", default-features = false }
+gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.2.4", default-features = false, features = ["wayland"] }
+gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.2.4", default-features = false }
 gtk4 = "0.11.3"
 json-lines = { path = "crates/json-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
