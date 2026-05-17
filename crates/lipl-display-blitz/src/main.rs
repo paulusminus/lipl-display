@@ -1,4 +1,4 @@
-use dioxus_native::launch;
+use dioxus_native_blitz::launch;
 
 mod app;
 

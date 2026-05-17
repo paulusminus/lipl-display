@@ -41,9 +41,10 @@ where
         .map(BufReader::new)
 }
 
-pub fn lines<O>(r: impl AsyncBufRead) -> impl TryStream<Ok = O, Error = Error>
+pub fn lines<O, R>(r: R) -> impl TryStream<Ok = O, Error = Error>
 where
     O: DeserializeOwned,
+    R: AsyncBufRead,
 {
     LinesStream::new(r.lines())
         .and_then(|line| ready(serde_json::from_str::<O>(&line).map_err(Error::other)))

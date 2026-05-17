@@ -45,6 +45,7 @@ dbus = "0.9.11"
 derive_builder = "0.20.2"
 dioxus = "0.7.9"
 dioxus-native = "0.7.9"
+dioxus-native-blitz = { git = "https://github.com/DioxusLabs/blitz", package = "dioxus-native" }
 eframe = { version = "0.34.2", default-features = false, features = [
   "glow",
   "wayland",

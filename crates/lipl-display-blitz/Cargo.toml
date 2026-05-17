@@ -6,9 +6,11 @@ license = "MIT"
 publish = false
 
 [dependencies]
+chrono = { workspace = true }
 dioxus = { workspace = true }
-dioxus-native = { workspace = true }
+dioxus-native-blitz = { workspace = true }
+futures-util = { workspace = true }
+json-lines = { workspace = true }
+lipl-display-common = { workspace = true }
 tokio = { workspace = true, features = ["rt", "time"] }
 tracing-subscriber = { workspace = true }
-chrono = { workspace = true }
-json-lines = { workspace = true }

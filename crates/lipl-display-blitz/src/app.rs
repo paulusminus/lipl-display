@@ -1,19 +1,22 @@
-use chrono::Local;
-use dioxus::prelude::*;
 use std::time::Duration;
-use tokio::time::interval;
 
-const DEFAULT_PART: &str = "";
+use dioxus::prelude::*;
+use futures_util::TryStreamExt;
+use lipl_display_common::{Command, Message};
+use tokio::time::sleep;
+
 const DEFAULT_STATUS: &str = "Even geduld a.u.b. ...";
 const DEFAULT_DARK: bool = false;
+const DEFAULT_FONT_SIZE: u32 = 30;
 const STYLESHEET: &str = include_str!("styles.css");
 
 pub fn app() -> Element {
-    let part = use_signal(|| DEFAULT_PART.to_owned());
+    let part = use_signal(|| Vec::<String>::new());
     let status = use_signal(|| DEFAULT_STATUS.to_owned());
     let dark = use_signal(|| DEFAULT_DARK);
+    let font_size = use_signal(|| DEFAULT_FONT_SIZE);
 
-    use_future(move || background_task(part, status, dark));
+    use_future(move || background_task(part, status, dark, font_size));
 
     rsx!(
         head {
@@ -23,30 +26,51 @@ pub fn app() -> Element {
         }
         body {
             class: if dark() { "dark" } else { "light" },
-        div {
-            p {
+            ul {
                 class: "part",
-                {part} }
+                style: format!("font-size: {}px;", font_size()),
+                   {part.iter().map(|i| rsx! { li { "{i}" } })}
+               }
             p {
                 class: "status",
+                style: format!("font-size: {}px;", font_size().saturating_sub(2)),
                 {status} }
-        }
     })
 }
 
 async fn background_task(
-    mut part: Signal<String>,
-    mut status: Signal<String>,
-    _dark: Signal<bool>,
+    mut part_signal: Signal<Vec<String>>,
+    mut status_signal: Signal<String>,
+    mut dark_signal: Signal<bool>,
+    mut font_size_signal: Signal<u32>,
 ) {
-    let mut count: usize = 0;
-    let mut interval = interval(Duration::from_millis(1000));
-    loop {
-        interval.tick().await;
-        count += 1;
-        let time = Local::now();
-        let fmt = "%H:%M:%S";
-        part.set(time.format(fmt).to_string());
-        status.set(format!("Teller = {count}"));
+    let r = json_lines::file_reader("/home/paul/Code/dart/lipl_display/lipl-gatt-input.txt")
+        .await
+        .unwrap();
+    let mut s = json_lines::lines::<Message, _>(r);
+
+    while let Some(message) = s.try_next().await.unwrap() {
+        match message {
+            Message::Part(part) => part_signal.set(
+                part.split("\n")
+                    .map(ToString::to_string)
+                    .collect::<Vec<_>>(),
+            ),
+            Message::Status(status) => status_signal.set(status),
+            Message::Command(Command::Dark) => dark_signal.set(true),
+            Message::Command(Command::Light) => dark_signal.set(false),
+            Message::Command(Command::Increase) => font_size_signal.set(font_size_signal() + 1),
+            Message::Command(Command::Decrease) => {
+                font_size_signal.set(font_size_signal().saturating_sub(1))
+            }
+            Message::Command(Command::Exit) | Message::Command(Command::Poweroff) => {
+                break;
+            }
+            Message::Command(Command::Wait) => {
+                status_signal.set("Even geduld a.u.b. ...".to_owned());
+                part_signal.set(Vec::<String>::new());
+            }
+        }
+        sleep(Duration::from_secs(2)).await;
     }
 }

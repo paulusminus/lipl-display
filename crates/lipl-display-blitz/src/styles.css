@@ -22,7 +22,8 @@ body {
     padding: 25px;
 } */
 
-p.part {
+ul.part {
+    list-style-type: none;
     height: 86vh;
     padding: 25px;
 }
