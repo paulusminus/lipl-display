@@ -90,3 +90,6 @@ uuid = "1.23.1"
 winit = { version = "0.30.13", default-features = false }
 xilem = "0.4.0"
 zbus = { version = "5.15.0", default-features = false }
+
+# build dependencies
+slint-build = { version = "1.16.1" }

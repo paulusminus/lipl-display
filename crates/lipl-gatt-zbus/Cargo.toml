@@ -20,5 +20,5 @@ uuid = { workspace = true }
 zbus = { workspace = true, features = ["tokio"] }
 
 [dev-dependencies]
-tokio = { version = "1.52.3", features = ["full"] }
-tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }

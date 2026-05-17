@@ -30,7 +30,7 @@ serde_with = { workspace = true }
 anyhow = { workspace = true }
 
 [build-dependencies]
-slint-build = "1.16.1"
+slint-build = { workspace = true }
 
 [package.metadata.deb]
 priority = "optional"
