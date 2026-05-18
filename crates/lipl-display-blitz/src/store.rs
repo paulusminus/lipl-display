@@ -1,9 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::{
-    args::Args,
-    constant::{DEFAULT_FONT_SIZE, DEFAULT_PART, DEFAULT_STATUS, DEFAULT_TIMEOUT},
-};
+use crate::args::Args;
 
 #[derive(Store)]
 pub struct Lipl {
@@ -32,17 +29,11 @@ impl From<Args> for Lipl {
     fn from(args: Args) -> Self {
         Self {
             dark: args.light,
-            font_size: args.initial_font_size.unwrap_or(DEFAULT_FONT_SIZE),
-            part: DEFAULT_PART.to_owned(),
-            status: args
-                .wait_message
-                .clone()
-                .unwrap_or(DEFAULT_STATUS.to_string()),
-            wait_message: args
-                .wait_message
-                .clone()
-                .unwrap_or(DEFAULT_STATUS.to_string()),
-            timeout: args.timeout.unwrap_or(DEFAULT_TIMEOUT),
+            font_size: args.font_size,
+            part: String::new(),
+            status: args.wait_message.clone(),
+            wait_message: args.wait_message,
+            timeout: args.timeout,
         }
     }
 }
