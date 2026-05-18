@@ -166,7 +166,7 @@ dependencies = [
 [[package]]
 name = "accesskit_xplat"
 version = "0.1.1"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "accesskit 0.24.0",
  "accesskit_macos 0.26.1",
@@ -1021,8 +1021,8 @@ checksum = "6099cdc01846bc367c4e7dd630dc5966dccf36b652fae7a74e17b640411a91b2"
 
 [[package]]
 name = "blitz-dom"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "accesskit 0.24.0",
  "anyrender",
@@ -1064,8 +1064,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-html"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -1075,8 +1075,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-net"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "blitz-traits",
  "data-url",
@@ -1087,8 +1087,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-paint"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "anyrender",
  "anyrender_svg",
@@ -1106,8 +1106,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-shell"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "accesskit 0.24.0",
  "accesskit_xplat",
@@ -1128,8 +1128,8 @@ dependencies = [
 
 [[package]]
 name = "blitz-traits"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "bitflags 2.11.1",
  "bytes",
@@ -2263,7 +2263,7 @@ checksum = "da220af51a1a335e9a930beaaef53d261e41ea9eecfb3d973a3ddae1a7284b9c"
 [[package]]
 name = "debug_timer"
 version = "0.1.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 
 [[package]]
 name = "deflate64"
@@ -2620,7 +2620,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "android-activity",
  "anyrender",
@@ -2653,7 +2653,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-dom"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -5986,6 +5986,7 @@ dependencies = [
  "lipl-display-common",
  "tokio",
  "tracing-subscriber",
+ "winit 0.31.0-beta.2",
 ]
 
 [[package]]
@@ -9785,8 +9786,8 @@ checksum = "850ac3401667d004d4a13f9c93dc6d9fe67044c9bfdaf5f1519ff136ed68fbab"
 
 [[package]]
 name = "stylo_taffy"
-version = "0.3.0-alpha.3"
-source = "git+https://github.com/DioxusLabs/blitz#afc255ca0c0cfa1310848cc1b6c91685207abd1f"
+version = "0.3.0-alpha.4"
+source = "git+https://github.com/DioxusLabs/blitz#8ef723eb6f54d8fa0dbd10c1ccff0040aed7f03d"
 dependencies = [
  "stylo",
  "stylo_atoms",

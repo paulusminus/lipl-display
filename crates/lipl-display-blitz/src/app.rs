@@ -1,49 +1,46 @@
 use std::time::Duration;
 
+use crate::store::{Lipl, LiplStoreExt, LiplStoreImplExt};
 use dioxus::prelude::*;
+use dioxus_native_blitz::use_window;
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, Message};
 use tokio::time::sleep;
+#[cfg(feature = "fullscreen")]
+use winit::monitor::Fullscreen;
 
-const DEFAULT_STATUS: &str = "Even geduld a.u.b. ...";
-const DEFAULT_DARK: bool = false;
-const DEFAULT_FONT_SIZE: u32 = 30;
-const STYLESHEET: &str = include_str!("styles.css");
+const SS_ASSET: Asset = asset!("src/styles.css");
 
 pub fn app() -> Element {
-    let part = use_signal(|| Vec::<String>::new());
-    let status = use_signal(|| DEFAULT_STATUS.to_owned());
-    let dark = use_signal(|| DEFAULT_DARK);
-    let font_size = use_signal(|| DEFAULT_FONT_SIZE);
-
-    use_future(move || background_task(part, status, dark, font_size));
+    let store = use_store(crate::store::Lipl::default);
+    use_future(move || background_task(store));
+    use_window().set_cursor_visible(false);
+    #[cfg(feature = "fullscreen")]
+    use_window().set_fullscreen(Some(Fullscreen::Borderless(None)));
 
     rsx!(
-        head {
-            meta { name: "viewport", content: "width=device-width, initial-scale=1.0" }
-            title { "Dioxus App" }
-            style { r#type: "text/css", {STYLESHEET} }
-        }
+        document::Stylesheet {
+            href: SS_ASSET,
+        },
+        document::Meta { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+        document::Style {
+            ""
+        },
         body {
-            class: if dark() { "dark" } else { "light" },
+            class: if store.dark().cloned() { "dark" } else { "light" },
             ul {
                 class: "part",
-                style: format!("font-size: {}px;", font_size()),
-                   {part.iter().map(|i| rsx! { li { "{i}" } })}
+                style: format!("font-size: {}px;", store.font_size().cloned()),
+                   {store.get_part_lines().into_iter().map(|i| rsx! { li { "{i}" } })},
                }
             p {
                 class: "status",
-                style: format!("font-size: {}px;", font_size().saturating_sub(2)),
-                {status} }
+                style: format!("font-size: {}px;", store.font_size().cloned()),
+                {store.status().cloned()} }
     })
 }
 
-async fn background_task(
-    mut part_signal: Signal<Vec<String>>,
-    mut status_signal: Signal<String>,
-    mut dark_signal: Signal<bool>,
-    mut font_size_signal: Signal<u32>,
-) {
+async fn background_task(store: Store<Lipl>) {
     let r = json_lines::file_reader("/home/paul/Code/dart/lipl_display/lipl-gatt-input.txt")
         .await
         .unwrap();
@@ -51,24 +48,24 @@ async fn background_task(
 
     while let Some(message) = s.try_next().await.unwrap() {
         match message {
-            Message::Part(part) => part_signal.set(
-                part.split("\n")
-                    .map(ToString::to_string)
-                    .collect::<Vec<_>>(),
-            ),
-            Message::Status(status) => status_signal.set(status),
-            Message::Command(Command::Dark) => dark_signal.set(true),
-            Message::Command(Command::Light) => dark_signal.set(false),
-            Message::Command(Command::Increase) => font_size_signal.set(font_size_signal() + 1),
+            Message::Part(part) => store.part().set(part),
+            Message::Status(status) => store.status().set(status),
+            Message::Command(Command::Dark) => store.dark().set(true),
+            Message::Command(Command::Light) => store.dark().set(false),
+            Message::Command(Command::Increase) => {
+                let font_size = store.font_size().cloned().saturating_add(1);
+                store.font_size().set(font_size);
+            }
             Message::Command(Command::Decrease) => {
-                font_size_signal.set(font_size_signal().saturating_sub(1))
+                let font_size = store.font_size().cloned().saturating_sub(1);
+                store.font_size().set(font_size);
             }
             Message::Command(Command::Exit) | Message::Command(Command::Poweroff) => {
                 break;
             }
             Message::Command(Command::Wait) => {
-                status_signal.set("Even geduld a.u.b. ...".to_owned());
-                part_signal.set(Vec::<String>::new());
+                store.status().set("Even geduld a.u.b. ...".to_owned());
+                store.part().set("".to_owned());
             }
         }
         sleep(Duration::from_secs(2)).await;

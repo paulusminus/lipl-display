@@ -24,12 +24,16 @@ body {
 
 ul.part {
     list-style-type: none;
-    height: 86vh;
-    padding: 25px;
+    padding: 1em;
+}
+
+ul.part li {
+    margin-bottom: 0.2em;
 }
 
 p.status {
-    height: 14vh;
-    padding-left: 25px;
-    padding-bottom: 25px;
+    position: absolute;
+    bottom: 1em;
+    padding-left: 1em;
+    padding-bottom: 0.5em;
 }

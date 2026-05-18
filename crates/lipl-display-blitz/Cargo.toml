@@ -5,6 +5,9 @@ edition = "2024"
 license = "MIT"
 publish = false
 
+[features]
+fullscreen = []
+
 [dependencies]
 chrono = { workspace = true }
 dioxus = { workspace = true }
@@ -14,3 +17,4 @@ json-lines = { workspace = true }
 lipl-display-common = { workspace = true }
 tokio = { workspace = true, features = ["rt", "time"] }
 tracing-subscriber = { workspace = true }
+winit = { version = "=0.31.0-beta.2" }
