@@ -1,8 +1,10 @@
 [package]
+authors.workspace = true
+edition.workspace = true
 name = "lipl-display-blitz"
 version = "0.1.0"
-edition = "2024"
-license = "MIT"
+repository.workspace = true
+license.workspace = true
 publish = false
 
 [features]
@@ -10,6 +12,7 @@ fullscreen = []
 
 [dependencies]
 chrono = { workspace = true }
+clap = { version = "4.6.1", features = ["derive"] }
 dioxus = { workspace = true }
 dioxus-native-blitz = { workspace = true }
 futures-util = { workspace = true }

@@ -1,19 +1,21 @@
+use clap::Parser;
 use dioxus_native_blitz::WindowAttributes;
 #[cfg(feature = "fullscreen")]
 use winit::monitor::Fullscreen;
 
+use crate::args::Args;
+
 mod app;
+mod args;
+mod constant;
+mod multi_line;
+mod status;
 mod store;
-
-const APP_TITLE: &str = "Lipl Display";
-
-// fn main() {
-//     tracing_subscriber::fmt::init();
-//     launch(app::app);
-// }
 
 #[cfg(not(feature = "fullscreen"))]
 fn default_window_attributes() -> Box<WindowAttributes> {
+    use crate::constant::APP_TITLE;
+
     Box::new(
         WindowAttributes::default()
             .with_maximized(true)
@@ -32,5 +34,9 @@ fn default_window_attributes() -> Box<WindowAttributes> {
 
 fn main() {
     tracing_subscriber::fmt::init();
-    dioxus_native_blitz::launch_cfg(app::app, vec![], vec![default_window_attributes()]);
+    dioxus_native_blitz::launch_cfg(
+        app::app,
+        vec![Box::new(|| Box::new(Args::parse()))],
+        vec![default_window_attributes()],
+    );
 }
