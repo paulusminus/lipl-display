@@ -12,8 +12,8 @@ use dioxus_native_blitz::use_window;
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, Message};
 use tokio::time::sleep;
-#[cfg(feature = "fullscreen")]
-use winit::monitor::Fullscreen;
+// #[cfg(feature = "fullscreen")]
+// use winit::monitor::Fullscreen;
 
 trait ToLines {
     fn to_lines(&self) -> Vec<String>;
@@ -30,8 +30,8 @@ pub fn app() -> Element {
     let store = use_store(|| Lipl::from(args));
     use_future(move || background_task(store));
     use_window().set_cursor_visible(false);
-    #[cfg(feature = "fullscreen")]
-    use_window().set_fullscreen(Some(Fullscreen::Borderless(None)));
+    // #[cfg(feature = "fullscreen")]
+    // use_window().set_fullscreen(Some(Fullscreen::Borderless(None)));
 
     rsx! {
         document::Stylesheet {

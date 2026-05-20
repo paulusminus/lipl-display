@@ -4,6 +4,8 @@ use dioxus_native_blitz::WindowAttributes;
 use winit::monitor::Fullscreen;
 
 use crate::args::Args;
+#[cfg(feature = "fullscreen")]
+use crate::constant::APP_TITLE;
 
 mod app;
 mod args;
@@ -28,6 +30,7 @@ fn default_window_attributes() -> Box<WindowAttributes> {
     Box::new(
         WindowAttributes::default()
             .with_fullscreen(Some(Fullscreen::Borderless(None)))
+            .with_title(APP_TITLE)
             .with_maximized(true),
     )
 }
