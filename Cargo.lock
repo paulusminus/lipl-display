@@ -208,7 +208,7 @@ dependencies = [
 [[package]]
 name = "accesskit_xplat"
 version = "0.1.1"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "accesskit 0.24.1",
  "accesskit_macos 0.26.2",
@@ -283,9 +283,9 @@ checksum = "cc7bb162ec39d46ab1ca8c77bf72e890535becd1751bb45f64c597edb4c8c6b3"
 
 [[package]]
 name = "alloc-stdlib"
-version = "0.2.2"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94fb8275041c72129eb51b7d0322c29b8387a0386127718b096429201a5d6ece"
+checksum = "0e76a019e91224d279006ff972f1e984179a6e9feb050adba6ce8274aef23195"
 dependencies = [
  "alloc-no-stdlib",
 ]
@@ -408,9 +408,9 @@ checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
 name = "anymap3"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "170433209e817da6aae2c51aa0dd443009a613425dd041ebfb2492d1c4c11a25"
+checksum = "fb5dfbc6d8d2675589ccbe4d0fd61df2419075625f8c1a62325e718e2b0049f9"
 
 [[package]]
 name = "anymore"
@@ -1103,7 +1103,7 @@ checksum = "6099cdc01846bc367c4e7dd630dc5966dccf36b652fae7a74e17b640411a91b2"
 [[package]]
 name = "blitz-dom"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "accesskit 0.24.1",
  "anyrender",
@@ -1146,7 +1146,7 @@ dependencies = [
 [[package]]
 name = "blitz-html"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -1157,7 +1157,7 @@ dependencies = [
 [[package]]
 name = "blitz-net"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "blitz-traits",
  "data-url",
@@ -1169,7 +1169,7 @@ dependencies = [
 [[package]]
 name = "blitz-paint"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "anyrender",
  "anyrender_svg",
@@ -1188,7 +1188,7 @@ dependencies = [
 [[package]]
 name = "blitz-shell"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "accesskit 0.24.1",
  "accesskit_xplat",
@@ -1210,7 +1210,7 @@ dependencies = [
 [[package]]
 name = "blitz-traits"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "bitflags 2.13.0",
  "bytes",
@@ -1318,9 +1318,9 @@ dependencies = [
 
 [[package]]
 name = "brotli-decompressor"
-version = "5.0.1"
+version = "5.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5962523e1b92ce1b5e793d9169b9943eece10d39f62550bc04bb605d75b94924"
+checksum = "3a32acac15fe1967bc3986b2a6347dffc965602354ea6f450ad07e8bfd253583"
 dependencies = [
  "alloc-no-stdlib",
  "alloc-stdlib",
@@ -2378,7 +2378,7 @@ checksum = "da220af51a1a335e9a930beaaef53d261e41ea9eecfb3d973a3ddae1a7284b9c"
 [[package]]
 name = "debug_timer"
 version = "0.1.3"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 
 [[package]]
 name = "deflate64"
@@ -2391,9 +2391,6 @@ name = "deranged"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7cd812cc2bc1d69d4764bd80df88b4317eaef9e773c75226407d9bc0876b211c"
-dependencies = [
- "powerfmt",
-]
 
 [[package]]
 name = "derive_builder"
@@ -2735,7 +2732,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "android-activity",
  "anyrender",
@@ -2768,7 +2765,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-dom"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -9911,7 +9908,7 @@ dependencies = [
 [[package]]
 name = "stylo_taffy"
 version = "0.3.0-alpha.4"
-source = "git+https://github.com/DioxusLabs/blitz#2bcde3a11ccab340121da84fb2dbc4f0f71794a7"
+source = "git+https://github.com/DioxusLabs/blitz#8f07ea011b594655d78742811de964ef047d2e9f"
 dependencies = [
  "stylo",
  "stylo_atoms",
@@ -10358,12 +10355,11 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.47"
+version = "0.3.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "743bd48c283afc0388f9b8827b976905fb217ad9e647fae3a379a9283c4def2c"
+checksum = "711a53c2d47bbd818258c498c8dbfe186a2526c631495cfe7e078567f86b8469"
 dependencies = [
  "deranged",
- "itoa",
  "num-conv",
  "powerfmt",
  "serde_core",
@@ -10373,15 +10369,15 @@ dependencies = [
 
 [[package]]
 name = "time-core"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7694e1cfe791f8d31026952abf09c69ca6f6fa4e1a1229e18988f06a04a12dca"
+checksum = "9e1c906769ad99c88eaa54e728060edef082f8e358ff32030cb7c7d315e81109"
 
 [[package]]
 name = "time-macros"
-version = "0.2.27"
+version = "0.2.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e70e4c5a0e0a8a4823ad65dfe1a6930e4f4d756dcd9dd7939022b5e8c501215"
+checksum = "71c652a3727a9cbb9a02f707f530b618ce00d0ccd762009c8c23bd191df3c17d"
 dependencies = [
  "num-conv",
  "time-core",
