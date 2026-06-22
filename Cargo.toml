@@ -4,7 +4,7 @@ members = [
     "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
-    # "crates/lipl-display-freya",
+    "crates/lipl-display-freya",
     "crates/lipl-display-gpui",
     "crates/lipl-display-gtk",
     "crates/lipl-display-slint",
@@ -51,7 +51,7 @@ eframe = { version = "0.34.2", default-features = false, features = [
 ]}
 env_logger = "0.11.10"
 femtovg = "0.25.0"
-freya = { git = "https://github.com/marc2332/freya", tag = "v0.4.0-rc.22" }
+freya = { git = "https://github.com/marc2332/freya", tag = "v0.4.0-rc.23" }
 futures = "0.3.32"
 futures-channel = "0.3.32"
 futures-util = "0.3.32"
