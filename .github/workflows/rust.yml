@@ -17,7 +17,7 @@ jobs:
         with:
           toolchain: stable
           components: clippy,rustfmt
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Formatting
         run: cargo fmt --all -- --check
       # - name: Clippy Slint version
