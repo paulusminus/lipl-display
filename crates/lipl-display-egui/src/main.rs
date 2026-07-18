@@ -55,13 +55,13 @@ impl App for LiplDisplay {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut Frame) {
         Panel::bottom("Status")
             .max_size(3. * (self.config.font_size * style::FONT_SMALL_FACTOR))
-            .show_inside(ui, |ui| self.render_status(ui));
+            .show(ui, |ui| self.render_status(ui));
 
-        CentralPanel::default().show_inside(ui, |ui| self.render_text(ui));
+        CentralPanel::default().show(ui, |ui| self.render_text(ui));
     }
 
-    fn update(&mut self, ctx: &Context, _frame: &mut Frame) {
-        ctx.request_repaint();
+    fn logic(&mut self, ctx: &Context, _frame: &mut Frame) {
+        // ctx.request_repaint();
 
         if let Ok(value) = self.receiver.try_recv() {
             match value {
