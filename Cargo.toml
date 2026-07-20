@@ -1,13 +1,13 @@
 [workspace]
 members = [
     "crates/lipl-display-common",
-    "crates/lipl-display-blitz",
+    # "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
-    # "crates/lipl-display-freya",
+    "crates/lipl-display-freya",
     "crates/lipl-display-gpui",
     "crates/lipl-display-gtk",
-    "crates/lipl-display-slint",
+    # "crates/lipl-display-slint",
     "crates/lipl-display-xilem",
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
@@ -50,8 +50,8 @@ eframe = { version = "0.35.0", default-features = false, features = [
   "wayland",
 ]}
 env_logger = "0.11.10"
-femtovg = "0.25.0"
-freya = { git = "https://github.com/marc2332/freya", tag = "v0.4.0-rc.23" }
+femtovg = "0.26.0"
+freya = "0.4.0"
 futures = "0.3.32"
 futures-channel = "0.3.32"
 futures-util = "0.3.32"
@@ -76,7 +76,7 @@ serde_json = "1.0.149"
 serde_with = { version = "3.19.0", default-features = false, features = [
   "macros",
 ]}
-slint = { version = "1.16.1", default-features = false }
+slint = { version = "1.16.1", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
 strum = { version = "0.28.0", features = ["derive"] }
 thiserror = "2.0.18"
 tokio = "1.52.3"
