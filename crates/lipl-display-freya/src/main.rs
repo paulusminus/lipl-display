@@ -17,7 +17,6 @@ use constant::{
     MINIMUM_FONT_SIZE, WAIT_MESSAGE,
 };
 use font_size::FontSize;
-use freya::launch::launch_with_params;
 use freya::prelude::*;
 use futures_util::{FutureExt, TryStreamExt};
 use lipl_display_common::{Command, Message};
@@ -39,37 +38,36 @@ async fn background_task() -> Result<(), std::io::Error> {
         .try_for_each(move |message| {
             match message {
                 Message::Part(p) => {
-                    use_context::<Signal<Part>>().set(p.into());
+                    consume_context::<Part>().set_text(p.into());
                 }
-                Message::Status(s) => use_context::<Signal<Status>>().set(s.into()),
+                Message::Status(s) => consume_context::<Status>().set_text(s.into()),
                 Message::Command(c) => match c {
                     Command::Dark => {
-                        use_context::<Signal<Theme>>().set(Theme::dark());
+                        consume_context::<Theme>().set(Theme::dark());
                     }
                     Command::Light => {
-                        use_context::<Signal<Theme>>().set(Theme::light());
+                        consume_context::<Theme>().set(Theme::light());
                     }
                     Command::Increase => {
-                        let mut font_size = use_context::<Signal<FontSize>>();
-                        let f = font_size.peek().value();
-                        font_size.set((f + FONT_SIZE_INCREMENT).into());
+                        let mut font_size = consume_context::<FontSize>();
+                        let f = font_size.value();
+                        font_size.set(f + FONT_SIZE_INCREMENT);
                     }
                     Command::Decrease => {
-                        let font_size = use_context::<Signal<FontSize>>().peek().value();
+                        let font_size = consume_context::<FontSize>().value();
                         if font_size > MINIMUM_FONT_SIZE {
-                            use_context::<Signal<FontSize>>()
-                                .set((font_size - FONT_SIZE_INCREMENT).into());
+                            consume_context::<FontSize>().set(font_size - FONT_SIZE_INCREMENT);
                         }
                     }
                     Command::Wait => {
-                        use_context::<Signal<Part>>().set("".to_owned().into());
-                        use_context::<Signal<Status>>().set(WAIT_MESSAGE.to_owned().into());
+                        consume_context::<Part>().set_text("".to_owned().into());
+                        consume_context::<Status>().set_text(WAIT_MESSAGE.to_owned().into());
                     }
                     Command::Exit => {
-                        use_platform().close_window();
+                        // use_platform().close_window();
                     }
                     Command::Poweroff => {
-                        use_platform().close_window();
+                        // use_platform().close_window();
                     }
                 },
             }
@@ -78,55 +76,50 @@ async fn background_task() -> Result<(), std::io::Error> {
         .await
 }
 
-#[component]
-fn Root() -> Element {
-    let theme = use_context::<Signal<Theme>>();
-    let font_size = use_context::<Signal<FontSize>>();
-    let status = use_context::<Signal<Status>>();
-    let part = use_context::<Signal<Part>>();
+// #[component]
+fn root() -> impl IntoElement {
+    let theme = consume_context::<Theme>();
+    let font_size = consume_context::<FontSize>();
+    let status = consume_context::<Status>();
+    let part = consume_context::<Part>();
 
     use_future(background_task);
 
-    rsx!(
-        rect {
-            width: "100%",
-            height: "90%",
-            background: theme().bg_color(),
-            color: theme().fg_color(),
-            font_size: font_size.to_string(),
-            padding: "20",
-            label {
-                {part.to_string()}
-            }
-        }
-        rect {
-            width: "100%",
-            height: "10%",
-            background: theme().bg_color(),
-            color: theme().fg_color(),
-            padding: "20",
-            font_size: font_size.to_string(),
-            label {
-                {status.to_string()}
-            }
-        }
-    )
+    rect().children([
+        rect()
+            .width(Size::percent(100.0))
+            .height(Size::percent(90.0))
+            .background(Fill::Color(theme.bg_color()))
+            .color(Fill::Color(theme.fg_color()))
+            .font_size(freya::prelude::FontSize::from(font_size.value()))
+            .padding(Gaps::new_all(20.0))
+            .children([label().text(part.to_string()).into_element()])
+            .into_element(),
+        rect()
+            .width(Size::percent(100.0))
+            .height(Size::percent(10.0))
+            .background(Fill::Color(theme.fg_color()))
+            .color(Fill::Color(theme.bg_color()))
+            .padding(Gaps::new_all(20.0))
+            .children([label().text(status.to_string()).into_element()])
+            .into_element(),
+    ])
 }
 
 fn app() -> Element {
-    use_platform().set_fullscreen_window(true);
-    use_context_provider(|| Signal::new(Theme::dark));
-    use_context_provider(|| Signal::new(|| FontSize::from(22)));
-    use_context_provider(|| Signal::new(|| Status::from(WAIT_MESSAGE.to_owned())));
-    use_context_provider(|| Signal::new(|| Part::from("".to_owned())));
+    // use_platform().set_fullscreen_window(true);
+    provide_context(Theme::dark);
+    provide_context(FontSize::from(22));
+    provide_context(Status::from(WAIT_MESSAGE.to_owned()));
+    provide_context(Part::from("".to_owned()));
 
-    rsx!(Root {})
+    root().into_element()
 }
 
 fn main() {
-    launch_with_params(
-        app,
-        APPLICATION_TITLE,
-        (APPLICATION_WIDTH, APPLICATION_HEIGHT),
-    );
+    let window_config = WindowConfig::new(app)
+        .with_title(APPLICATION_TITLE)
+        .with_size(APPLICATION_WIDTH, APPLICATION_HEIGHT);
+    let launch_config = LaunchConfig::default().with_window(window_config);
+    launch(launch_config);
 }

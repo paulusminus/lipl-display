@@ -9,6 +9,12 @@ impl From<String> for Part {
     }
 }
 
+impl Part {
+    pub fn set_text(&mut self, text: String) {
+        self.0 = text;
+    }
+}
+
 impl Display for Part {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)

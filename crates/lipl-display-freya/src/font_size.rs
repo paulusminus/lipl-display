@@ -1,27 +1,32 @@
 use std::ops::Add;
 
+#[derive(Clone)]
 pub struct FontSize {
-    size: usize,
+    size: i32,
 }
 
 impl FontSize {
-    pub fn value(&self) -> usize {
+    pub fn value(&self) -> i32 {
         self.size
+    }
+
+    pub fn set(&mut self, size: i32) {
+        self.size = size;
     }
 }
 
-impl Add<usize> for FontSize {
+impl Add<i32> for FontSize {
     type Output = FontSize;
 
-    fn add(self, other: usize) -> FontSize {
+    fn add(self, other: i32) -> FontSize {
         FontSize {
             size: self.size + other,
         }
     }
 }
 
-impl From<usize> for FontSize {
-    fn from(size: usize) -> Self {
+impl From<i32> for FontSize {
+    fn from(size: i32) -> Self {
         FontSize { size }
     }
 }
