@@ -14,7 +14,7 @@ fullscreen = []
 chrono = { workspace = true }
 clap = { version = "4.6.1", features = ["derive"] }
 dioxus = { workspace = true }
-dioxus-native-blitz = { workspace = true }
+dioxus-native = { workspace = true }
 futures-util = { workspace = true }
 json-lines = { workspace = true }
 lipl-display-common = { workspace = true }
