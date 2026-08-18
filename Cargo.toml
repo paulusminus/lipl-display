@@ -45,7 +45,7 @@ derive_builder = "0.20.2"
 dioxus = "0.8.0-alpha.1"
 dioxus-native = "0.8.0-alpha.1"
 # dioxus-native-blitz = { git = "https://github.com/DioxusLabs/blitz", package = "dioxus-native" }
-eframe = { version = "0.35.0", default-features = false, features = [
+eframe = { version = "0.36.0", default-features = false, features = [
   "glow",
   "wayland",
 ]}
