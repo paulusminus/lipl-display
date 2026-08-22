@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "crates/lipl-display-common",
-    # "crates/lipl-display-blitz",
+    "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
     "crates/lipl-display-femtovg",
     "crates/lipl-display-freya",
@@ -42,9 +42,9 @@ bluer = { version = "0.17.4", features = ["bluetoothd"]}
 chrono = "0.4.44"
 dbus = "0.9.11"
 derive_builder = "0.20.2"
-dioxus = "0.8.0-alpha.1"
-dioxus-native = "0.8.0-alpha.1"
-# dioxus-native-blitz = { git = "https://github.com/DioxusLabs/blitz", package = "dioxus-native" }
+dioxus = "0.7.3"
+# dioxus-native = "0.8.0-alpha.1"
+dioxus-native-blitz = { git = "https://github.com/DioxusLabs/blitz", package = "dioxus-native" }
 eframe = { version = "0.36.0", default-features = false, features = [
   "glow",
   "wayland",
@@ -94,5 +94,5 @@ zbus = { version = "5.15.0", default-features = false }
 # build dependencies
 slint-build = { version = "1.16.1" }
 
-[patch.crates-io]
-blitz-dom = { git = "https://github.com/DioxusLabs/blitz" }
+# [patch.crates-io]
+# blitz-dom = { git = "https://github.com/DioxusLabs/blitz" }
