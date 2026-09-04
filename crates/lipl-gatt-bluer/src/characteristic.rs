@@ -2,11 +2,11 @@ use bluer::Uuid;
 use bluer::gatt::local::{
     Characteristic, CharacteristicWrite, CharacteristicWriteMethod, ReqError,
 };
-use futures_channel::mpsc;
-use futures_util::{FutureExt, SinkExt};
+use futures_util::FutureExt;
 use lipl_display_common::Message;
 use std::sync::Arc;
 use tokio::sync::Mutex;
+use tokio::sync::mpsc;
 
 pub fn write_no_response_characteristic(
     uuid: Uuid,
@@ -20,7 +20,7 @@ pub fn write_no_response_characteristic(
             write_without_response: true,
             method: CharacteristicWriteMethod::Fun(Box::new(move |new_value, _| {
                 let value = value_write.clone();
-                let mut s = sender.clone();
+                let s = sender.clone();
                 async move {
                     let mut value = value.lock().await;
                     let send_value: Vec<u8> = new_value.to_vec();

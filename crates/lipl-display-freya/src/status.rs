@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use crate::constant;
+
 #[derive(Debug, Clone)]
 pub struct Status(String);
 
@@ -18,5 +20,11 @@ impl From<String> for Status {
 impl Display for Status {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
+    }
+}
+
+impl Default for Status {
+    fn default() -> Self {
+        Status::from(constant::WAIT_MESSAGE.to_string())
     }
 }

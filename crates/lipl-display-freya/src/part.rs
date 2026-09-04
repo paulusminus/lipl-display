@@ -20,3 +20,9 @@ impl Display for Part {
         write!(f, "{}", self.0)
     }
 }
+
+impl Default for Part {
+    fn default() -> Self {
+        Part::from("".to_string())
+    }
+}

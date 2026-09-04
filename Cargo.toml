@@ -50,20 +50,20 @@ eframe = { version = "0.36.0", default-features = false, features = [
   "wayland",
 ]}
 env_logger = "0.11.10"
-femtovg = "0.26.0"
-freya = { version = "0.5.0-rc.4", features = ["radio"] }
+femtovg = "0.27.0"
+freya = { version = "0.5.0-rc.4", features = ["radio", "sdk-tokio"] }
 futures = "0.3.32"
 futures-channel = "0.3.32"
 futures-util = "0.3.32"
 glib = { version = "0.22.7", features = ["log"] }
 glutin = { version = "0.32.3", default-features = false }
 glutin-winit = "0.5.0"
-gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.16.2", default-features = false, features = [
+gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.18.0", default-features = false, features = [
     "wayland",
     "font-kit",
 ] }
-gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.16.2", default-features = false, features = ["wayland"] }
-gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.16.2", default-features = false }
+gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.18.0", default-features = false, features = ["wayland"] }
+gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.18.0", default-features = false }
 gtk4 = "0.11.3"
 json-lines = { path = "crates/json-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
@@ -93,6 +93,3 @@ zbus = { version = "5.15.0", default-features = false }
 
 # build dependencies
 slint-build = { version = "1.16.1" }
-
-# [patch.crates-io]
-# blitz-dom = { git = "https://github.com/DioxusLabs/blitz" }

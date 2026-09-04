@@ -1,6 +1,6 @@
-use futures_channel::mpsc::TrySendError;
 use lipl_display_common::Message;
 use thiserror::Error;
+use tokio::sync::mpsc::error::TrySendError;
 
 #[derive(Debug, Error)]
 pub enum Error {

@@ -18,13 +18,14 @@ use constant::{
 };
 use font_size::FontSize;
 use freya::prelude::*;
-use futures_util::{FutureExt, TryStreamExt};
-use lipl_display_common::{Command, Message};
+use futures_util::{FutureExt, StreamExt, TryStreamExt};
+use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
+use lipl_gatt_bluer::listen_stream;
 use part::Part;
 use status::Status;
 use std::time::Duration;
 use theme::Theme;
-use tokio::time::sleep;
+use tokio::{runtime::Runtime, time::sleep};
 
 mod constant;
 // mod file_input;
@@ -76,50 +77,66 @@ async fn background_task() -> Result<(), std::io::Error> {
         .await
 }
 
-// #[component]
-fn root() -> impl IntoElement {
-    let theme = consume_context::<Theme>();
-    let font_size = consume_context::<FontSize>();
-    let status = consume_context::<Status>();
-    let part = consume_context::<Part>();
+#[derive(PartialEq)]
+struct Root;
 
-    use_future(background_task);
+impl Component for Root {
+    fn render(&self) -> impl IntoElement {
+        let theme = use_state(|| Theme::Dark);
+        let font_size = use_state(|| FontSize::from(22));
+        let status = use_state(|| Status::default());
+        let part = use_state(|| Part::default());
 
-    rect().children([
-        rect()
-            .width(Size::percent(100.0))
-            .height(Size::percent(90.0))
-            .background(Fill::Color(theme.bg_color()))
-            .color(Fill::Color(theme.fg_color()))
-            .font_size(freya::prelude::FontSize::from(font_size.value()))
-            .padding(Gaps::new_all(20.0))
-            .children([label().text(part.to_string()).into_element()])
-            .into_element(),
-        rect()
-            .width(Size::percent(100.0))
-            .height(Size::percent(10.0))
-            .background(Fill::Color(theme.fg_color()))
-            .color(Fill::Color(theme.bg_color()))
-            .padding(Gaps::new_all(20.0))
-            .children([label().text(status.to_string()).into_element()])
-            .into_element(),
-    ])
+        use_future(background_task);
+
+        rect().children([
+            rect()
+                .width(Size::percent(100.0))
+                .height(Size::percent(90.0))
+                .background(Fill::Color(theme.read().bg_color()))
+                .color(Fill::Color(theme.read().fg_color()))
+                .font_size(freya::prelude::FontSize::from(font_size.read().value()))
+                .padding(Gaps::new_all(20.0))
+                .children([label().text(part.read().to_string()).into_element()])
+                .into_element(),
+            rect()
+                .width(Size::percent(100.0))
+                .height(Size::percent(10.0))
+                .background(Fill::Color(theme.read().fg_color()))
+                .color(Fill::Color(theme.read().bg_color()))
+                .padding(Gaps::new_all(20.0))
+                .children([label().text(status.read().to_string()).into_element()])
+                .into_element(),
+        ])
+    }
 }
 
-fn app() -> Element {
-    // use_platform().set_fullscreen_window(true);
-    provide_context(Theme::dark);
-    provide_context(FontSize::from(22));
-    provide_context(Status::from(WAIT_MESSAGE.to_owned()));
-    provide_context(Part::from("".to_owned()));
+#[derive(Default)]
+struct DisplayApp;
 
-    root().into_element()
+impl App for DisplayApp {
+    fn render(&self) -> impl IntoElement {
+        Root {}
+    }
 }
 
 fn main() {
-    let window_config = WindowConfig::new(app)
+    let rt = Runtime::new().unwrap();
+    let _guard = rt.enter();
+
+    let window_config = WindowConfig::new_app(DisplayApp::default())
         .with_title(APPLICATION_TITLE)
         .with_size(APPLICATION_WIDTH, APPLICATION_HEIGHT);
-    let launch_config = LaunchConfig::default().with_window(window_config);
+    let launch_config = LaunchConfig::default()
+        .with_window(window_config)
+        .with_future(|proxy| async {
+            let s = listen_stream()
+                .await
+                .unwrap()
+                .scan(LiplScreen::default(), |last, message| {
+                    last.handle_message(message);
+                    async move { Some(last.clone()) }
+                });
+        });
     launch(launch_config);
 }

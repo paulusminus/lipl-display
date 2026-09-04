@@ -12,5 +12,5 @@ freya = { workspace = true }
 futures-util = { workspace = true }
 lipl-display-common = { workspace = true }
 lipl-gatt-bluer = { workspace = true }
-tokio = { workspace = true, features = ["time"] }
+tokio = { workspace = true, features = ["time", "rt", "rt-multi-thread"] }
 json-lines = { workspace = true }

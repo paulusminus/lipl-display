@@ -9,12 +9,11 @@ use bluer::{
 };
 use lipl_display_common::{BackgroundThread, Message};
 
-use futures_channel::mpsc;
 use futures_util::{Stream, StreamExt};
 use log::{error, trace};
 use pin_project::{pin_project, pinned_drop};
 use std::pin::Pin;
-use tokio::sync::Mutex;
+use tokio::sync::{Mutex, mpsc};
 
 mod characteristic;
 mod error;
@@ -52,7 +51,7 @@ impl Stream for MessageStream {
         self: std::pin::Pin<&mut Self>,
         cx: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Option<Self::Item>> {
-        self.project().values_rx.poll_next(cx)
+        self.project().values_rx.poll_recv(cx)
     }
 }
 
