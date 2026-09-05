@@ -4,13 +4,13 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = []
-fake = []
+default = ["fake"]
+fake = ["dep:lipl-gatt-bluer"]
 
 [dependencies]
 freya = { workspace = true }
 futures-util = { workspace = true }
 lipl-display-common = { workspace = true }
-lipl-gatt-bluer = { workspace = true }
+lipl-gatt-bluer = { workspace = true, optional = true }
 tokio = { workspace = true, features = ["time", "rt", "rt-multi-thread"] }
 json-lines = { workspace = true }
