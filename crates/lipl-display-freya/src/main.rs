@@ -20,6 +20,29 @@ struct DisplayApp {
     rx: tokio::sync::watch::Receiver<LiplScreen>,
 }
 
+trait LiplScreenExt {
+    fn bg_color(&self) -> Color;
+    fn fg_color(&self) -> Color;
+}
+
+impl LiplScreenExt for LiplScreen {
+    fn bg_color(&self) -> Color {
+        if self.dark {
+            Color::BLACK
+        } else {
+            Color::WHITE
+        }
+    }
+
+    fn fg_color(&self) -> Color {
+        if self.dark {
+            Color::WHITE
+        } else {
+            Color::BLACK
+        }
+    }
+}
+
 impl App for DisplayApp {
     fn render(&self) -> impl IntoElement {
         use_track_watcher(&self.rx);
@@ -27,29 +50,18 @@ impl App for DisplayApp {
         rect().children([
             rect()
                 .width(Size::percent(100.0))
-                .height(Size::percent(90.0))
-                .background(Fill::Color(if self.rx.borrow().dark {
-                    Color::BLACK
-                } else {
-                    Color::WHITE
-                }))
-                .color(Fill::Color(if self.rx.borrow().dark {
-                    Color::WHITE
-                } else {
-                    Color::BLACK
-                }))
+                .height(Size::percent(85.0))
+                .background(Fill::Color(self.rx.borrow().bg_color()))
+                .color(Fill::Color(self.rx.borrow().fg_color()))
                 .font_size(FontSize::from(self.rx.borrow().font_size))
                 .padding(Gaps::new_all(20.0))
                 .children([label().text(self.rx.borrow().text.clone()).into_element()])
                 .into_element(),
             rect()
                 .width(Size::percent(100.0))
-                .height(Size::percent(10.0))
-                .background(Fill::Color(if self.rx.borrow().dark {
-                    Color::BLACK
-                } else {
-                    Color::WHITE
-                }))
+                .height(Size::percent(15.0))
+                .background(Fill::Color(self.rx.borrow().bg_color()))
+                .color(Fill::Color(self.rx.borrow().fg_color()))
                 .font_size(FontSize::from(self.rx.borrow().font_size))
                 .padding(Gaps::new_all(20.0))
                 .children([label().text(self.rx.borrow().status.clone()).into_element()])
