@@ -99,7 +99,7 @@ fn main() {
         });
     let launch_config = LaunchConfig::default()
         .with_window(window_config)
-        .with_future(|_proxy: LaunchProxy| async move {
+        .with_future(|proxy: LaunchProxy| async move {
             let mut s = listen().await;
             let mut screen = LiplScreen::default();
             screen.font_size = constant::FONT_SIZE;
@@ -107,7 +107,7 @@ fn main() {
 
             while let Ok(Some(message)) = s.try_next().await {
                 if message.is_stop() {
-                    let result = _proxy.post_callback(|render_context| {
+                    let result = proxy.post_callback(|render_context| {
                         render_context.exit();
                     });
                     result.await.unwrap();

@@ -35,6 +35,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "accesskit"
+version = "0.25.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "438a7081a65b95c668db56591a4fef9bc5dad275f448bd6223fc6949d823db38"
+dependencies = [
+ "uuid",
+]
+
+[[package]]
 name = "accesskit_atspi_common"
 version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -74,9 +83,9 @@ dependencies = [
 
 [[package]]
 name = "accesskit_consumer"
-version = "0.35.0"
+version = "0.38.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53cf47daed85312e763fbf85ceca136e0d7abc68e0a7e12abe11f48172bc3b10"
+checksum = "5d10a236f96f87d70732e44520046785431ef01d5bcd6b041317bfadd2f88245"
 dependencies = [
  "accesskit 0.24.1",
  "hashbrown 0.16.1",
@@ -84,12 +93,12 @@ dependencies = [
 
 [[package]]
 name = "accesskit_consumer"
-version = "0.38.0"
+version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d10a236f96f87d70732e44520046785431ef01d5bcd6b041317bfadd2f88245"
+checksum = "cc882fa0c9c24c53649e256311b51046cf36eca9a8f7e54ff4ef682160b0cb27"
 dependencies = [
- "accesskit 0.24.1",
- "hashbrown 0.16.1",
+ "accesskit 0.25.0",
+ "hashbrown 0.17.1",
 ]
 
 [[package]]
@@ -129,6 +138,20 @@ dependencies = [
  "accesskit 0.24.1",
  "accesskit_consumer 0.38.0",
  "hashbrown 0.16.1",
+ "objc2 0.5.2",
+ "objc2-app-kit 0.2.2",
+ "objc2-foundation 0.2.2",
+]
+
+[[package]]
+name = "accesskit_macos"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3f278988416e5fb600f24d0cfffe31a249ebbff980fb9c5a3b5fbed2c579f73"
+dependencies = [
+ "accesskit 0.25.0",
+ "accesskit_consumer 0.39.0",
+ "hashbrown 0.17.1",
  "objc2 0.5.2",
  "objc2-app-kit 0.2.2",
  "objc2-foundation 0.2.2",
@@ -184,12 +207,12 @@ dependencies = [
 
 [[package]]
 name = "accesskit_windows"
-version = "0.32.1"
+version = "0.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eff7009f1a532e917d66970a1e80c965140c6cfbbabbdde3d64e5431e6c78e21"
+checksum = "106c2b961215864d1c2e703ee63269c25c4e80a577ffb2c1017b9c17dcdf83a1"
 dependencies = [
  "accesskit 0.24.1",
- "accesskit_consumer 0.35.0",
+ "accesskit_consumer 0.38.0",
  "hashbrown 0.16.1",
  "static_assertions",
  "windows 0.62.2",
@@ -198,13 +221,13 @@ dependencies = [
 
 [[package]]
 name = "accesskit_windows"
-version = "0.34.0"
+version = "0.35.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "106c2b961215864d1c2e703ee63269c25c4e80a577ffb2c1017b9c17dcdf83a1"
+checksum = "a59e8d7160cbac991c1345c99153783ab96423644ccb1f20617cf80c97596aa1"
 dependencies = [
- "accesskit 0.24.1",
- "accesskit_consumer 0.38.0",
- "hashbrown 0.16.1",
+ "accesskit 0.25.0",
+ "accesskit_consumer 0.39.0",
+ "hashbrown 0.17.1",
  "static_assertions",
  "windows 0.62.2",
  "windows-core 0.62.2",
@@ -241,12 +264,12 @@ dependencies = [
 
 [[package]]
 name = "accesskit_xplat"
-version = "0.1.1"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+version = "0.2.0"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
- "accesskit 0.24.1",
- "accesskit_macos 0.26.3",
- "accesskit_windows 0.32.1",
+ "accesskit 0.25.0",
+ "accesskit_macos 0.27.0",
+ "accesskit_windows 0.35.0",
  "android-activity",
  "raw-window-handle",
 ]
@@ -1090,9 +1113,9 @@ dependencies = [
 [[package]]
 name = "blitz-dom"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
- "accesskit 0.24.1",
+ "accesskit 0.25.0",
  "anyrender",
  "app_units",
  "atomic_refcell",
@@ -1135,7 +1158,7 @@ dependencies = [
 [[package]]
 name = "blitz-html"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -1146,7 +1169,7 @@ dependencies = [
 [[package]]
 name = "blitz-net"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "blitz-traits",
  "data-url",
@@ -1158,7 +1181,7 @@ dependencies = [
 [[package]]
 name = "blitz-paint"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "anyrender",
  "anyrender_svg",
@@ -1179,9 +1202,9 @@ dependencies = [
 [[package]]
 name = "blitz-shell"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
- "accesskit 0.24.1",
+ "accesskit 0.25.0",
  "accesskit_xplat",
  "android-activity",
  "anyrender",
@@ -1202,7 +1225,7 @@ dependencies = [
 [[package]]
 name = "blitz-traits"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "atomic_refcell",
  "bitflags 2.13.2",
@@ -1672,7 +1695,7 @@ dependencies = [
 [[package]]
 name = "collections"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "gpui_util",
  "indexmap",
@@ -2246,7 +2269,7 @@ checksum = "da220af51a1a335e9a930beaaef53d261e41ea9eecfb3d973a3ddae1a7284b9c"
 [[package]]
 name = "debug_timer"
 version = "0.1.3"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 
 [[package]]
 name = "defmt"
@@ -2342,7 +2365,7 @@ dependencies = [
 [[package]]
 name = "derive_refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2614,7 +2637,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "android-activity",
  "anyrender",
@@ -2649,7 +2672,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-dom"
 version = "0.7.0"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -3622,9 +3645,9 @@ dependencies = [
 
 [[package]]
 name = "freya"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f99a4c70b4af7a4ae5ef871e1b17adb5708036d031346fef1b9eb5dcc9da07a0"
+checksum = "fbb7b70c54aff10a7bae49c9f9124ab75aa1c2fcc30ba2f0acc9b61a052b1c9f"
 dependencies = [
  "cfg-if",
  "freya-android",
@@ -3634,7 +3657,7 @@ dependencies = [
  "freya-core",
  "freya-edit",
  "freya-engine",
- "freya-performance-plugin",
+ "freya-metrics-plugin",
  "freya-radio",
  "freya-sdk",
  "freya-winit",
@@ -3643,9 +3666,9 @@ dependencies = [
 
 [[package]]
 name = "freya-android"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eed7db5d6ea5936641f837d1bda4c30e00f4bffe66e2b1c415e24659306b4210"
+checksum = "9b1dfa8ac8de54b0794273db240fc30941d02526152bc49e0c8d2180486f1294"
 dependencies = [
  "freya-components",
  "freya-core",
@@ -3657,9 +3680,9 @@ dependencies = [
 
 [[package]]
 name = "freya-animation"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a70c07e5526e5171938f6549b70c493943ddca47944a62a526d513085f402588"
+checksum = "50748eb90202acc69424c04389ac93db585cfeda24a95573ca7c8af0dd5f8e2b"
 dependencies = [
  "easer",
  "freya-core",
@@ -3667,9 +3690,9 @@ dependencies = [
 
 [[package]]
 name = "freya-clipboard"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92eb3852c674c95f9dd454deb03140b1946629db6f828c6ecdcadc5643e7d188"
+checksum = "396eabdd183fa15c62744ae52a1f78300ce05a0b43842f57d0623339bafe9182"
 dependencies = [
  "copypasta",
  "freya-core",
@@ -3677,9 +3700,9 @@ dependencies = [
 
 [[package]]
 name = "freya-components"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b22144f28b0083f7099627369474d607dd34d121e03cfb4dd6ba1ceecd6b5640"
+checksum = "e981d2d61e23633677f347c92525f97bfc6abf54ad5801cdc0f83ccee327c8d3"
 dependencies = [
  "accesskit 0.24.1",
  "anyhow",
@@ -3701,9 +3724,9 @@ dependencies = [
 
 [[package]]
 name = "freya-core"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bba992e9bf96c37bc3bffd69e6954edd34d577ad7f45222b2c404731bf7d4ebe"
+checksum = "d56fe86aa386a7ad488f953b642e1d5593ded47132889b70f8d52fa1bcd26be0"
 dependencies = [
  "accesskit 0.24.1",
  "async-io",
@@ -3732,9 +3755,9 @@ dependencies = [
 
 [[package]]
 name = "freya-edit"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94a8afb98b5efb912dd067791f859a0fd2580ff21633a43366ae7fa10d1969ab"
+checksum = "e3c2c1a1b1d9e198a61a1acf22e8a57a2b77781b3f6aa5d4711d1a00dac03a26"
 dependencies = [
  "bitflags 2.13.2",
  "freya-clipboard",
@@ -3747,38 +3770,39 @@ dependencies = [
 
 [[package]]
 name = "freya-engine"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe2a00a492c19a275955fdc4fa3802e82dc08956a131b23571df732c9fb1d7f6"
+checksum = "fd81638d92c30af1479a9098e4ec514e5c21a9e9239c45fd11756a74c42a587a"
 dependencies = [
  "freya-skia-safe",
 ]
 
 [[package]]
-name = "freya-performance-plugin"
-version = "0.5.0-rc.6"
+name = "freya-metrics-plugin"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5552fce8ad4e026677a4872413c02a34aa1bc7b279a5a0838effb6aefd72cfd1"
+checksum = "85ac491c328630f1610fdcc26ca530df73ca10c660d82cfd3517a207bea8ac75"
 dependencies = [
  "freya-core",
  "freya-engine",
  "freya-winit",
+ "tracing",
 ]
 
 [[package]]
 name = "freya-radio"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3cc830d51f669d1ffdc0ff5fa47e8dea907be3646b421693be3410f3bfe8995"
+checksum = "5b502bbf8dcc67d984a5cc063bcc3228d1b5fec309b8dbcbe707638ab77d96d3"
 dependencies = [
  "freya-core",
 ]
 
 [[package]]
 name = "freya-sdk"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c258ed13714ad44aba70d47c3c593f12320f860cdb3a572b62b855b205aaa456"
+checksum = "d89b1ad912308e1d8f2444d60a9d4793f4acfe1f7e1d9bc5a5148f48afff621d"
 dependencies = [
  "freya-core",
  "tokio",
@@ -3827,9 +3851,9 @@ dependencies = [
 
 [[package]]
 name = "freya-winit"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a35e29030ac019b90e389d4b3a6202efb47b3aef664320c1b014c007d5fecec2"
+checksum = "bae1aaa800d7a82f9c1efa0c96d23b28369be50eaea7ebba9cc23566e65721be"
 dependencies = [
  "accesskit 0.24.1",
  "accesskit_winit 0.33.2",
@@ -4431,7 +4455,7 @@ dependencies = [
 [[package]]
 name = "gpui"
 version = "0.2.2"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "accesskit 0.24.1",
  "anyhow",
@@ -4482,7 +4506,6 @@ dependencies = [
  "sum_tree",
  "taffy 0.13.0",
  "thiserror 2.0.20",
- "tracing",
  "ttf-parser",
  "url",
  "usvg 0.46.0",
@@ -4492,13 +4515,12 @@ dependencies = [
  "web-time",
  "windows 0.62.2",
  "zed-font-kit",
- "ztracing",
 ]
 
 [[package]]
 name = "gpui_linux"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "accesskit 0.24.1",
  "accesskit_unix 0.22.1",
@@ -4539,7 +4561,7 @@ dependencies = [
 [[package]]
 name = "gpui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -4550,7 +4572,7 @@ dependencies = [
 [[package]]
 name = "gpui_shared_string"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "schemars",
  "serde",
@@ -4560,7 +4582,7 @@ dependencies = [
 [[package]]
 name = "gpui_tokio"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "anyhow",
  "gpui",
@@ -4571,7 +4593,7 @@ dependencies = [
 [[package]]
 name = "gpui_util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "anyhow",
  "log",
@@ -4581,7 +4603,7 @@ dependencies = [
 [[package]]
 name = "gpui_wgpu"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -4936,7 +4958,7 @@ dependencies = [
 [[package]]
 name = "http_client"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -5784,9 +5806,9 @@ checksum = "b6d2cec3eae94f9f509c767b45932f1ada8350c4bdb85af2fcab4a3c14807981"
 
 [[package]]
 name = "libredox"
-version = "0.1.24"
+version = "0.1.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6480ccc157a1389bb2e4891b24751b0f798ba640d22386f23143fbcc89da195a"
+checksum = "61ff90caf6077a803a240f62fdbe88645a890bbca49ef8174c3cb0404362171d"
 dependencies = [
  "bitflags 2.13.2",
  "libc",
@@ -6071,9 +6093,9 @@ dependencies = [
 
 [[package]]
 name = "lru"
-version = "0.18.4"
+version = "0.18.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ff9840bcc50b71349309900da0ce7279aa336ae71d73250b07998932c7d97c25"
+checksum = "ef9ac18847474e638e3702b76c65d4eb93428471a74778ef0f1be711717f89b5"
 
 [[package]]
 name = "lyon"
@@ -7539,9 +7561,9 @@ dependencies = [
 
 [[package]]
 name = "pathgraph"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b44a8c482783599d8e2c7c4d52b2b4a189bc4a1756705d9ce3275fee8b32d40a"
+checksum = "947942da6618fbcb6a6c53e0b97489323a71b13d648c3c9ddd13c345a712fb10"
 
 [[package]]
 name = "pbkdf2"
@@ -7587,7 +7609,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 [[package]]
 name = "perf"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "collections",
  "serde",
@@ -8012,9 +8034,9 @@ checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
 
 [[package]]
 name = "ragnarok"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b80ba437d64bf600e9ee2c881c2606765d6e2cf9663a9bfd9cd2be2cd5276ae"
+checksum = "4e45c4cd354acc35aecb051f723b3a1a8ccfa88e5ab6645a9b0f2cda198e374d"
 dependencies = [
  "euclid",
  "hotpath",
@@ -8282,7 +8304,7 @@ dependencies = [
 [[package]]
 name = "refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "derive_refineable",
 ]
@@ -8559,7 +8581,7 @@ dependencies = [
 [[package]]
 name = "scheduler"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "async-task",
  "backtrace",
@@ -9470,7 +9492,7 @@ dependencies = [
 [[package]]
 name = "stylo_taffy"
 version = "0.3.0-beta.2"
-source = "git+https://github.com/DioxusLabs/blitz#e7bf7bca452bc9194ac5c9bcf2ac3c0ebcf02e09"
+source = "git+https://github.com/DioxusLabs/blitz#e99fbdbd1d03b9f0aa1622c3f810d95daac92042"
 dependencies = [
  "bitflags 2.13.2",
  "stylo",
@@ -9537,7 +9559,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "sum_tree"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "heapless",
  "log",
@@ -10127,9 +10149,9 @@ checksum = "7d56353a2a665ad0f41a421187180aab746c8c325620617ad883a99a1cbe66d2"
 
 [[package]]
 name = "torin"
-version = "0.5.0-rc.6"
+version = "0.5.0-rc.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76a9b98840304ffc816547d5b4a2314ff2287dca07d5328413c3f3b0b9ba33b7"
+checksum = "8574dcfce3b2507a8bd8e5e9c676d0da721a4825a83c33670d00cefb65f2e51f"
 dependencies = [
  "euclid",
  "itertools 0.14.0",
@@ -10544,7 +10566,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "util_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "perf",
  "quote",
@@ -12901,7 +12923,7 @@ checksum = "b268e58e7c693d7c271f93ffc4ba3b380412554231c85bf61ca7af91042a4112"
 [[package]]
 name = "zlog"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "anyhow",
  "chrono",
@@ -12918,7 +12940,7 @@ checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 [[package]]
 name = "ztracing"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 dependencies = [
  "tracing",
  "tracing-subscriber",
@@ -12929,7 +12951,7 @@ dependencies = [
 [[package]]
 name = "ztracing_macro"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.20.2#7c451e694f3c52ee0aeb01d7e28b5fa18cd0ad2f"
+source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
 
 [[package]]
 name = "zune-core"
