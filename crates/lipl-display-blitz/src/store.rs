@@ -4,12 +4,12 @@ use crate::args::Args;
 
 #[derive(Store)]
 pub struct Lipl {
-    font_size: u32,
-    dark: bool,
-    part: String,
-    status: String,
-    wait_message: String,
-    timeout: u64,
+    pub font_size: u32,
+    pub dark: bool,
+    pub part: String,
+    pub status: String,
+    pub wait_message: String,
+    pub timeout: u64,
 }
 
 // impl Default for Lipl {

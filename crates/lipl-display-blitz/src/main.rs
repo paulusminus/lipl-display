@@ -1,5 +1,5 @@
 use clap::Parser;
-use dioxus_native_blitz::{WindowAttributes, launch_cfg};
+use dioxus_native::{WindowAttributes, launch_cfg};
 #[cfg(feature = "fullscreen")]
 use winit::monitor::Fullscreen;
 
@@ -38,7 +38,7 @@ fn default_window_attributes() -> Box<WindowAttributes> {
 fn main() {
     tracing_subscriber::fmt::init();
     launch_cfg(
-        app::app,
+        || app::app(),
         vec![Box::new(|| Box::new(Args::parse()))],
         vec![default_window_attributes()],
     );

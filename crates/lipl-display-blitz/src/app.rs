@@ -8,7 +8,7 @@ use crate::{
     store::{Lipl, LiplStoreExt},
 };
 use dioxus::prelude::*;
-use dioxus_native_blitz::use_window;
+use dioxus_native::use_window;
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, Message};
 use tokio::time::sleep;
