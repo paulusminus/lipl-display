@@ -673,9 +673,9 @@ dependencies = [
 
 [[package]]
 name = "async-compression"
-version = "0.4.49"
+version = "0.4.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3789ca2cd1c4e8ce71fe9bd6312566014e20ff3016fc87bc71c59ff93b5fa61"
+checksum = "ee19bd99b43e3691acbad4e840420a4881cea6c0b66a208125a824f8fd53f5a1"
 dependencies = [
  "compression-codecs",
  "compression-core",
@@ -1695,7 +1695,7 @@ dependencies = [
 [[package]]
 name = "collections"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "gpui_util",
  "indexmap",
@@ -1735,9 +1735,9 @@ dependencies = [
 
 [[package]]
 name = "compression-codecs"
-version = "0.4.44"
+version = "0.4.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f018b36ac50598f7bfb0aa6094281e253e6b3cbc507a69652d2fb963a326d8d"
+checksum = "98fc98460ba0ad5317075d3632b8dfc45d0be8c4a49347c2a38272019717614a"
 dependencies = [
  "bzip2",
  "compression-core",
@@ -1763,7 +1763,7 @@ dependencies = [
 [[package]]
 name = "const-serialize"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "const-serialize-macro",
  "dioxus-const-vec",
@@ -1773,7 +1773,7 @@ dependencies = [
 [[package]]
 name = "const-serialize-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2338,7 +2338,7 @@ dependencies = [
 [[package]]
 name = "derive_refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2359,7 +2359,7 @@ dependencies = [
 [[package]]
 name = "dioxus"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-asset-resolver",
  "dioxus-cli-config",
@@ -2384,7 +2384,7 @@ dependencies = [
 [[package]]
 name = "dioxus-asset-resolver"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-cli-config",
  "http",
@@ -2401,7 +2401,7 @@ dependencies = [
 [[package]]
 name = "dioxus-cli-config"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "wasm-bindgen",
 ]
@@ -2409,7 +2409,7 @@ dependencies = [
 [[package]]
 name = "dioxus-config-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2418,17 +2418,17 @@ dependencies = [
 [[package]]
 name = "dioxus-config-macros"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 
 [[package]]
 name = "dioxus-const-vec"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 
 [[package]]
 name = "dioxus-core"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "anyhow",
  "const_format",
@@ -2453,7 +2453,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "convert_case 0.8.0",
  "dioxus-rsx",
@@ -2465,7 +2465,7 @@ dependencies = [
 [[package]]
 name = "dioxus-core-template"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-const-vec",
  "serde",
@@ -2475,12 +2475,12 @@ dependencies = [
 [[package]]
 name = "dioxus-core-types"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 
 [[package]]
 name = "dioxus-devtools"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-core",
@@ -2497,7 +2497,7 @@ dependencies = [
 [[package]]
 name = "dioxus-devtools-types"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "serde",
@@ -2507,7 +2507,7 @@ dependencies = [
 [[package]]
 name = "dioxus-document"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "dioxus-core-macro",
@@ -2525,7 +2525,7 @@ dependencies = [
 [[package]]
 name = "dioxus-history"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "tracing",
@@ -2534,7 +2534,7 @@ dependencies = [
 [[package]]
 name = "dioxus-hooks"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "dioxus-signals",
@@ -2549,7 +2549,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "async-trait",
  "bytes",
@@ -2572,7 +2572,7 @@ dependencies = [
 [[package]]
 name = "dioxus-html-internal-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "convert_case 0.8.0",
  "proc-macro2",
@@ -2583,7 +2583,7 @@ dependencies = [
 [[package]]
 name = "dioxus-interpreter-js"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "js-sys",
  "lazy-js-bundle",
@@ -2598,7 +2598,7 @@ dependencies = [
 [[package]]
 name = "dioxus-logger"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-cli-config",
  "tracing",
@@ -2609,7 +2609,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "android-activity",
  "anyrender",
@@ -2643,7 +2643,7 @@ dependencies = [
 [[package]]
 name = "dioxus-native-dom"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "blitz-dom",
  "blitz-traits",
@@ -2657,7 +2657,7 @@ dependencies = [
 [[package]]
 name = "dioxus-rsx"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core-template",
  "proc-macro2",
@@ -2670,7 +2670,7 @@ dependencies = [
 [[package]]
 name = "dioxus-signals"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "futures-channel",
@@ -2685,7 +2685,7 @@ dependencies = [
 [[package]]
 name = "dioxus-stores"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-core",
  "dioxus-signals",
@@ -2696,7 +2696,7 @@ dependencies = [
 [[package]]
 name = "dioxus-stores-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "convert_case 0.8.0",
  "proc-macro2",
@@ -2707,7 +2707,7 @@ dependencies = [
 [[package]]
 name = "dioxus-web"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dioxus-cli-config",
  "dioxus-core",
@@ -4052,7 +4052,7 @@ dependencies = [
 [[package]]
 name = "generational-box"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "parking_lot",
  "tracing",
@@ -4430,7 +4430,7 @@ dependencies = [
 [[package]]
 name = "gpui"
 version = "0.2.2"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "accesskit 0.24.1",
  "anyhow",
@@ -4458,6 +4458,8 @@ dependencies = [
  "log",
  "lyon",
  "num_cpus",
+ "objc2-core-foundation",
+ "objc2-core-video",
  "parking",
  "parking_lot",
  "pin-project",
@@ -4495,7 +4497,7 @@ dependencies = [
 [[package]]
 name = "gpui_linux"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "accesskit 0.24.1",
  "accesskit_unix 0.22.1",
@@ -4536,7 +4538,7 @@ dependencies = [
 [[package]]
 name = "gpui_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -4547,7 +4549,7 @@ dependencies = [
 [[package]]
 name = "gpui_shared_string"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "schemars",
  "serde",
@@ -4557,7 +4559,7 @@ dependencies = [
 [[package]]
 name = "gpui_tokio"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "anyhow",
  "gpui",
@@ -4568,7 +4570,7 @@ dependencies = [
 [[package]]
 name = "gpui_util"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "anyhow",
  "log",
@@ -4578,7 +4580,7 @@ dependencies = [
 [[package]]
 name = "gpui_wgpu"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -4933,7 +4935,7 @@ dependencies = [
 [[package]]
 name = "http_client"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -5637,7 +5639,7 @@ dependencies = [
 [[package]]
 name = "lazy-js-bundle"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 
 [[package]]
 name = "lazy_static"
@@ -6187,7 +6189,7 @@ dependencies = [
 [[package]]
 name = "manganis"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "const-serialize",
  "jni 0.21.1",
@@ -6201,7 +6203,7 @@ dependencies = [
 [[package]]
 name = "manganis-core"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "const-serialize",
  "dioxus-cli-config",
@@ -6213,7 +6215,7 @@ dependencies = [
 [[package]]
 name = "manganis-macro"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "dunce",
  "macro-string",
@@ -7568,7 +7570,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 [[package]]
 name = "perf"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "collections",
  "serde",
@@ -8263,7 +8265,7 @@ dependencies = [
 [[package]]
 name = "refineable"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "derive_refineable",
 ]
@@ -8540,7 +8542,7 @@ dependencies = [
 [[package]]
 name = "scheduler"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "async-task",
  "backtrace",
@@ -9459,7 +9461,7 @@ dependencies = [
 [[package]]
 name = "subsecond"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "js-sys",
  "libc",
@@ -9477,7 +9479,7 @@ dependencies = [
 [[package]]
 name = "subsecond-types"
 version = "0.8.0-alpha.1"
-source = "git+https://github.com/DioxusLabs/dioxus#c607e4ef28616456402b6da32c916e977c95d665"
+source = "git+https://github.com/DioxusLabs/dioxus#b2ed8c328bff51ea5d4e42225a3d1ef7675bad2c"
 dependencies = [
  "serde",
 ]
@@ -9491,7 +9493,7 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 [[package]]
 name = "sum_tree"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "heapless",
  "log",
@@ -10500,7 +10502,7 @@ checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 [[package]]
 name = "util_macros"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "perf",
  "quote",
@@ -12591,9 +12593,9 @@ dependencies = [
 
 [[package]]
 name = "yoke-derive"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33811428bee40dbceb6d545e95754741d17a6aef9a4849f0fd62e2ba4f412a78"
+checksum = "ec8ebde2db3681e8c9980cc27822030e68752690ddfa9473e739aeb4dbde6d71"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -12843,7 +12845,7 @@ checksum = "b268e58e7c693d7c271f93ffc4ba3b380412554231c85bf61ca7af91042a4112"
 [[package]]
 name = "zlog"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "anyhow",
  "chrono",
@@ -12860,7 +12862,7 @@ checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
 [[package]]
 name = "ztracing"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 dependencies = [
  "tracing",
  "tracing-subscriber",
@@ -12871,7 +12873,7 @@ dependencies = [
 [[package]]
 name = "ztracing_macro"
 version = "0.1.0"
-source = "git+https://github.com/zed-industries/zed?tag=v1.21.0#33c95853ed2b6956f339733c63a8220964ecbeb6"
+source = "git+https://github.com/zed-industries/zed?tag=v1.22.0#76659a55a8c10ed355a070f8764a0b1733e3c115"
 
 [[package]]
 name = "zune-core"
