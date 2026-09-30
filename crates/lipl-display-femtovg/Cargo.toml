@@ -10,15 +10,17 @@ version.workspace = true
 
 [dependencies]
 femtovg = { workspace = true }
+futures-util = { workspace = true }
 glutin = { workspace = true }
 glutin-winit = { workspace = true, features = [
     "egl",
     "wayland",
 ] }
 lipl-display-common = { workspace = true }
-lipl-gatt-bluer = { workspace = true }
+lipl-gatt-zbus = { workspace = true }
 log = { workspace = true }
 env_logger = { workspace = true }
+tokio = { workspace = true, features = ["macros"] }
 winit = { workspace = true, features = [
     "rwh_06",
     "wayland",

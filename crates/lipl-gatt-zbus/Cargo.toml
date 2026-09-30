@@ -14,7 +14,7 @@ futures = { workspace = true }
 lipl-display-common = { workspace = true }
 pin-project = { workspace = true }
 thiserror = { workspace = true }
-tokio = { workspace = true, features = ["rt", "rt-multi-thread"] }
+tokio = { workspace = true, features = ["rt"] }
 tracing = { workspace = true }
 uuid = { workspace = true }
 zbus = { workspace = true, features = ["tokio"] }

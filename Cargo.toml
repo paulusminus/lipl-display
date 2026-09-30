@@ -12,7 +12,7 @@ members = [
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
     "crates/lipl-gatt-zbus",
-    "crates/login-poweroff-reboot",
+    "crates/login-poweroff-reboot", "crates/login-poweroff-reboot-zbus",
 ]
 resolver = "3"
 
@@ -67,6 +67,7 @@ gtk4 = "0.11.3"
 json-lines = { path = "crates/json-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.6", path = "crates/lipl-gatt-bluer" }
+lipl-gatt-zbus = { version = "0.4.6", path = "crates/lipl-gatt-zbus" }
 log = "0.4.29"
 login-poweroff-reboot = { version = "0.4.6", path = "crates/login-poweroff-reboot" }
 pin-project = "1.1.12"

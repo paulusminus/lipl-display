@@ -1,15 +1,13 @@
 use std::error::Error;
 
 use femtovg::{Canvas, Color, FontId, Paint, renderer::OpenGl};
+use futures_util::StreamExt;
 use glutin::surface::GlSurface;
-use lipl_display_common::{BackgroundThread, Command, HandleMessage, LiplScreen, Message};
-use lipl_gatt_bluer::ListenBluer;
+use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
+use lipl_gatt_zbus::GattListener;
 use log::error;
 use winit::{
-    application::ApplicationHandler,
-    dpi::PhysicalSize,
-    event::WindowEvent,
-    event_loop::{EventLoop, EventLoopProxy},
+    application::ApplicationHandler, dpi::PhysicalSize, event::WindowEvent, event_loop::EventLoop,
 };
 
 const ROBOTO_REGULAR: &[u8] = include_bytes!("../../../font/Roboto-Regular.ttf");
@@ -25,22 +23,36 @@ fn get_colors(dark: bool) -> (Color, Color) {
     if dark { (WHITE, BLACK) } else { (BLACK, WHITE) }
 }
 
-fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
-    move |message| {
-        if let Err(error) = proxy.send_event(message) {
-            error!("Error sending to main loop: {error}");
-        }
-    }
-}
+// fn create_callback(proxy: EventLoopProxy<Message>) -> impl Fn(Message) {
+//     move |message| {
+//         if let Err(error) = proxy.send_event(message) {
+//             error!("Error sending to main loop: {error}");
+//         }
+//     }
+// }
 
-fn main() -> Result<(), Box<dyn Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
     let event_loop = EventLoop::<Message>::with_user_event().build()?;
-    let mut gatt = ListenBluer::new(create_callback(event_loop.create_proxy()));
+
+    let proxy = event_loop.create_proxy();
+
+    tokio::spawn(async move {
+        let mut listener = GattListener::default();
+        while let Some(event) = listener.next().await {
+            if let Err(error) = proxy.send_event(event) {
+                error!("Error sending to main loop: {error}");
+                break;
+            }
+        }
+        if let Err(error) = listener.await {
+            error!("Error listening to GATT events: {error}");
+        }
+    });
 
     event_loop.run_app(&mut Application::default())?;
 
-    gatt.stop();
     Ok(())
 }
 
