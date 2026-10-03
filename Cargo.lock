@@ -3312,31 +3312,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b97b65636e5b9ef369943878ac74335ba1c55c1cb6adbf1e2c293c624248d693"
 
 [[package]]
-name = "femtovg"
-version = "0.27.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31eebf3ab1b76359ccd5f850c07a7c6b2722c64d9127c40e02358e83f3ff9b1a"
-dependencies = [
- "bitflags 2.13.2",
- "bytemuck",
- "fnv",
- "glow 0.18.0",
- "image",
- "imgref",
- "itertools 0.15.0",
- "log",
- "lru",
- "rgb",
- "rustybuzz",
- "slotmap",
- "ttf-parser",
- "unicode-bidi",
- "unicode-segmentation",
- "wasm-bindgen",
- "web-sys",
-]
-
-[[package]]
 name = "field-offset"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4265,18 +4240,6 @@ name = "glow"
 version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29038e1c483364cc6bb3cf78feee1816002e127c331a1eec55a4d202b9e1adb5"
-dependencies = [
- "js-sys",
- "slotmap",
- "wasm-bindgen",
- "web-sys",
-]
-
-[[package]]
-name = "glow"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "263218b0ba2b0715c3370fb04674f5f8aa331594b521c94ff0a8e4a8472d1386"
 dependencies = [
  "js-sys",
  "slotmap",
@@ -5866,22 +5829,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lipl-display-femtovg"
-version = "0.4.8"
-dependencies = [
- "env_logger",
- "femtovg",
- "futures-util",
- "glutin",
- "glutin-winit",
- "lipl-display-common",
- "lipl-gatt-zbus",
- "log",
- "tokio",
- "winit 0.30.13",
-]
-
-[[package]]
 name = "lipl-display-freya"
 version = "0.1.0"
 dependencies = [
@@ -6075,12 +6022,6 @@ checksum = "0fae87c125b03c1d2c0150c90365d7d6bcc53fb73a9acaef207d2d065860f062"
 dependencies = [
  "imgref",
 ]
-
-[[package]]
-name = "lru"
-version = "0.18.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef9ac18847474e638e3702b76c65d4eb93428471a74778ef0f1be711717f89b5"
 
 [[package]]
 name = "lyon"

@@ -3,7 +3,6 @@ members = [
     "crates/lipl-display-common",
     "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
-    "crates/lipl-display-femtovg",
     "crates/lipl-display-freya",
     "crates/lipl-display-gpui",
     "crates/lipl-display-gtk",
@@ -49,7 +48,6 @@ eframe = { version = "0.36.0", default-features = false, features = [
   "wayland",
 ]}
 env_logger = "0.11.10"
-femtovg = "0.27.0"
 freya = { version = "0.5.0-rc.4", features = ["radio", "sdk-tokio"] }
 futures = "0.3.32"
 futures-channel = "0.3.32"
