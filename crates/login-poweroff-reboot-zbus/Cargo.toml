@@ -1,5 +1,6 @@
 [package]
 name = "login-poweroff-reboot-zbus"
+description = "Poweroff or reboot machine using dbus interface logind"
 authors.workspace = true
 edition.workspace = true
 homepage.workspace = true
