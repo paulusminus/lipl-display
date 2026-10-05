@@ -1,12 +1,9 @@
 [workspace]
 members = [
     "crates/lipl-display-common",
-    "crates/lipl-display-blitz",
     "crates/lipl-display-egui",
     "crates/lipl-display-freya",
     "crates/lipl-display-gpui",
-    "crates/lipl-display-gtk",
-    # "crates/lipl-display-slint",
     "crates/lipl-display-xilem",
     "crates/lipl-gatt-bluer",
     "crates/lipl-gatt-bluer-cli",
@@ -38,23 +35,17 @@ codegen-units = 1
 anyhow = "1.0.102"
 async-channel = "2.5.0"
 bluer = { version = "0.17.4", features = ["bluetoothd"]}
-chrono = "0.4.44"
 dbus = "0.9.11"
 derive_builder = "0.20.2"
-dioxus = { git = "https://github.com/DioxusLabs/dioxus", package = "dioxus" }
-dioxus-native = { git = "https://github.com/DioxusLabs/dioxus", package = "dioxus-native" }
 eframe = { version = "0.36.0", default-features = false, features = [
   "glow",
   "wayland",
 ]}
 env_logger = "0.11.10"
-freya = { version = "0.5.0-rc.4", features = ["radio", "sdk-tokio"] }
+freya = { version = "0.5.0-rc.9", features = ["radio", "sdk-tokio"] }
 futures = "0.3.32"
-futures-channel = "0.3.32"
 futures-util = "0.3.32"
 glib = { version = "0.22.7", features = ["log"] }
-glutin = { version = "0.32.3", default-features = false }
-glutin-winit = "0.5.0"
 gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false, features = [
     "wayland",
     "font-kit",
@@ -62,33 +53,20 @@ gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default
 gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false, features = ["wayland"] }
 gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false }
 gtk4 = "0.11.3"
-json-lines = { path = "crates/json-lines" }
+json-lines = { git = "https://github.com/paulusminus/json-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.6", path = "crates/lipl-gatt-bluer" }
-lipl-gatt-zbus = { version = "0.4.6", path = "crates/lipl-gatt-zbus" }
 log = "0.4.29"
 login-poweroff-reboot = { version = "0.4.6", path = "crates/login-poweroff-reboot" }
-login-poweroff-reboot-zbus = { version = "0.4.6", path = "crates/login-poweroff-reboot-zbus" }
 pin-project = "1.1.12"
 serde = "1.0.228"
 serde_json = "1.0.149"
-serde_with = { version = "3.19.0", default-features = false, features = [
-  "macros",
-]}
-slint = { version = "1.16.1", default-features = false, features = ["std", "compat-1-2", "renderer-femtovg", "backend-linuxkms"] }
 strum = { version = "0.28.0", features = ["derive"] }
 thiserror = "2.0.18"
 tokio = "1.52.3"
 tokio-stream = "0.1.18"
-toml = "1.1.2"
 tracing = "0.1.44"
-tracing-appender = "0.2.5"
-tracing-log = "0.2.0"
 tracing-subscriber = "0.3.23"
 uuid = "1.23.1"
-winit = { version = "0.30.13", default-features = false }
 xilem = "0.4.0"
 zbus = { version = "5.15.0", default-features = false }
-
-# build dependencies
-slint-build = { version = "1.16.1" }

@@ -1,3 +1,0 @@
-log_level = "trace"
-tracing_level = "trace"
-log_dir = "/var/log/lipl"
