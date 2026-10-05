@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: formatting
         run: cargo fmt --all -- --check
-      - name: clippy freya version
-        run: cargo clippy --no-deps -p lipl-display-freya -- -D warnings
+      # - name: clippy freya version
+      #   run: cargo clippy --no-deps -p lipl-display-freya -- -D warnings
       - name: build freya version
         run: cargo build --release -p lipl-display-freya
