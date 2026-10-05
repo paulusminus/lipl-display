@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - name: install ubuntu dependencies
-        run: sudo apt update && sudo apt install libdbus-1-dev libudev-dev libgbm-dev libxkbcommon-dev libfontconfig1-dev libseat-dev libsystemd-dev libinput-dev libgles-dev libwayland-egl-backend-dev
+        run: apt install libdbus-1-dev libudev-dev libgbm-dev libxkbcommon-dev libfontconfig1-dev libseat-dev libsystemd-dev libinput-dev libgles-dev libwayland-egl-backend-dev libwayland-dev
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
