@@ -3,12 +3,11 @@
     windows_subsystem = "windows"
 )]
 
-#[cfg(feature = "fake")]
+#[cfg(not(feature = "gatt"))]
 use std::time::Duration;
 
 use constant::{APPLICATION_HEIGHT, APPLICATION_TITLE, APPLICATION_WIDTH};
 use freya::{prelude::*, sdk::use_track_watcher};
-#[cfg(feature = "fake")]
 use futures_util::TryStream;
 use futures_util::TryStreamExt;
 use lipl_display_common::{HandleMessage, LiplScreen, Message};
@@ -70,13 +69,13 @@ impl App for DisplayApp {
     }
 }
 
-#[cfg(feature = "fake")]
+#[cfg(not(feature = "gatt"))]
 async fn listen() -> impl TryStream<Ok = Message, Error = std::io::Error> {
     let lines = json_lines::file_reader(constant::PATH).await.unwrap();
     json_lines::lines(lines)
 }
 
-#[cfg(not(feature = "fake"))]
+#[cfg(feature = "gatt")]
 async fn listen() -> impl TryStream<Ok = Message, Error = std::io::Error> {
     let s = lipl_gatt_bluer::listen_stream().await.unwrap();
     s
@@ -101,9 +100,11 @@ fn main() {
         .with_window(window_config)
         .with_future(|proxy: LaunchProxy| async move {
             let mut s = listen().await;
-            let mut screen = LiplScreen::default();
-            screen.font_size = constant::FONT_SIZE;
-            screen.status = constant::WAIT_MESSAGE.to_string();
+            let mut screen = LiplScreen {
+                status: constant::WAIT_MESSAGE.to_owned(),
+                font_size: constant::FONT_SIZE,
+                ..Default::default()
+            };
 
             while let Ok(Some(message)) = s.try_next().await {
                 if message.is_stop() {
@@ -115,7 +116,7 @@ fn main() {
                 }
                 screen.handle_message(message);
                 tx.send(screen.clone()).unwrap();
-                #[cfg(feature = "fake")]
+                #[cfg(not(feature = "gatt"))]
                 tokio::time::sleep(Duration::from_millis(1000)).await;
             }
         });

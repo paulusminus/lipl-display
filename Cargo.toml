@@ -45,14 +45,12 @@ env_logger = "0.11.10"
 freya = { version = "0.5.0-rc.9", features = ["radio", "sdk-tokio"] }
 futures = "0.3.32"
 futures-util = "0.3.32"
-glib = { version = "0.22.7", features = ["log"] }
 gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false, features = [
     "wayland",
     "font-kit",
 ] }
 gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false, features = ["wayland"] }
 gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.22.0", default-features = false }
-gtk4 = "0.11.3"
 json-lines = { git = "https://github.com/paulusminus/json-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.6", path = "crates/lipl-gatt-bluer" }

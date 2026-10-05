@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = ["fake"]
-fake = ["dep:lipl-gatt-bluer"]
+default = []
+gatt = ["dep:lipl-gatt-bluer"]
 
 [dependencies]
 freya = { workspace = true }
