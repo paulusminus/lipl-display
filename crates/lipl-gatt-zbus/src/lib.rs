@@ -31,12 +31,12 @@ type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue>>;
 pub struct GattListener {
     task: tokio::task::JoinHandle<()>,
     #[pin]
-    receiver: futures::channel::mpsc::Receiver<Message>,
+    receiver: futures::channel::mpsc::Receiver<Result<Message, std::io::Error>>,
     terminate: futures::channel::oneshot::Sender<()>,
 }
 
 impl Stream for GattListener {
-    type Item = Message;
+    type Item = Result<Message, std::io::Error>;
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
         self.project().receiver.poll_next(cx)
     }
@@ -62,7 +62,8 @@ impl IntoFuture for GattListener {
 
 impl GattListener {
     pub fn new() -> Self {
-        let (sender, receiver) = futures::channel::mpsc::channel::<Message>(100);
+        let (sender, receiver) =
+            futures::channel::mpsc::channel::<Result<Message, std::io::Error>>(100);
         let (terminate, terminate_receiver) = futures::channel::oneshot::channel::<()>();
         Self {
             task: tokio::runtime::Handle::current().spawn(async move {
@@ -88,7 +89,7 @@ impl GattListener {
 
 async fn handle_messages(
     mut rx: Receiver<Request>,
-    mut sender: Sender<Message>,
+    mut sender: Sender<Result<Message, std::io::Error>>,
     mut terminate_receiver: futures::channel::oneshot::Receiver<()>,
     dispose: Pin<Box<dyn Future<Output = Result<()>> + Send>>,
 ) {
@@ -108,7 +109,7 @@ async fn handle_messages(
                             {
                                 break;
                             }
-                            sender.send(message).await.unwrap();
+                            sender.send(Ok(message)).await.unwrap();
                         }
                     }
                     Some(Request::Read(_)) => {
