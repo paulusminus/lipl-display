@@ -5,7 +5,7 @@ edition = "2024"
 
 [dependencies]
 futures-util = { workspace = true }
-json-lines = { workspace = true }
+deserialize-lines = { workspace = true }
 lipl-display-common = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }

@@ -71,8 +71,10 @@ impl App for DisplayApp {
 
 #[cfg(not(feature = "gatt"))]
 async fn listen() -> impl TryStream<Ok = Message, Error = std::io::Error> {
-    let lines = json_lines::file_reader(constant::PATH).await.unwrap();
-    json_lines::lines(lines)
+    let lines = deserialize_lines::file_reader(constant::PATH)
+        .await
+        .unwrap();
+    deserialize_lines::lines(lines)
 }
 
 #[cfg(feature = "gatt")]
