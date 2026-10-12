@@ -71,10 +71,10 @@ impl App for DisplayApp {
 
 #[cfg(not(feature = "gatt"))]
 async fn listen() -> impl TryStream<Ok = Message, Error = std::io::Error> {
-    let lines = deserialize_lines::file_reader(constant::PATH)
-        .await
-        .unwrap();
-    deserialize_lines::lines(lines)
+    use parse_lines::{ErrIntoIO, IntoAsyncBufRead, ParseLines};
+    use std::fs::File;
+    let reader = File::open(constant::PATH).unwrap().into_async_bufreader();
+    reader.parse_lines(|s| serde_json::from_str(&s).err_into_io())
 }
 
 #[cfg(feature = "gatt")]
@@ -100,7 +100,7 @@ fn main() {
         });
     let launch_config = LaunchConfig::default()
         .with_window(window_config)
-        .with_future(|proxy: LaunchProxy| async move {
+        .with_task(|proxy: LaunchProxy| async move {
             let mut s = listen().await;
             let mut screen = LiplScreen {
                 status: constant::WAIT_MESSAGE.to_owned(),

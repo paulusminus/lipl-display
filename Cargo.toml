@@ -42,16 +42,16 @@ eframe = { version = "0.36.0", default-features = false, features = [
   "wayland",
 ]}
 env_logger = "0.11.10"
-freya = { version = "0.5.0-rc.9", features = ["radio", "sdk-tokio"] }
+freya = { version = "0.5.0-rc.10", features = ["radio", "sdk-tokio"] }
 futures = "0.3.32"
 futures-util = "0.3.32"
-gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.23.2", default-features = false, features = [
+gpui = { git = "https://github.com/zed-industries/zed", tag = "v1.23.3", default-features = false, features = [
     "wayland",
     "font-kit",
 ] }
-gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.23.2", default-features = false, features = ["wayland"] }
-gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.23.2", default-features = false }
-deserialize-lines = { git = "https://github.com/paulusminus/json-lines" }
+gpui_linux = { git = "https://github.com/zed-industries/zed", tag = "v1.23.3", default-features = false, features = ["wayland"] }
+gpui_tokio = { git = "https://github.com/zed-industries/zed", tag = "v1.23.3", default-features = false }
+parse-lines = { git = "https://github.com/paulusminus/parse-lines" }
 lipl-display-common = { version = "0.4.6", path = "crates/lipl-display-common" }
 lipl-gatt-bluer = { version = "0.4.6", path = "crates/lipl-gatt-bluer" }
 log = "0.4.29"

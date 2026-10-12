@@ -13,4 +13,5 @@ futures-util = { workspace = true }
 lipl-display-common = { workspace = true }
 lipl-gatt-bluer = { workspace = true, optional = true }
 tokio = { workspace = true, features = ["time", "rt", "rt-multi-thread"] }
-deserialize-lines = { workspace = true }
+parse-lines = { workspace = true }
+serde_json.workspace = true
