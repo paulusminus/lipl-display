@@ -71,10 +71,13 @@ impl App for DisplayApp {
 
 #[cfg(not(feature = "gatt"))]
 async fn listen() -> impl TryStream<Ok = Message, Error = std::io::Error> {
-    use parse_lines::{ErrIntoIO, IntoAsyncBufRead, ParseLines};
+    use parse_lines::{IntoAsyncBufRead, ParseLines};
     use std::fs::File;
-    let reader = File::open(constant::PATH).unwrap().into_async_bufreader();
-    reader.parse_lines(|s| serde_json::from_str(&s).err_into_io())
+
+    File::open(constant::PATH)
+        .unwrap()
+        .into_async_bufreader()
+        .parse_lines(|s| serde_json::from_str(&s))
 }
 
 #[cfg(feature = "gatt")]

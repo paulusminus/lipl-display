@@ -5539,7 +5539,8 @@ dependencies = [
 [[package]]
 name = "parse-lines"
 version = "0.2.0"
-source = "git+https://github.com/paulusminus/parse-lines#0ec42bdf04322e14ac3f48a02a4335da57bcc312"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9bc9c9544f96912bb031537d3a0e1bc8d48435858a58a3931e8489d875ff7eb5"
 dependencies = [
  "futures-util",
  "pin-project",
