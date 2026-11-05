@@ -1,7 +1,7 @@
 pub use error::Result;
 use futures::{
     FutureExt, SinkExt, Stream, StreamExt, TryFutureExt,
-    channel::mpsc::{Receiver, Sender},
+    channel::{mpsc, oneshot},
     select,
 };
 use gatt::Request;
@@ -31,8 +31,8 @@ type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedVariant>>;
 pub struct GattListener {
     task: tokio::task::JoinHandle<()>,
     #[pin]
-    receiver: futures::channel::mpsc::Receiver<Result<Message, std::io::Error>>,
-    terminate: futures::channel::oneshot::Sender<()>,
+    receiver: mpsc::Receiver<Result<Message, std::io::Error>>,
+    terminate: oneshot::Sender<()>,
 }
 
 impl Stream for GattListener {
@@ -62,9 +62,8 @@ impl IntoFuture for GattListener {
 
 impl GattListener {
     pub fn new() -> Self {
-        let (sender, receiver) =
-            futures::channel::mpsc::channel::<Result<Message, std::io::Error>>(100);
-        let (terminate, terminate_receiver) = futures::channel::oneshot::channel::<()>();
+        let (sender, receiver) = mpsc::channel::<Result<Message, std::io::Error>>(100);
+        let (terminate, terminate_receiver) = oneshot::channel::<()>();
         Self {
             task: tokio::runtime::Handle::current().spawn(async move {
                 match Peripheral::new()
@@ -88,9 +87,9 @@ impl GattListener {
 }
 
 async fn handle_messages(
-    mut rx: Receiver<Request>,
-    mut sender: Sender<Result<Message, std::io::Error>>,
-    mut terminate_receiver: futures::channel::oneshot::Receiver<()>,
+    mut rx: mpsc::Receiver<Request>,
+    mut sender: mpsc::Sender<Result<Message, std::io::Error>>,
+    mut terminate_receiver: oneshot::Receiver<()>,
     dispose: Pin<Box<dyn Future<Output = Result<()>> + Send>>,
 ) {
     tracing::info!("Advertising and Gatt application started");
