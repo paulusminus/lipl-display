@@ -1,7 +1,7 @@
 use std::{collections::HashMap, vec};
 use tracing::debug;
 use uuid::Uuid;
-use zbus::interface;
+use zbus::{Variant, interface};
 
 use crate::gatt_application::GattApplication;
 const MANUFACTURER_NAME: &str = "PM";
@@ -53,11 +53,11 @@ impl PeripheralAdvertisement {
     }
 
     #[zbus(property, name = "ManufacturerData")]
-    fn manufacturer_data(&self) -> HashMap<u16, zbus::zvariant::Value<'_>> {
+    fn manufacturer_data(&self) -> HashMap<u16, Variant<'_>> {
         self.manufacturer_data
             .clone()
             .into_iter()
-            .map(|s| (s.0, zbus::zvariant::Value::from(s.1)))
+            .map(|s| (s.0, Variant::from(s.1)))
             .collect()
     }
 

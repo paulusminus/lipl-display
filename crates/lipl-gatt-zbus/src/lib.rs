@@ -13,7 +13,7 @@ use pin_project::pin_project;
 use std::collections::HashMap;
 use std::pin::Pin;
 use std::task::{Context, Poll};
-use zbus::{names::OwnedInterfaceName, zvariant::OwnedValue};
+use zbus::{OwnedVariant, names::OwnedInterfaceName};
 
 mod advertisement;
 mod connection_extension;
@@ -25,7 +25,7 @@ mod object_path_extensions;
 mod peripheral;
 mod proxy;
 
-type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedValue>>;
+type Interfaces = HashMap<OwnedInterfaceName, HashMap<String, OwnedVariant>>;
 
 #[pin_project]
 pub struct GattListener {

@@ -1,6 +1,5 @@
 use futures_util::TryStreamExt;
 use lipl_display_common::{Command, HandleMessage, LiplScreen, Message};
-use parse_lines::ErrIntoIO;
 use std::str;
 use std::time::Duration;
 use xilem::core::{MessageProxy, fork};
@@ -78,7 +77,9 @@ async fn background_task(proxy: MessageProxy<Message>) {
         let reader = File::open("/home/paul/Code/dart/lipl_display/lipl-gatt-input.txt")?
             .into_async_bufreader();
         tracing::info!("input from file ok");
-        let mut s = reader.parse_lines(|s| serde_json::from_str::<Message>(&s).err_into_io());
+        let mut s = reader.parse_lines(|s| {
+            serde_json::from_str::<Message>(&s).map_err(|e| std::io::Error::other(e))
+        });
         while let Some(message) = s.try_next().await? {
             tracing::info!("Received message: {}", message);
             proxy.message(message)?;

@@ -14,10 +14,8 @@ use futures::{
 };
 use std::{collections::HashMap, pin::Pin};
 use zbus::{
-    Connection, ObjectServer,
-    conn::Builder,
+    Connection, ObjectServer, OwnedObjectPath, OwnedVariant, conn::Builder,
     object_server::Interface,
-    zvariant::{OwnedObjectPath, OwnedValue},
 };
 
 #[derive(Clone)]
@@ -37,8 +35,8 @@ impl Peripheral {
 
     pub async fn adapter_proxy(&self) -> Result<Adapter1Proxy<'_>> {
         Adapter1Proxy::builder(&self.connection)
-            .destination("org.bluez")?
-            .path(&self.adapter)?
+            .destination("org.bluez")
+            .path(&self.adapter)
             .build()
             .await
             .map_err(Into::into)
@@ -46,8 +44,8 @@ impl Peripheral {
 
     pub async fn gatt_manager_proxy(&self) -> Result<GattManager1Proxy<'_>> {
         GattManager1Proxy::builder(&self.connection)
-            .destination("org.bluez")?
-            .path(&self.adapter)?
+            .destination("org.bluez")
+            .path(&self.adapter)
             .build()
             .await
             .map_err(Into::into)
@@ -55,8 +53,8 @@ impl Peripheral {
 
     pub async fn advertising_manager_proxy(&self) -> Result<LEAdvertisingManager1Proxy<'_>> {
         LEAdvertisingManager1Proxy::builder(&self.connection)
-            .destination("org.bluez")?
-            .path(&self.adapter)?
+            .destination("org.bluez")
+            .path(&self.adapter)
             .build()
             .await
             .map_err(Into::into)
@@ -66,7 +64,7 @@ impl Peripheral {
     /// Finds the first gatt capable adapter
     /// Set adapter powered and discoverable1
     pub async fn new() -> Result<Peripheral> {
-        let connection = Builder::system()?.build().await?;
+        let connection = Builder::system().build().await?;
         let adapter = connection.first_gatt_capable_adapter().await?;
         let peripheral_connection = Peripheral {
             connection,
@@ -117,7 +115,7 @@ impl Peripheral {
         );
 
         // Gatt application
-        let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedValue>>> =
+        let mut hm: HashMap<OwnedObjectPath, HashMap<String, HashMap<String, OwnedVariant>>> =
             HashMap::new();
 
         for service in gatt_application.services.clone() {

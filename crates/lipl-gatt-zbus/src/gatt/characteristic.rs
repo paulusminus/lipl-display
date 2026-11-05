@@ -4,10 +4,7 @@ use std::collections::HashMap;
 
 use crate::{GattCharacteristicConfig, object_path_extensions::OwnedObjectPathExtensions};
 use uuid::Uuid;
-use zbus::{
-    interface,
-    zvariant::{OwnedObjectPath, Value},
-};
+use zbus::{OwnedObjectPath, Variant, interface};
 
 #[derive(Clone, Debug)]
 pub struct Characteristic {
@@ -93,27 +90,27 @@ macro_rules! option_convert {
     };
 }
 
-impl From<(Uuid, Vec<u8>, &HashMap<String, Value<'_>>, Uuid)> for WriteRequest {
-    fn from(options: (Uuid, Vec<u8>, &HashMap<String, Value>, Uuid)) -> Self {
+impl From<(Uuid, Vec<u8>, &HashMap<String, Variant<'_>>, Uuid)> for WriteRequest {
+    fn from(options: (Uuid, Vec<u8>, &HashMap<String, Variant<'_>>, Uuid)) -> Self {
         WriteRequest {
             uuid: options.0,
             value: options.1,
-            mtu: option_convert!(options.2, "mtu", u16, Value::U16, clone),
-            device: option_convert!(options.2, "device", String, Value::ObjectPath, to_string),
-            offset: option_convert!(options.2, "offset", u16, Value::U16, clone),
-            write_type: option_convert!(options.2, "type", String, Value::Str, to_string),
+            mtu: option_convert!(options.2, "mtu", u16, Variant::U16, clone),
+            device: option_convert!(options.2, "device", String, Variant::ObjectPath, to_string),
+            offset: option_convert!(options.2, "offset", u16, Variant::U16, clone),
+            write_type: option_convert!(options.2, "type", String, Variant::Str, to_string),
             service_uuid: options.3,
         }
     }
 }
 
-impl From<(Uuid, &HashMap<String, Value<'_>>, Sender<Vec<u8>>, Uuid)> for ReadRequest {
-    fn from(options: (Uuid, &HashMap<String, Value<'_>>, Sender<Vec<u8>>, Uuid)) -> Self {
+impl From<(Uuid, &HashMap<String, Variant<'_>>, Sender<Vec<u8>>, Uuid)> for ReadRequest {
+    fn from(options: (Uuid, &HashMap<String, Variant<'_>>, Sender<Vec<u8>>, Uuid)) -> Self {
         ReadRequest {
             uuid: options.0,
-            mtu: option_convert!(options.1, "mtu", u16, Value::U16, clone),
-            device: option_convert!(options.1, "device", String, Value::ObjectPath, to_string),
-            offset: option_convert!(options.1, "offset", u16, Value::U16, clone),
+            mtu: option_convert!(options.1, "mtu", u16, Variant::U16, clone),
+            device: option_convert!(options.1, "device", String, Variant::ObjectPath, to_string),
+            offset: option_convert!(options.1, "offset", u16, Variant::U16, clone),
             sender: Some(options.2),
             service_uuid: options.3,
         }
@@ -242,7 +239,7 @@ impl Characteristic {
     #[zbus(name = "ReadValue")]
     async fn read_value(
         &mut self,
-        options: HashMap<String, Value<'_>>,
+        options: HashMap<String, Variant<'_>>,
     ) -> zbus::fdo::Result<Vec<u8>> {
         if !self.read {
             return Err(zbus::fdo::Error::NotSupported(
@@ -265,7 +262,7 @@ impl Characteristic {
     fn write_value(
         &mut self,
         value: Vec<u8>,
-        options: HashMap<String, Value>,
+        options: HashMap<String, Variant<'_>>,
     ) -> zbus::fdo::Result<()> {
         if !self.write {
             return Err(zbus::fdo::Error::NotSupported(

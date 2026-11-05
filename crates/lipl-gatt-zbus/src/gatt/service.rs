@@ -1,6 +1,6 @@
 use crate::object_path_extensions::OwnedObjectPathExtensions;
 use uuid::Uuid;
-use zbus::{interface, zvariant::OwnedObjectPath};
+use zbus::{OwnedObjectPath, interface};
 
 #[derive(Clone, Debug)]
 pub struct Service {

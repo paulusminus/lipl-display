@@ -2,11 +2,10 @@ use crate::Interfaces;
 use crate::Result;
 use crate::error::{ErrInto, NoGattCapabilityError};
 use futures::TryFutureExt;
+use zbus::ObjectPath;
 use zbus::fdo::ManagedObjects;
-use zbus::zvariant::ObjectPath;
 use zbus::{
-    Connection, export::async_trait::async_trait, fdo::ObjectManagerProxy,
-    zvariant::OwnedObjectPath,
+    Connection, OwnedObjectPath, export::async_trait::async_trait, fdo::ObjectManagerProxy,
 };
 
 // Predicate for filtering gatt capable adapters
@@ -47,8 +46,8 @@ impl ConnectionExt for Connection {
     /// Returns: the first advertising and gatt application capable adapter or Error
     async fn first_gatt_capable_adapter(&self) -> Result<OwnedObjectPath> {
         ObjectManagerProxy::builder(self)
-            .destination("org.bluez")?
-            .path("/")?
+            .destination("org.bluez")
+            .path("/")
             .build()
             .and_then(get_managed_objects)
             .await

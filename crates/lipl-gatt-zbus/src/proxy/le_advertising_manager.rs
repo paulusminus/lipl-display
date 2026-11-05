@@ -1,4 +1,6 @@
-use zbus::proxy;
+use std::collections::HashMap;
+
+use zbus::{ObjectPath, Result, Variant, proxy};
 
 #[proxy(
     interface = "org.bluez.LEAdvertisingManager1",
@@ -8,29 +10,26 @@ pub trait LEAdvertisingManager1 {
     /// RegisterAdvertisement method
     fn register_advertisement(
         &self,
-        advertisement: &zbus::zvariant::ObjectPath<'_>,
-        options: std::collections::HashMap<&str, zbus::zvariant::Value<'_>>,
-    ) -> zbus::Result<()>;
+        advertisement: &ObjectPath<'_>,
+        options: HashMap<&str, Variant<'_>>,
+    ) -> Result<()>;
 
     /// UnregisterAdvertisement method
-    fn unregister_advertisement(
-        &self,
-        service: &zbus::zvariant::ObjectPath<'_>,
-    ) -> zbus::Result<()>;
+    fn unregister_advertisement(&self, service: &ObjectPath<'_>) -> Result<()>;
 
     /// ActiveInstances property
     #[zbus(property)]
-    fn active_instances(&self) -> zbus::Result<u8>;
+    fn active_instances(&self) -> Result<u8>;
 
     /// SupportedIncludes property
     #[zbus(property)]
-    fn supported_includes(&self) -> zbus::Result<Vec<String>>;
+    fn supported_includes(&self) -> Result<Vec<String>>;
 
     /// SupportedInstances property
     #[zbus(property)]
-    fn supported_instances(&self) -> zbus::Result<u8>;
+    fn supported_instances(&self) -> Result<u8>;
 
     /// SupportedSecondaryChannels property
     #[zbus(property)]
-    fn supported_secondary_channels(&self) -> zbus::Result<Vec<String>>;
+    fn supported_secondary_channels(&self) -> Result<Vec<String>>;
 }
