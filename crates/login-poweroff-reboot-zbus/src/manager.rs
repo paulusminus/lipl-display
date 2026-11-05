@@ -19,7 +19,10 @@
 //!
 //! [Writing a client proxy]: https://z-galaxy.github.io/zbus/client.html
 //! [D-Bus standard interfaces]: https://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces,
-use zbus::proxy;
+//!
+
+use zbus::{Result, proxy};
+
 #[proxy(
     interface = "org.freedesktop.login1.Manager",
     default_service = "org.freedesktop.login1",
@@ -27,26 +30,26 @@ use zbus::proxy;
 )]
 pub trait Manager {
     /// CancelScheduledShutdown method
-    fn cancel_scheduled_shutdown(&self) -> zbus::Result<bool>;
+    fn cancel_scheduled_shutdown(&self) -> Result<bool>;
 
     /// Halt method
-    fn halt(&self, interactive: bool) -> zbus::Result<()>;
+    fn halt(&self, interactive: bool) -> Result<()>;
 
     /// HaltWithFlags method
-    fn halt_with_flags(&self, flags: u64) -> zbus::Result<()>;
+    fn halt_with_flags(&self, flags: u64) -> Result<()>;
 
     /// PowerOff method
-    fn power_off(&self, interactive: bool) -> zbus::Result<()>;
+    fn power_off(&self, interactive: bool) -> Result<()>;
 
     /// PowerOffWithFlags method
-    fn power_off_with_flags(&self, flags: u64) -> zbus::Result<()>;
+    fn power_off_with_flags(&self, flags: u64) -> Result<()>;
 
     /// Reboot method
-    fn reboot(&self, interactive: bool) -> zbus::Result<()>;
+    fn reboot(&self, interactive: bool) -> Result<()>;
 
     /// RebootWithFlags method
-    fn reboot_with_flags(&self, flags: u64) -> zbus::Result<()>;
+    fn reboot_with_flags(&self, flags: u64) -> Result<()>;
 
     /// ScheduleShutdown method
-    fn schedule_shutdown(&self, type_: &str, usec: u64) -> zbus::Result<()>;
+    fn schedule_shutdown(&self, type_: &str, usec: u64) -> Result<()>;
 }

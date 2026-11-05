@@ -3,6 +3,7 @@
 use manager::ManagerProxy;
 use std::time::{SystemTime, UNIX_EPOCH};
 use strum::Display;
+use zbus::{Connection, Error, Result};
 
 mod manager;
 
@@ -14,14 +15,14 @@ pub enum Shutdown {
 }
 
 struct ZbusConnection<'a> {
-    _connection: zbus::Connection,
+    _connection: Connection,
     proxy: ManagerProxy<'a>,
 }
 
 impl<'a> ZbusConnection<'a> {
-    async fn new() -> zbus::Result<Self> {
+    async fn new() -> Result<Self> {
         let _connection = zbus::Connection::system().await?;
-        let proxy = manager::ManagerProxy::builder(&_connection).build().await?;
+        let proxy = ManagerProxy::builder(&_connection).build().await?;
         Ok(Self { _connection, proxy })
     }
     fn manager(&self) -> &ManagerProxy<'a> {
@@ -30,15 +31,15 @@ impl<'a> ZbusConnection<'a> {
 }
 
 /// Converts a delay from now in milliseconds to milliseconds since the Unix epoch.
-fn time(delay_millis: u64) -> zbus::Result<u64> {
+fn time(delay_millis: u64) -> Result<u64> {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|now| now.as_millis() as u64 + delay_millis)
-        .map_err(|_| zbus::Error::Unsupported)
+        .map_err(|_| Error::Unsupported)
 }
 
 /// Reboots the machine.
-pub async fn schedule_shutdown(typ: Shutdown, delay_millis: u64) -> zbus::Result<()> {
+pub async fn schedule_shutdown(typ: Shutdown, delay_millis: u64) -> Result<()> {
     ZbusConnection::new()
         .await?
         .manager()
