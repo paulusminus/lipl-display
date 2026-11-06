@@ -77,9 +77,8 @@ async fn background_task(proxy: MessageProxy<Message>) {
         let reader = File::open("/home/paul/Code/dart/lipl_display/lipl-gatt-input.txt")?
             .into_async_bufreader();
         tracing::info!("input from file ok");
-        let mut s = reader.parse_lines(|s| {
-            serde_json::from_str::<Message>(&s).map_err(|e| std::io::Error::other(e))
-        });
+        let mut s = reader
+            .parse_lines(|s| serde_json::from_str::<Message>(&s).map_err(std::io::Error::other));
         while let Some(message) = s.try_next().await? {
             tracing::info!("Received message: {}", message);
             proxy.message(message)?;
