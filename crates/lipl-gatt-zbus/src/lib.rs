@@ -128,6 +128,12 @@ async fn handle_messages(
 
 #[cfg(test)]
 mod tests {
+    use std::time::Duration;
+
+    use futures::{StreamExt as _, TryStreamExt, stream::select};
+    use lipl_display_common::{Command, Message};
+    use tokio::time::interval;
+    use tokio_stream::wrappers::IntervalStream;
     use uuid::Uuid;
 
     struct Characteristic {
@@ -207,5 +213,50 @@ mod tests {
         );
         assert_eq!(LIPL_DISPLAY_SERVICE.characteristics[2].read, false);
         assert_eq!(LIPL_DISPLAY_SERVICE.characteristics[2].write, true);
+    }
+
+    #[tokio::test]
+    async fn test_select() {
+        #[derive(Debug)]
+        enum Choice {
+            Next(Option<Message>),
+            Sleep,
+        }
+
+        impl From<Option<Message>> for Choice {
+            fn from(value: Option<Message>) -> Self {
+                Self::Next(value)
+            }
+        }
+
+        impl From<()> for Choice {
+            fn from(_: ()) -> Self {
+                Self::Sleep
+            }
+        }
+
+        let interval = interval(Duration::from_millis(100));
+        let interval_stream = IntervalStream::new(interval)
+            .map(std::io::Result::Ok)
+            .map_ok(|_| Choice::from(()));
+        let message_stream = futures::stream::iter([
+            std::io::Result::Ok(Some(Message::Command(Command::Wait))),
+            std::io::Result::Ok(Some(Message::Command(Command::Increase))),
+            std::io::Result::Ok(Some(Message::Part("Even geduld a.u.b. ...".to_owned()))),
+        ])
+        .map_ok(Choice::from);
+        let mut s = select(interval_stream, message_stream);
+        while let Ok(Some(v)) = s.try_next().await {
+            match v {
+                Choice::Next(option) => {
+                    if let Some(message) = option {
+                        println!("{:#?}", message);
+                    }
+                }
+                Choice::Sleep => {
+                    println!("Sleeping")
+                }
+            }
+        }
     }
 }
