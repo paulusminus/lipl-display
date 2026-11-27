@@ -37,7 +37,7 @@ async-channel = "2.5.0"
 bluer = { version = "0.17.4", features = ["bluetoothd"]}
 dbus = "0.9.11"
 derive_builder = "0.20.2"
-eframe = { version = "0.36.0", default-features = false, features = [
+eframe = { version = "0.37.0", default-features = false, features = [
   "glow",
   "wayland",
 ]}
